@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تابع ترتيب الفرق في الدوريات الكبرى حول العالم. جدول محدث للنقاط، الفوز، التعادل، والخسارة.">
+    <meta name="keywords" content="ترتيب, جدول, دوري, نقاط, الدوري الإنجليزي, الدوري الإسباني">
+    <title>ترتيب الفرق - Football 3D Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Custom Select Dropdown Styles */
+        .standings-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .standings-controls label {
+            margin-left: 15px;
+            font-size: 1.1rem;
+        }
+        .custom-select-wrapper {
+            position: relative;
+            display: inline-block;
+            user-select: none;
+            width: 280px;
+        }
+        .custom-select {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .custom-select__trigger {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--light);
+            background-color: var(--dark-blue);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.1);
+        }
+        .custom-select__trigger:hover {
+            border-color: #00aaff; /* Brighter primary color on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+        }
+        .arrow {
+            transition: transform 0.3s ease;
+            color: var(--primary-color);
+        }
+        .custom-select.open .arrow {
+            transform: rotate(180deg);
+        }
+        .custom-options {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            right: 0;
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            background-color: #1a2c4a;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 10;
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+        .custom-select.open .custom-options {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+        .custom-option {
+            display: block;
+            padding: 12px 16px;
+            color: var(--light);
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .custom-option:hover {
+            background-color: var(--primary-color);
+            color: var(--dark-blue);
+        }
+        .custom-option.selected {
+            background-color: #004a7c; /* A darker shade for selected */
+            font-weight: 600;
+        }
+
+        /* 3D Table Effect Styles */
+        .table-container {
+            perspective: 1000px; /* Add perspective to the container */
+        }
+        .standings-table {
+            transform-style: preserve-3d; /* Allow 3D transforms on children */
+            transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .standings-table tbody tr {
+            transition: all 0.3s ease-out;
+            transform-origin: center;
+        }
+        .standings-table tbody tr:hover {
+            transform: scale(1.02) translateZ(15px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(40, 58, 85, 0.8); /* Slightly lighter background on hover */
+            border-color: var(--primary);
+        }
+        /* Style the rank number */
+        .standings-table td:first-child {
+            font-weight: 700;
+            color: var(--light);
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- الرأس -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <div class="logo-text">Football 3D Hub</div>
+                </div>
+                
+                <nav>
+                    <ul>
+                        <li><a href="blackbox-output-code-RTX7MLD937.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                        <li><a href="teams.html"><i class="fas fa-shield-alt"></i> الفرق</a></li>
+                        <li><a href="players.html"><i class="fas fa-star"></i> اللاعبين</a></li>
+                        <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i> الترتيب</a></li>
+                        <li><a href="stats.html"><i class="fas fa-chart-line"></i> الإحصائيات</a></li>
+                        <li><a href="news.html"><i class="far fa-newspaper"></i> الأخبار</a></li>
+                        <li><a href="contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- قسم الترتيب -->
+    <section class="standings" id="standings">
+        <div class="container">
+            <h2 class="section-title">جدول الترتيب</h2>
+            
+            <div class="standings-controls">
+                <label>اختر الدوري:</label>
+                <div class="custom-select-wrapper">
+                    <div class="custom-select">
+                        <div class="custom-select__trigger"><span>الدوري الإنجليزي الممتاز</span><div class="arrow"><i class="fas fa-chevron-down"></i></div></div>
+                        <div class="custom-options">
+                            <span class="custom-option selected" data-value="39">الدوري الإنجليزي الممتاز</span>
+                            <span class="custom-option" data-value="140">الدوري الإسباني</span>
+                            <span class="custom-option" data-value="135">الدوري الإيطالي</span>
+                            <span class="custom-option" data-value="78">الدوري الألماني</span>
+                            <span class="custom-option" data-value="61">الدوري الفرنسي</span>
+                            <span class="custom-option" data-value="307">دوري روشن السعودي</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <h3 id="standings-league-name" class="section-subtitle" style="margin-bottom: 1rem;"></h3>
+                <table class="standings-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>الفريق</th>
+                            <th>لعب</th>
+                            <th>ف</th>
+                            <th>ت</th>
+                            <th>خ</th>
+                            <th>+/-</th>
+                            <th>النقاط</th>
+                        </tr>
+                    </thead>
+                    <tbody id="standings-body">
+                        <!-- سيتم ملء بيانات الترتيب هنا بواسطة JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- التذييل -->
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                © 2023 Football 3D Hub. جميع الحقوق محفوظة.
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js" defer></script>
+</body>
+</html>

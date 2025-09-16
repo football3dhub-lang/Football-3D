@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="استكشف عالم كرة القدم بمنظور ثلاثي الأبعاد. Football 3D Hub يقدم إحصائيات اللاعبين، تشكيلات الفرق، وأخبار كرة القدم في بيئة تفاعلية.">
+    <meta name="keywords" content="كرة القدم, ثلاثي الأبعاد, إحصائيات, لاعبين, فرق, أخبار, نتائج, ميسي, رونالدو, مبابي, هالاند">
+    <title>Football 3D Hub - مركز كرة القدم التفاعلي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+</head>
+<body>
+    <!-- الرأس -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <div class="logo-text">Football 3D Hub</div>
+                </div>
+                
+                <nav>
+                    <ul>
+                        <li><a href="blackbox-output-code-RTX7MLD937.html" class="active"><i class="fas fa-home"></i> الرئيسية</a></li>
+                        <li><a href="teams.html"><i class="fas fa-shield-alt"></i> الفرق</a></li>
+                        <li><a href="players.html"><i class="fas fa-star"></i> اللاعبين</a></li>
+                        <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i> الترتيب</a></li>
+                        <li><a href="stats.html"><i class="fas fa-chart-line"></i> الإحصائيات</a></li>
+                        <li><a href="news.html"><i class="far fa-newspaper"></i> الأخبار</a></li>
+                        <li><a href="contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- قسم البطل -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">استكشف عالم كرة القدم بمنظور ثلاثي الأبعاد</h1>
+                    <p class="hero-subtitle">
+                        Football 3D Hub يمنحك تجربة فريدة لمشاهدة إحصائيات اللاعبين، تشكيلات الفرق، وأداء الأندية في بيئة تفاعلية ثلاثية الأبعاد غامرة.
+                    </p>
+                    
+                    <div class="hero-buttons">
+                        <a href="#scoreboard" class="btn btn-primary">
+                            <i class="fas fa-chart-line"></i> استعرض النتائج
+                        </a>
+                        <a href="about.html" class="btn btn-secondary">
+                            <i class="fas fa-info-circle"></i> المزيد من المعلومات
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="hero-canvas" id="pitch-3d">
+                    <!-- سيناريو Three.js سيعمل هنا -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- لوحة النتائج -->
+    <section class="scoreboard"  id="scoreboard">
+        <div class="container">
+            <h2 class="section-title">نتائج مباشرة</h2>
+            <div class="scoreboard-grid">
+                <!-- سيتم ملء محتوى المباريات هنا بواسطة JavaScript -->
+            </div>
+        </div>
+
+    </section>
+
+    <!-- المميزات -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">مميزات منصتنا</h2>
+            <p class="section-subtitle">اكتشف عالم كرة القدم بطريقة جديدة كلياً مع أدواتنا المتطورة ثلاثية الأبعاد</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-field"></i>
+                    </div>
+                    <h3 class="feature-title">ملاعب ثلاثية الأبعاد</h3>
+                    <p class="feature-description">
+                        استكشف الملاعب الشهيرة بتقنية ثلاثية الأبعاد تفاعلية مع إمكانية رؤية تفاصيل التشكيلات وحركة اللاعبين.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3 class="feature-title">إحصائيات متقدمة</h3>
+                    <p class="feature-description">
+                        تحليل عميق لأداء اللاعبين والفرق مع رسوم بيانية ثلاثية الأبعاد وتقارير مفصلة عن كل مباراة.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3 class="feature-title">تقييم المهارات</h3>
+                    <p class="feature-description">
+                        نظام متكامل لتقييم مهارات اللاعبين يشمل السرعة، التسديد، التمرير، الدفاع وغيرها من المهارات الأساسية.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="feature-title">تصنيفات اللاعبين</h3>
+                    <p class="feature-description">
+                        قوائم دورية لأفضل اللاعبين حسب المراكز والبطولات المختلفة مع مقارنة أدائهم عبر المواسم.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- اللاعبون المميزون -->
+    <section class="players" id="players">
+        <div class="container">
+            <h2 class="section-title">النجوم المتألقون</h2>
+            <p class="section-subtitle">تعرف على أفضل اللاعبين في العالم من خلال تحليلاتنا المتقدمة</p>
+            
+            <div class="players-grid">
+                <div class="player-card">
+                    <div class="player-image">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Lionel_Messi_20180626.jpg" alt="ليونيل ميسي" loading="lazy">
+                    </div>
+                    <div class="player-info">
+                        <h3 class="player-name">ليونيل ميسي</h3>
+                        <div class="player-team">
+                            <i class="fas fa-shield-alt"></i>
+                            إنتر ميامي
+                        </div>
+                        <p>هجوم - يمين / وسط</p>
+                        
+                        <div class="player-stats">
+                            <div class="stat">
+                                <div class="stat-value">94</div>
+                                <div class="stat-label">التقييم</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">38</div>
+                                <div class="stat-label">الأهداف</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">18</div>
+                                <div class="stat-label">تمريرات حاسمة</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="player-card">
+                    <div class="player-image">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Cristiano_Ronaldo_WC2022_-_01.jpg" alt="كريستيانو رونالدو" loading="lazy">
+                    </div>
+                    <div class="player-info">
+                        <h3 class="player-name">كريستيانو رونالدو</h3>
+                        <div class="player-team">
+                            <i class="fas fa-shield-alt"></i>
+                            النصر
+                        </div>
+                        <p>هجوم - مركز</p>
+                        
+                        <div class="player-stats">
+                            <div class="stat">
+                                <div class="stat-value">92</div>
+                                <div class="stat-label">التقييم</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">45</div>
+                                <div class="stat-label">الأهداف</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">تمريرات حاسمة</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="player-card">
+                    <div class="player-image">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/2022_FIFA_World_Cup_France_4%E2%80%931_Australia_-_%28Kylian_Mbapp%C3%A9%29.jpg" alt="كيليان مبابي" loading="lazy">
+                    </div>
+                    <div class="player-info">
+                        <h3 class="player-name">كيليان مبابي</h3>
+                        <div class="player-team">
+                            <i class="fas fa-shield-alt"></i>
+                            باريس سان جيرمان
+                        </div>
+                        <p>هجوم - جناح</p>
+                        
+                        <div class="player-stats">
+                            <div class="stat">
+                                <div class="stat-value">91</div>
+                                <div class="stat-label">التقييم</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">42</div>
+                                <div class="stat-label">الأهداف</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">10</div>
+                                <div class="stat-label">تمريرات حاسمة</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-card">
+                    <div class="player-image">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Erling_Haaland_2023.jpg" alt="إرلينغ هالاند" loading="lazy">
+                    </div>
+                    <div class="player-info">
+                        <h3 class="player-name">إرلينغ هالاند</h3>
+                        <div class="player-team">
+                            <i class="fas fa-shield-alt"></i>
+                            مانشستر سيتي
+                        </div>
+                        <p>هجوم - مركز</p>
+                        
+                        <div class="player-stats">
+                            <div class="stat">
+                                <div class="stat-value">91</div>
+                                <div class="stat-label">التقييم</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">52</div>
+                                <div class="stat-label">الأهداف</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">9</div>
+                                <div class="stat-label">تمريرات حاسمة</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الأخبار -->
+    <section class="news" id="news">
+        <div class="container">
+            <h2 class="section-title">آخر الأخبار</h2>
+            <p class="section-subtitle">تابع آخر التطورات والأخبار في عالم كرة القدم</p>
+            <div class="news-grid">
+                <!-- بطاقة خبر 1 -->
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1553779429-0435b05a3563?q=80&w=2070&auto=format&fit=crop" alt="سوق الانتقالات" loading="lazy">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-category">انتقالات</span>
+                        <h3 class="news-title">صفقة قياسية محتملة تهز سوق الانتقالات الصيفي</h3>
+                        <div class="news-meta">
+                            <span><i class="far fa-calendar-alt"></i> منذ 3 ساعات</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- بطاقة خبر 2 -->
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1517423568366-8b83523034fd?q=80&w=1974&auto=format&fit=crop" alt="تحليل مباراة" loading="lazy">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-category">تحليل فني</span>
+                        <h3 class="news-title">تحليل تكتيكي لنهائي دوري الأبطال: كيف حسمت التفاصيل اللقب؟</h3>
+                        <div class="news-meta">
+                            <span><i class="far fa-calendar-alt"></i> أمس</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الإحصائيات -->
+    <section class="stats" id="stats">
+        <div class="container">
+            <h2 class="section-title">أرقام واحصائيات</h2>
+            <p class="section-subtitle">اكتشف عالم كرة القدم من خلال الأرقام والإحصائيات الدقيقة</p>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <div class="stat-number">5,280</div>
+                    <div class="stat-desc">هدف تم تسجيله هذا الموسم</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number">720</div>
+                    <div class="stat-desc">لاعب محترف في القاعدة</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="stat-number">48</div>
+                    <div class="stat-desc">فريق يتم تحليله</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-number">12</div>
+                    <div class="stat-desc">بطولة مختلفة</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- التذييل -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">
+                        <i class="fas fa-futbol"></i>
+                        <span>Football 3D Hub</span>
+                    </div>
+                    <p class="footer-description">
+                        منصة متكاملة لعشاق كرة القدم تجمع بين التحليل الرياضي الدقيق والتجربة البصرية ثلاثية الأبعاد الغامرة.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">روابط سريعة</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html"><i class="fas fa-angle-left"></i> عن الموقع</a></li>
+                        <li><a href="features.html"><i class="fas fa-angle-left"></i> المميزات</a></li>
+                        <li><a href="teams.html"><i class="fas fa-angle-left"></i> الفرق</a></li>
+                        <li><a href="news.html"><i class="fas fa-angle-left"></i> الأخبار</a></li>
+                        <li><a href="stats.html"><i class="fas fa-angle-left"></i> الإحصائيات</a></li>
+                        <li><a href="contact.html"><i class="fas fa-angle-left"></i> اتصل بنا</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">البطولات</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-angle-left"></i> دوري أبطال أوروبا</a></li>
+                        <li><a href="#"><i class="fas fa-angle-left"></i> الدوري الإنجليزي</a></li>
+                        <li><a href="#"><i class="fas fa-angle-left"></i> الدوري الإسباني</a></li>
+                        <li><a href="#"><i class="fas fa-angle-left"></i> كأس العالم</a></li>
+                        <li><a href="#"><i class="fas fa-angle-left"></i> دوري الأمم الأوروبية</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">اتصل بنا</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:football3dhub@gmail.com"><i class="fas fa-envelope"></i> football3dhub@gmail.com</a></li>
+                        <li><a href="tel:+201279082485"><i class="fas fa-phone"></i> +20 127 908 2485</a></li>
+                        <li><a href="contact.html"><i class="fas fa-map-marker-alt"></i> مصر</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-legal">
+                <ul class="footer-links">
+                    <li><a href="privacy-policy.html">سياسة الخصوصية</a></li>
+                    <li><a href="terms-and-conditions.html">الشروط والأحكام</a></li>
+                </ul>
+            </div>
+
+            <div class="copyright">
+                © 2023 Football 3D Hub. جميع الحقوق محفوظة.
+            </div>
+        </div>
+    </footer>
+
+    <!-- إشعار ملفات تعريف الارتباط -->
+    <div id="cookie-notice">
+        <p>يستخدم هذا الموقع ملفات تعريف الارتباط لضمان حصولك على أفضل تجربة. <a href="privacy-policy.html">اعرف المزيد</a></p>
+        <button id="cookie-accept-btn">أوافق</button>
+    </div>
+
+    <script src="main.js" defer></script>
+</body>
+</html>
