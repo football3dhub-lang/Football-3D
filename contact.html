@@ -23,13 +23,13 @@
                 
                 <nav>
                     <ul>
-                        <li><a href="blackbox-output-code-RTX7MLD937.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-                        <li><a href="teams.html"><i class="fas fa-shield-alt"></i> الفرق</a></li>
-                        <li><a href="players.html"><i class="fas fa-star"></i> اللاعبين</a></li>
-                        <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i> الترتيب</a></li>
-                        <li><a href="stats.html"><i class="fas fa-chart-line"></i> الإحصائيات</a></li>
-                        <li><a href="news.html"><i class="far fa-newspaper"></i> الأخبار</a></li>
-                        <li><a href="contact.html" class="active"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+                        <li><a href="index.html"><i class="fas fa-home"></i><span data-i18n="navHome"> الرئيسية</span></a></li>
+                        <li><a href="teams.html"><i class="fas fa-shield-alt"></i><span data-i18n="navTeams"> الفرق</span></a></li>
+                        <li><a href="players.html"><i class="fas fa-star"></i><span data-i18n="navPlayers"> اللاعبين</span></a></li>
+                        <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i><span data-i18n="navStandings"> الترتيب</span></a></li>
+                        <li><a href="stats.html"><i class="fas fa-chart-line"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
+                        <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                        <li><a href="contact.html"><i class="fas fa-envelope"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
                     </ul>
                 </nav>
             </div>
@@ -44,7 +44,9 @@
             <div class="contact-content">
                 <div class="contact-form-container">
                     <h3>أرسل لنا رسالة</h3>
-                    <form action="https://formspree.io/f/e6e6dc31d115af988beb9677b7436fa4" method="POST">
+                    <!-- هام: لتفعيل النموذج، قم بالتسجيل في موقع formspree.io -->
+                    <!-- واحصل على رابط الـ action الخاص بك واستبدله بالرابط الموجود أدناه -->
+                    <form id="contact-form" action="https://formspree.io/f/28a2735e1a11450d97bcc8030c8d15e9" method="POST">
                         <div class="form-group">
                             <input type="text" name="name" placeholder="الاسم الكامل" required>
                         </div>
@@ -59,6 +61,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary">إرسال الرسالة</button>
                     </form>
+                    <p id="form-status" style="margin-top: 20px; text-align: center; font-weight: 600;"></p>
                 </div>
                 <div class="contact-info-container">
                     <h3>معلومات الاتصال</h3>
@@ -83,8 +86,73 @@
     <!-- التذييل -->
     <footer>
         <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">
+                        <i class="fas fa-futbol"></i>
+                        <span>Football 3D Hub</span>
+                    </div>
+                    <p class="footer-description">
+                        منصة متكاملة لعشاق كرة القدم تجمع بين التحليل الرياضي الدقيق والتجربة البصرية ثلاثية الأبعاد الغامرة.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title" data-i18n="quickLinks">روابط سريعة</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html"><i class="fas fa-angle-left"></i><span data-i18n="aboutUs"> عن الموقع</span></a></li>
+                        <li><a href="features.html"><i class="fas fa-angle-left"></i><span data-i18n="features"> المميزات</span></a></li>
+                        <li><a href="teams.html"><i class="fas fa-angle-left"></i><span data-i18n="navTeams"> الفرق</span></a></li>
+                        <li><a href="news.html"><i class="fas fa-angle-left"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                        <li><a href="stats.html"><i class="fas fa-angle-left"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
+                        <li><a href="contact.html"><i class="fas fa-angle-left"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
+                        <li><a href="sitemap.html"><i class="fas fa-angle-left"></i> خريطة الموقع</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">اتصل بنا</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:football3dhub@gmail.com"><i class="fas fa-envelope"></i> football3dhub@gmail.com</a></li>
+                        <li><a href="tel:+201279082485"><i class="fas fa-phone"></i> +20 127 908 2485</a></li>
+                        <li><a href="contact.html"><i class="fas fa-map-marker-alt"></i> مصر</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-extra-content">
+                <div class="footer-keywords">
+                    <h3 class="footer-title">كلمات مفتاحية</h3>
+                    <ul class="keywords-list">
+                        <li>نتائج مباشرة</li>
+                        <li>أخبار كرة القدم</li>
+                        <li>الدوري الإنجليزي</li>
+                        <li>الدوري الإسباني</li>
+                        <li>دوري أبطال أوروبا</li>
+                        <li>ترتيب الفرق</li>
+                        <li>إحصائيات اللاعبين</li>
+                        <li>سوق الانتقالات</li>
+                        <li>مباريات اليوم</li>
+                        <li>أهداف المباريات</li>
+                        <li>محمد صلاح</li>
+                        <li>ليونيل ميسي</li>
+                        <li>كريستيانو رونالدو</li>
+                    </ul>
+                </div>
+                <div class="footer-language">
+                    <h3 class="footer-title">اللغة</h3>
+                    <div id="language-switcher"></div>
+                </div>
+            </div>
+
             <div class="copyright">
-                © 2023 Football 3D Hub. جميع الحقوق محفوظة.
+                © 2024 Football 3D Hub. جميع الحقوق محفوظة.
             </div>
         </div>
     </footer>

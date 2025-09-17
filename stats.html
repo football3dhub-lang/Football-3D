@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="تصفح إحصائيات اللاعبين التفصيلية في مختلف الدوريات والبطولات العالمية.">
-    <meta name="keywords" content="إحصائيات, لاعبين, أهداف, صناعة, تقييم, كرة قدم">
-    <title>إحصائيات اللاعبين - Football 3D Hub</title>
+    <meta name="description" content="تصفح قائمة الهدافين في الدوريات الكبرى. بيانات محدثة لأفضل الهدافين وصانعي الأهداف.">
+    <meta name="keywords" content="هدافين, إحصائيات, لاعبين, أهداف, صناعة, تقييم, كرة قدم, الدوري الإنجليزي, الدوري الإسباني">
+    <title>قائمة الهدافين - Football 3D Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -23,13 +23,13 @@
                 
                 <nav>
                     <ul>
-                        <li><a href="blackbox-output-code-RTX7MLD937.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-                        <li><a href="teams.html"><i class="fas fa-shield-alt"></i> الفرق</a></li>
-                        <li><a href="players.html"><i class="fas fa-star"></i> اللاعبين</a></li>
-                        <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i> الترتيب</a></li>
-                        <li><a href="stats.html"><i class="fas fa-chart-line"></i> الإحصائيات</a></li>
-                        <li><a href="news.html"><i class="far fa-newspaper"></i> الأخبار</a></li>
-                        <li><a href="contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+                        <li><a href="index.html"><i class="fas fa-home"></i><span data-i18n="navHome"> الرئيسية</span></a></li>
+                        <li><a href="teams.html"><i class="fas fa-shield-alt"></i><span data-i18n="navTeams"> الفرق</span></a></li>
+                        <li><a href="players.html"><i class="fas fa-star"></i><span data-i18n="navPlayers"> اللاعبين</span></a></li>
+                        <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i><span data-i18n="navStandings"> الترتيب</span></a></li>
+                        <li><a href="stats.html"><i class="fas fa-chart-line"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
+                        <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                        <li><a href="contact.html"><i class="fas fa-envelope"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
                     </ul>
                 </nav>
             </div>
@@ -39,26 +39,48 @@
     <!-- قسم الإحصائيات -->
     <section class="standings" id="player-stats-section">
         <div class="container">
-            <h2 class="section-title">إحصائيات اللاعبين</h2>
-            <p class="section-subtitle">بيانات تفصيلية لأداء اللاعبين في مختلف البطولات</p>
+            <h2 class="section-title">قائمة الهدافين</h2>
+            <p class="section-subtitle">بيانات تفصيلية لأداء أفضل الهدافين في مختلف البطولات</p>
             
+            <div class="standings-controls">
+                <label>اختر الدوري:</label>
+                <div class="custom-select-wrapper">
+                    <div class="custom-select">
+                        <div class="custom-select__trigger"><span>الدوري الإنجليزي الممتاز</span><div class="arrow"><i class="fas fa-chevron-down"></i></div></div>
+                        <div class="custom-options" style="z-index: 11;">
+                            <span class="custom-option selected" data-value="39">الدوري الإنجليزي الممتاز</span>
+                            <span class="custom-option" data-value="140">الدوري الإسباني</span>
+                            <span class="custom-option" data-value="135">الدوري الإيطالي</span>
+                            <span class="custom-option" data-value="78">الدوري الألماني</span>
+                            <span class="custom-option" data-value="61">الدوري الفرنسي</span>
+                            <span class="custom-option" data-value="307">دوري روشن السعودي</span>
+                            <span class="custom-option" data-value="2">دوري أبطال أوروبا</span>
+                            <span class="custom-option" data-value="233">الدوري المصري الممتاز</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="table-container">
+                <h3 id="stats-league-name" class="section-subtitle" style="margin-bottom: 1rem;"></h3>
                 <table class="standings-table">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>اللاعب</th>
                             <th>الفريق</th>
-                            <th>الدوري</th>
-                            <th>مشاركات</th>
-                            <th>دقائق</th>
+                            <th>المركز</th>
+                            <th>تاريخ الميلاد</th>
+                            <th>لعب</th>
                             <th>أهداف</th>
                             <th>صناعة</th>
+                            <th>تسديدات</th>
+                            <th>ركلات جزاء</th>
                             <th>تقييم</th>
                         </tr>
                     </thead>
                     <tbody id="stats-body">
-                        <!-- سيتم ملء بيانات الإحصائيات هنا بواسطة JavaScript -->
+                        <!-- سيتم ملء بيانات الهدافين هنا بواسطة JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -68,8 +90,73 @@
     <!-- التذييل -->
     <footer>
         <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">
+                        <i class="fas fa-futbol"></i>
+                        <span>Football 3D Hub</span>
+                    </div>
+                    <p class="footer-description">
+                        منصة متكاملة لعشاق كرة القدم تجمع بين التحليل الرياضي الدقيق والتجربة البصرية ثلاثية الأبعاد الغامرة.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title" data-i18n="quickLinks">روابط سريعة</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html"><i class="fas fa-angle-left"></i><span data-i18n="aboutUs"> عن الموقع</span></a></li>
+                        <li><a href="features.html"><i class="fas fa-angle-left"></i><span data-i18n="features"> المميزات</span></a></li>
+                        <li><a href="teams.html"><i class="fas fa-angle-left"></i><span data-i18n="navTeams"> الفرق</span></a></li>
+                        <li><a href="news.html"><i class="fas fa-angle-left"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                        <li><a href="stats.html"><i class="fas fa-angle-left"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
+                        <li><a href="contact.html"><i class="fas fa-angle-left"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
+                        <li><a href="sitemap.html"><i class="fas fa-angle-left"></i> خريطة الموقع</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">اتصل بنا</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:football3dhub@gmail.com"><i class="fas fa-envelope"></i> football3dhub@gmail.com</a></li>
+                        <li><a href="tel:+201279082485"><i class="fas fa-phone"></i> +20 127 908 2485</a></li>
+                        <li><a href="contact.html"><i class="fas fa-map-marker-alt"></i> مصر</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-extra-content">
+                <div class="footer-keywords">
+                    <h3 class="footer-title">كلمات مفتاحية</h3>
+                    <ul class="keywords-list">
+                        <li>نتائج مباشرة</li>
+                        <li>أخبار كرة القدم</li>
+                        <li>الدوري الإنجليزي</li>
+                        <li>الدوري الإسباني</li>
+                        <li>دوري أبطال أوروبا</li>
+                        <li>ترتيب الفرق</li>
+                        <li>إحصائيات اللاعبين</li>
+                        <li>سوق الانتقالات</li>
+                        <li>مباريات اليوم</li>
+                        <li>أهداف المباريات</li>
+                        <li>محمد صلاح</li>
+                        <li>ليونيل ميسي</li>
+                        <li>كريستيانو رونالدو</li>
+                    </ul>
+                </div>
+                <div class="footer-language">
+                    <h3 class="footer-title">اللغة</h3>
+                    <div id="language-switcher"></div>
+                </div>
+            </div>
+
             <div class="copyright">
-                © 2023 Football 3D Hub. جميع الحقوق محفوظة.
+                © 2024 Football 3D Hub. جميع الحقوق محفوظة.
             </div>
         </div>
     </footer>

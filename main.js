@@ -145,14 +145,102 @@ function addPlayer(scene, x, y, z, color) {
     scene.add(playerGroup);
 }
 
-// بدء تحميل المشهد ثلاثي الأبعاد عند تحميل الصفحة
-initThreeJS();
+// --- Global Configuration ---
+// تنبيه أمني: في بيئة الإنتاج، يجب عدم عرض مفتاح الـ API في كود الواجهة الأمامية.
+// يجب أن يتم استدعاء الـ API من خلال خادم خلفي (backend) للحفاظ على سرية المفتاح.
+const API_KEY = '97b0f94e37aa62b6718ab11d4ef0f9ce';
+const API_HOST = 'v3.football.api-sports.io';
+const SEASON = 2023; // تم التحديث إلى الموسم المكتمل لضمان توفر الإحصائيات
 
+// --- Global Data ---
+// News data is hardcoded for demonstration purposes. In a real application, this would come from a CMS or a news API.
+const newsData = [
+    {
+        id: 1,
+        category: 'تحليل تكتيكي',
+        title: 'ثورة جوارديولا: كيف أعاد "الظهير الوهمي" تعريف كرة القدم الحديثة؟',
+        image: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?q=80&w=1907&auto=format&fit=crop',
+        date: 'منذ ساعتين',
+        link: 'news-article.html?id=1',
+        content: `لم يعد مركز الظهير مجرد لاعب يركض على الخط الجانبي لإرسال العرضيات. في عالم بيب جوارديولا، تحول الظهير إلى قطعة شطرنج استراتيجية تتحرك بذكاء في عمق الملعب، وهو ما يُعرف بـ "الظهير الوهمي" أو "Inverted Full-back". هذه الثورة التكتيكية لم تغير فقط طريقة لعب مانشستر سيتي، بل ألهمت مدربين في جميع أنحاء العالم لإعادة التفكير في أدوار لاعبيهم.\n\nالفكرة بسيطة في جوهرها ولكنها معقدة في تنفيذها. بدلاً من البقاء على الأطراف، يتحرك الظهير (مثل كايل ووكر أو جواو كانسيلو سابقاً) إلى وسط الملعب عند امتلاك الكرة. هذا التحرك يخلق زيادة عددية في منطقة حيوية، مما يمنح الفريق سيطرة أكبر على إيقاع اللعب ويفتح زوايا تمرير جديدة لم تكن متاحة. الأهم من ذلك، أنه يوفر حماية دفاعية فورية ضد الهجمات المرتدة، حيث يكون الفريق أكثر تماسكاً في الوسط عند فقدان الكرة.\n\nتطبيق هذا الأسلوب يتطلب لاعبين بمهارات استثنائية. يجب أن يمتلك الظهير رؤية لاعب خط الوسط، القدرة على المراوغة في المساحات الضيقة، ودقة التمرير، بالإضافة إلى واجباته الدفاعية التقليدية. لقد نجح جوارديولا في تطوير لاعبين مثل فيليب لام في بايرن ميونخ، وأعاد اكتشاف لاعبين مثل جون ستونز في مانشستر سيتي ليقوموا بهذا الدور ببراعة. النتيجة؟ هيمنة شبه كاملة على المباريات، وقدرة على تفكيك أقوى الدفاعات، ونظام لعب مرن يصعب على الخصوم مواجهته.`
+    },
+    {
+        id: 2,
+        category: 'سوق الانتقالات',
+        title: 'صفقة القرن: كيليان مبابي إلى ريال مدريد.. ما الذي يعنيه هذا للعالم؟',
+        image: 'https://images.unsplash.com/photo-1599422442439-773d3d34341a?q=80&w=1974&auto=format&fit=crop',
+        date: 'منذ 8 ساعات',
+        link: 'news-article.html?id=2',
+        content: `بعد سنوات من التكهنات والشد والجذب، أصبح الحلم حقيقة. أعلن ريال مدريد رسمياً عن ضم النجم الفرنسي كيليان مبابي في صفقة انتقال حر تاريخية. هذا الانتقال لا يمثل مجرد تعزيز هائل لصفوف النادي الملكي، بل هو حدث سيعيد تشكيل خريطة القوة في كرة القدم الأوروبية لسنوات قادمة.\n\nبالنسبة لريال مدريد، يمثل وصول مبابي تتويجاً لاستراتيجية طويلة الأمد لجلب أفضل المواهب في العالم. سينضم مبابي إلى كوكبة من النجوم مثل فينيسيوس جونيور، جود بيلينجهام، ورودريجو، ليشكلوا خط هجوم مرعباً قد يكون الأقوى في العالم. يتوقع المحللون أن يمنح هذا الهجوم ريال مدريد أفضلية حاسمة في جميع البطولات التي ينافس عليها.\n\nعلى الجانب الآخر، يواجه باريس سان جيرمان تحدي بناء فريق جديد في حقبة ما بعد مبابي. خسارة لاعب بحجمه لا يمكن تعويضها بسهولة، وسيتعين على النادي الفرنسي أن يكون ذكياً في سوق الانتقالات لإعادة بناء مشروعه. أما بالنسبة للدوري الإسباني، فإن قدوم مبابي يعزز من قيمته التنافسية والتسويقية، ويعيد الصراع الكلاسيكي بين ريال مدريد وبرشلونة إلى الواجهة بقوة، حيث سيتعين على برشلونة إيجاد طريقة لمواجهة هذا العملاق الجديد.`
+    },
+    {
+        id: 3,
+        category: 'أساطير اللعبة',
+        title: 'ليونيل ميسي في أمريكا: تأثير يتجاوز حدود الملعب',
+        image: 'https://images.unsplash.com/photo-1552053831-71594a27632d?q=80&w=1924&auto=format&fit=crop',
+        date: 'أمس',
+        link: 'news-article.html?id=3',
+        content: `عندما انتقل ليونيل ميسي إلى إنتر ميامي، لم يكن مجرد انتقال لاعب كرة قدم، بل كان ظاهرة ثقافية واقتصادية. منذ لحظة وصوله، أحدث الأسطورة الأرجنتينية تأثيراً هائلاً على الدوري الأمريكي (MLS) وعلى رياضة كرة القدم في الولايات المتحدة بشكل عام.\n\nعلى أرض الملعب، قاد ميسي فريقه إنتر ميامي لتحقيق أول بطولة في تاريخه (كأس الدوريات)، وقدم لمحات فنية أعادت تعريف ما هو ممكن في الدوري. لكن تأثيره الأكبر كان خارج الملعب. ارتفعت أسعار تذاكر مباريات إنتر ميامي بشكل جنوني، وحققت منصة Apple TV+، الناقل الحصري للدوري، أرقام اشتراكات قياسية. أصبح قميص ميسي الوردي هو الأكثر مبيعاً في العالم، وتحولت مدينة ميامي إلى قبلة لعشاق كرة القدم.\n\nيمثل "تأثير ميسي" نقطة تحول في تاريخ كرة القدم في أمريكا. لقد جذب انتباه وسائل الإعلام العالمية والمشجعين العاديين على حد سواء، مما يمهد الطريق لنمو هائل للعبة قبل استضافة كأس العالم 2026. إن وجود ميسي لا يرفع فقط من مستوى المنافسة، بل يلهم جيلاً جديداً من اللاعبين والمشجعين في بلد كانت كرة القدم فيه دائماً تكافح من أجل الحصول على مكانة بين الرياضات الكبرى.`
+    },
+    {
+        id: 4,
+        category: 'الدوري السعودي',
+        title: 'دوري روشن: كيف تحول إلى وجهة لنجوم العالم؟',
+        image: 'https://images.unsplash.com/photo-1674537623981-a43a7f991332?q=80&w=1932&auto=format&fit=crop',
+        date: 'منذ يومين',
+        link: 'news-article.html?id=4',
+        content: `لم يعد الدوري السعودي مجرد دوري محلي، بل تحول في غضون أشهر قليلة إلى أحد أبرز الدوريات في العالم، جاذباً نجوماً من العيار الثقيل مثل كريستيانو رونالدو، نيمار، كريم بنزيما، وساديو ماني. هذا التحول المذهل هو نتاج مشروع استثماري ضخم يهدف إلى جعل المملكة العربية السعودية مركزاً رياضياً عالمياً.\n\nبدأ كل شيء مع انتقال كريستيانو رونالدو إلى نادي النصر، وهي الصفقة التي فتحت الباب أمام سلسلة من الانتقالات التاريخية. استثمر صندوق الاستثمارات العامة السعودي في أربعة من أكبر أندية الدوري (الهلال، النصر، الاتحاد، والأهلي)، مما منحها قوة مالية هائلة للمنافسة على أفضل اللاعبين في العالم. هذا الاستثمار لم يرفع فقط من المستوى الفني للدوري، بل زاد أيضاً من متابعته عالمياً، حيث تم بيع حقوق بث المباريات لأكثر من 100 دولة.\n\nالهدف لا يقتصر فقط على كرة القدم. يرى الخبراء أن هذا المشروع هو جزء من رؤية 2030 لتنويع اقتصاد المملكة وتعزيز قوتها الناعمة على الساحة الدولية. ومع استمرار تدفق النجوم، أصبح دوري روشن السعودي قوة لا يستهان بها، ويطرح تساؤلات حول مستقبل موازين القوى في كرة القدم العالمية.`
+    },
+    {
+        id: 5,
+        category: 'كرة نسائية',
+        title: 'هيمنة إسبانية: كيف سيطر برشلونة والمنتخب على كرة القدم النسائية؟',
+        image: 'https://images.unsplash.com/photo-1594464405979-49c9a39812a4?q=80&w=1974&auto=format&fit=crop',
+        date: 'منذ 3 أيام',
+        link: 'news-article.html?id=5',
+        content: `تشهد كرة القدم النسائية حقبة من الهيمنة الإسبانية المطلقة، بقيادة نادي برشلونة والمنتخب الوطني. لقد أصبح أسلوب "التيكي تاكا" المعتمد على الاستحواذ والتمرير القصير هو السمة المميزة للكرة الإسبانية، وقد أثبت نجاحه الساحق على أعلى المستويات.\n\nفريق برشلونة للسيدات، بقيادة نجمات مثل أيتانا بونماتي وأليكسيا بوتياس، حقق إنجازات تاريخية، بما في ذلك الفوز بدوري أبطال أوروبا عدة مرات وإكمال ثلاثيات ورباعيات محلية. هذا النجاح لم يأت من فراغ، بل هو نتاج استثمار طويل الأمد في أكاديمية "لا ماسيا" وتطبيق نفس فلسفة اللعب التي اشتهر بها فريق الرجال.\n\nامتد هذا النجاح إلى المنتخب الوطني، الذي توج بكأس العالم للسيدات لأول مرة في تاريخه، ثم تبعه بلقب دوري الأمم الأوروبية. أصبحت إسبانيا القوة المهيمنة في كرة القدم النسائية، حيث تجمع بين الموهبة الفردية والتفوق التكتيكي. هذا النجاح لا يلهم فقط الفتيات في إسبانيا، بل يضع معياراً جديداً للعبة على مستوى العالم.`
+    },
+    {
+        id: 6,
+        category: 'تكنولوجيا الرياضة',
+        title: 'الذكاء الاصطناعي في التحكيم: هل ينهي الـ VAR الجدل إلى الأبد؟',
+        image: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=2070&auto=format&fit=crop',
+        date: 'منذ 4 أيام',
+        link: 'news-article.html?id=6',
+        content: `منذ إدخال تقنية حكم الفيديو المساعد (VAR)، كان الهدف هو تقليل الأخطاء التحكيمية وزيادة العدالة. ومع ذلك، لم تخلُ التجربة من الجدل، حيث أثارت قرارات الـ VAR نقاشات واسعة حول التسلل ولمسات اليد. الآن، تدخل التكنولوجيا مرحلة جديدة مع الذكاء الاصطناعي، فهل ستكون الحل النهائي؟\n\nيعمل الاتحاد الدولي لكرة القدم (فيفا) على تطوير تقنيات جديدة تعتمد على الذكاء الاصطناعي، مثل تقنية التسلل شبه الآلية التي تم استخدامها في كأس العالم. تستخدم هذه التقنية عشرات الكاميرات لتتبع حركة اللاعبين والكرة بدقة متناهية، وتقوم بإرسال تنبيه فوري إلى غرفة الـ VAR في حالة وجود تسلل، مما يقلل من وقت اتخاذ القرار ويزيد من دقته.\n\nبالإضافة إلى التسلل، يتم تطوير أنظمة ذكاء اصطناعي لتحليل لمسات اليد وتحديد ما إذا كانت متعمدة أم لا بناءً على حركة الجسم وسرعة الكرة. بينما يرى المؤيدون أن هذه التقنيات ستقضي على الجدل وتجعل اللعبة أكثر عدلاً، يخشى البعض الآخر أن تفقد كرة القدم روحها الإنسانية وتتحول إلى لعبة تدار بالكامل بواسطة الآلات. يبقى السؤال مفتوحاً، ولكن من المؤكد أن التكنولوجيا ستستمر في لعب دور أكبر في مستقبل التحكيم.`
+    }
+];
+
+// --- Global Messages ---
+const API_ERROR_MESSAGE = 'عفواً، حدث خطأ في جلب البيانات. قد يكون سبب ذلك انتهاء صلاحية مفتاح الـ API أو تجاوز الحد اليومي للطلبات. يرجى مراجعة لوحة التحكم الخاصة بـ API-Football.';
+const NO_DATA_MESSAGE = (season) => `لا توجد بيانات لهذا الدوري في موسم ${season}/${season + 1} حالياً. قد تبدأ البيانات بالظهور مع انطلاق الموسم.`;
+
+// --- Helper Functions ---
+async function fetchData(url) {
+    try {
+        const response = await fetch(url, { headers: { 'x-apisports-key': API_KEY } });
+        if (!response.ok) {
+            // Handles network errors, 5xx, 404s etc.
+            throw new Error(API_ERROR_MESSAGE);
+        }
+        const data = await response.json();
+        // Handles API-specific errors returned with a 200 status
+        // e.g. invalid key, subscription issues, bad parameters
+        if (data.errors && (Array.isArray(data.errors) ? data.errors.length > 0 : Object.keys(data.errors).length > 0)) {
+            console.error("API Error Response:", data.errors);
+            throw new Error(API_ERROR_MESSAGE);
+        }
+        return data;
+    } catch (error) {
+        console.error(`FetchData Error for ${url}:`, error);
+        throw new Error(error.message || API_ERROR_MESSAGE);
+    }
+}
 function initializeActiveNavLinks() {
     // اسم الملف الرئيسي الذي يعمل كصفحة البداية
-    const homePageFile = 'blackbox-output-code-RTX7MLD937.html';
+    const homePageFile = 'index.html';
     // احصل على اسم الملف للصفحة الحالية من الرابط
-    const currentPage = window.location.pathname.split("/").pop();
+    const currentPage = window.location.pathname.split("/").pop() || homePageFile;
     // اختر جميع روابط التنقل في الرأس والتذييل
     const navLinks = document.querySelectorAll('header nav a, .footer-links a');
 
@@ -184,15 +272,15 @@ function initializeCookieNotice() {
 
 function initializePlayerSearch() {
     const searchInput = document.getElementById('player-search');
-    if (!searchInput) return;
-
-    const playerCards = document.querySelectorAll('.player-card');
+    if (!searchInput) return; // Only run on pages with a search bar
 
     searchInput.addEventListener('keyup', (e) => {
         const searchTerm = e.target.value.toLowerCase();
+        // Select cards within the dynamic grid
+        const playerCards = document.querySelectorAll('#players-grid-dynamic .player-card'); 
 
         playerCards.forEach(card => {
-            const playerName = card.querySelector('.player-name').textContent.toLowerCase();
+            const playerName = card.querySelector('.player-name')?.textContent.toLowerCase() || '';
             
             if (playerName.includes(searchTerm)) {
                 card.style.display = 'block';
@@ -207,39 +295,46 @@ function initializeLiveMatches() {
     const scoreboardGrid = document.querySelector('.scoreboard-grid');
     if (!scoreboardGrid) return;
 
-    // مفتاح API لخدمة api-football (api-sports)
-    const API_KEY = 'fc4a47e7f3c9e852d56c26a1b699a10c';
-    // جلب مباريات اليوم
-    const today = new Date().toISOString().slice(0, 10);
-    const API_URL = `https://v3.football.api-sports.io/fixtures?date=${today}`;
-
-    // دالة لجلب البيانات
-    async function fetchMatches() {
-        // مسح المحتوى التجريبي أولاً
-        scoreboardGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">جاري تحميل المباريات...</p>';
+    // دالة لجلب المباريات المباشرة
+    async function fetchLiveMatches() {
+        scoreboardGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; padding: 20px;">جاري تحميل المباريات المباشرة... <i class="fas fa-spinner fa-spin"></i></p>';
+        const API_URL = `https://${API_HOST}/fixtures?live=all`;
 
         try {
-            const response = await fetch(API_URL, {
-                headers: {
-                    'x-apisports-key': API_KEY
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
+            const data = await fetchData(API_URL);
             if (data.response && data.response.length > 0) {
-                displayMatches(data.response.slice(0, 6)); // عرض أول 6 مباريات فقط
+                // تحديث عنوان القسم
+                const sectionTitle = document.querySelector('#scoreboard .section-title');
+                if (sectionTitle) sectionTitle.textContent = 'مباريات مباشرة';
+                displayMatches(data.response);
             } else {
-                console.error("API Error:", data.message || 'No matches found');
-                scoreboardGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">لا توجد مباريات اليوم أو حدث خطأ. تأكد من صحة مفتاح الـ API.</p>';
+                fetchTodaysMatches();
             }
 
         } catch (error) {
-            console.error("Could not fetch matches:", error);
-            scoreboardGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">عفواً، حدث خطأ أثناء تحميل المباريات. تأكد من اتصالك بالإنترنت وصحة مفتاح الـ API.</p>';
+            console.error("Could not fetch live matches:", error);
+            scoreboardGrid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">${error.message}</p>`;
+        }
+    }
+
+    // دالة لجلب مباريات اليوم كبديل
+    async function fetchTodaysMatches() {
+        const today = new Date().toISOString().slice(0, 10);
+        // جلب المباريات القادمة، المباشرة، والمنتهية لليوم
+        const today_API_URL = `https://${API_HOST}/fixtures?date=${today}&status=NS-LIVE-FT-AET-PEN-SUSP-INT`;
+        
+        scoreboardGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; padding: 20px;">لا توجد مباريات مباشرة حالياً. جاري تحميل مباريات اليوم... <i class="fas fa-spinner fa-spin"></i></p>';
+
+        try {
+            const data = await fetchData(today_API_URL);
+            if (data.response && data.response.length > 0) {
+                displayMatches(data.response);
+            } else {
+                scoreboardGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">لا توجد مباريات مجدولة اليوم.</p>';
+            }
+        } catch (error) {
+            console.error("Could not fetch today's matches:", error);
+            scoreboardGrid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">${error.message}</p>`;
         }
     }
 
@@ -266,32 +361,40 @@ function initializeLiveMatches() {
 
             const score = (matchStatus === 'live' || matchStatus === 'finished') 
                 ? `${goals.home ?? 0} - ${goals.away ?? 0}` 
-                : 'VS';
+                : '-';
 
             let time;
             if (matchStatus === 'live') {
-                time = `'${fixture.status.elapsed}`;
+                time = fixture.status.short === 'HT' 
+                    ? 'استراحة' 
+                    : `مباشر ${fixture.status.elapsed}'`;
             } else if (matchStatus === 'finished') {
                 time = 'انتهت';
             } else { // upcoming
-                time = new Date(fixture.date).toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
+                const matchDate = new Date(fixture.date);
+                const dateString = matchDate.toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' });
+                const timeString = matchDate.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
+                time = `${dateString} - ${timeString}`;
             }
 
             const matchCardHTML = `
-                <div class="match-card ${matchStatus}">
-                    <div class="match-header">${league.name}</div>
-                    <div class="match-body">
-                        <div class="team"><img src="${teams.home.logo}" alt="${teams.home.name}" class="team-logo"><span>${teams.home.name}</span></div>
-                        <div class="score">${score}</div>
-                        <div class="team"><img src="${teams.away.logo}" alt="${teams.away.name}" class="team-logo"><span>${teams.away.name}</span></div>
+                <a href="match-details.html?id=${fixture.id}" class="match-card-link">
+                    <div class="match-card ${matchStatus}">
+                        <div class="match-header">${league.name}</div>
+                        <div class="match-body">
+                            <div class="team"><img src="${teams.home.logo}" alt="${teams.home.name}" class="team-logo"><span>${teams.home.name}</span></div>
+                            <div class="score">${score}</div>
+                            <div class="team"><img src="${teams.away.logo}" alt="${teams.away.name}" class="team-logo"><span>${teams.away.name}</span></div>
+                        </div>
+                        <div class="match-footer"><span class="match-time ${fixture.status.short === 'HT' ? 'استراحة' : ''}">${time}</span></div>
                     </div>
-                    <div class="match-footer"><span class="match-time">${time}</span></div>
-                </div>`;
+                </a>`;
             scoreboardGrid.insertAdjacentHTML('beforeend', matchCardHTML);
         });
     }
 
-    fetchMatches();
+    // البدء بمحاولة جلب المباريات المباشرة
+    fetchLiveMatches();
 }
 
 function initializeStandings() {
@@ -334,8 +437,6 @@ function initializeStandings() {
 
     const standingsBody = document.getElementById('standings-body');
     const leagueNameTitle = document.getElementById('standings-league-name');
-    const API_KEY = 'fc4a47e7f3c9e852d56c26a1b699a10c';
-    const SEASON = 2023; // عرض بيانات موسم 2023-2024
 
     async function fetchStandings(leagueId) {
         // التأكد من وجود العناصر
@@ -349,30 +450,20 @@ function initializeStandings() {
         standingsBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 40px 0;">جاري تحميل البيانات... <i class="fas fa-spinner fa-spin"></i></td></tr>`;
 
 
-        const API_URL = `https://v3.football.api-sports.io/standings?league=${leagueId}&season=${SEASON}`;
-
+        const API_URL = `https://${API_HOST}/standings?league=${leagueId}&season=${SEASON}`;
         try {
-            const response = await fetch(API_URL, {
-                headers: { 'x-apisports-key': API_KEY }
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
+            const data = await fetchData(API_URL);
 
             if (data.response && data.response.length > 0 && data.response[0].league.standings.length > 0) {
                 const standings = data.response[0].league.standings[0];
                 displayStandings(standings);
             } else {
-                console.error("API Error:", data.errors || 'No standings found');
-                standingsBody.innerHTML = `<tr><td colspan="8" style="text-align: center;">لا توجد بيانات ترتيب لهذا الدوري حالياً.</td></tr>`;
+                standingsBody.innerHTML = `<tr><td colspan="8" style="text-align: center;">${NO_DATA_MESSAGE(SEASON)}</td></tr>`;
             }
 
         } catch (error) {
             console.error("Could not fetch standings:", error);
-            standingsBody.innerHTML = `<tr><td colspan="8" style="text-align: center;">عفواً، حدث خطأ أثناء تحميل البيانات.</td></tr>`;
+            standingsBody.innerHTML = `<tr><td colspan="8" style="text-align: center;">${error.message}</td></tr>`;
         }
     }
 
@@ -383,7 +474,11 @@ function initializeStandings() {
             const row = `
                 <tr>
                     <td>${teamData.rank}</td>
-                    <td class="team-name-cell"><img src="${team.logo}" alt="${team.name}"> ${team.name}</td>
+                    <td class="team-name-cell">
+                        <a href="team-details.html?id=${team.id}">
+                            <img src="${team.logo}" alt="${team.name}"> ${team.name}
+                        </a>
+                    </td>
                     <td>${teamData.all.played}</td>
                     <td>${teamData.all.win}</td>
                     <td>${teamData.all.draw}</td>
@@ -403,173 +498,993 @@ function initializeStandings() {
     }
 }
 
-function initializePlayerStats() {
+// دالة جديدة لجلب أفضل اللاعبين حسب الأهداف
+async function fetchTopPlayersByGoals(leagueId, count) {
+    let allPlayers = [];
+    let currentPage = 1;
+    // نحتاج لجلب صفحات إضافية لضمان وجود عدد كافٍ من اللاعبين بعد الفلترة
+    const maxPagesToFetch = Math.ceil(count / 20) + 2; 
+    let hasMorePages = true;
+
+    while (currentPage <= maxPagesToFetch && hasMorePages) {
+        const API_URL = `https://${API_HOST}/players?league=${leagueId}&season=${SEASON}&page=${currentPage}`;
+        try {
+            const data = await fetchData(API_URL);
+            if (data.response && data.response.length > 0) {
+                allPlayers.push(...data.response);
+                if (data.paging.current >= data.paging.total) {
+                    hasMorePages = false; // وصلنا للصفحة الأخيرة
+                } else {
+                    currentPage++;
+                }
+            } else {
+                hasMorePages = false; // لا يوجد المزيد من اللاعبين
+            }
+        } catch (error) {
+            console.error(`Could not fetch players for page ${currentPage}:`, error);
+            hasMorePages = false; // إيقاف المحاولة عند حدوث خطأ
+        }
+    }
+
+    // فلترة اللاعبين الذين لديهم إحصائيات أهداف، ثم ترتيبهم تنازلياً
+    const sortedPlayers = allPlayers
+        .filter(p => p.statistics && p.statistics.length > 0 && p.statistics[0].goals && p.statistics[0].goals.total !== null)
+        .sort((a, b) => (b.statistics[0].goals.total || 0) - (a.statistics[0].goals.total || 0));
+
+    return sortedPlayers.slice(0, count); // إرجاع العدد المطلوب من اللاعبين
+}
+
+function initializeTopScorers() {
     const statsSection = document.getElementById('player-stats-section');
     if (!statsSection) return; // تأكد من أننا في صفحة الإحصائيات فقط
-    const statsBody = statsSection.querySelector('#stats-body');
-    if (!statsBody) return;
+    // --- Custom Select Logic ---
+    const customSelectWrapper = statsSection.querySelector('.custom-select-wrapper');
+    if (!customSelectWrapper) return;
 
-    // تم تضمين بيانات CSV هنا مباشرة لتجنب مشاكل تحميل الملفات المحلية بسبب قيود أمان المتصفح.
-    const csvData = `Id;Name;Firstname;Lastname;Age;Birth date;Birth place;Birth country;Nationality;Height;Weight;Injured;Photo;Team id;Team name;Team logo;League id;League name;League country;League logo;League flag;League season;Games appearences;Games lineups;Games minutes;Games number;Games position;Games rating;Games captain;Substitutes in;Substitutes out;Substitutes bench;Shots total;Shots on;Goals total;Goals conceded;Goals assists;Goals saves;Passes total;Passes key;Passes accuracy;Tackles total;Tackles blocks;Tackles interceptions;Duels total;Duels won;Dribbles attempts;Dribbles success;Dribbles past;Fouls drawn;Fouls committed;Cards yellow;Cards yellowred;Cards red;Penalty won;Penalty commited;Penalty scored;Penalty missed;Penalty saved
-141;M. Wagué;Moussa;Wagué;23;1998-10-04;Bignona;Senegal;Senegal;177 cm;70 kg;;https://media.api-sports.io/football/players/141.png;13;Senegal;https://media.api-sports.io/football/teams/13.png;1;World Cup;World;https://media.api-sports.io/football/leagues/1.png;;2018;3;2;196;;Defender;6.766666;;1;0;1;1;1;1;0;;;62;4;16;3;;4;12;7;3;3;;1;1;0;0;0;;;0;0;
-468;V. Ćorluka;Vedran;Ćorluka;35;1986-02-05;Derventa;Bosnia and Herzegovina;Croatia;192 cm;84 kg;;https://media.api-sports.io/football/players/468.png;3;Croatia;https://media.api-sports.io/football/teams/3.png;1;World Cup;World;https://media.api-sports.io/football/leagues/1.png;;2018;4;1;118;;Defender;6.900000;;3;0;6;;;0;0;;;64;;14;1;;3;14;9;3;3;;;3;1;0;0;;;0;0;
-868;S. Khedira;Sami;Khedira;34;1987-04-04;Stuttgart;Germany;Germany;189 cm;90 kg;;https://media.api-sports.io/football/players/868.png;25;Germany;https://media.api-sports.io/football/teams/25.png;1;World Cup;World;https://media.api-sports.io/football/leagues/1.png;;2018;2;2;118;;Midfielder;6.600000;;0;2;1;1;1;0;0;;;104;1;43;4;;1;19;7;2;1;;1;2;0;0;0;;;0;0;
-878;M. Mandžukić;Mario;Mandžukić;35;1986-05-21;Slavonski Brod;Croatia;Croatia;190 cm;85 kg;;https://media.api-sports.io/football/players/878.png;3;Croatia;https://media.api-sports.io/football/teams/3.png;1;World Cup;World;https://media.api-sports.io/football/leagues/1.png;;2018;6;6;609;;Attacker;7.333333;;0;4;1;11;5;3;0;1;;176;8;19;12;1;2;101;53;3;2;;12;13;2;0;0;;;0;0;
-2751;M. Leckie;Mathew Allan;Leckie;30;1991-02-04;Melbourne;Australia;Australia;181 cm;82 kg;;https://media.api-sports.io/football/players/2751.png;20;Australia;https://media.api-sports.io/football/teams/20.png;1;World Cup;World;https://media.api-sports.io/football/leagues/1.png;;2018;3;3;270;;Midfielder;6.300000;;0;0;0;6;1;0;0;;;77;2;17;2;;2;60;29;10;5;;5;6;1;0;0;;;0;0;
-19243;M. Obi;Mikel John;Obi;34;1987-04-22;Jos;Nigeria;Nigeria;188 cm;86 kg;;https://media.api-sports.io/football/players/19243.png;19;Nigeria;https://media.api-sports.io/football/teams/19.png;1;World Cup;World;https://media.api-sports.io/football/leagues/1.png;;2018;3;3;268;;Midfielder;6.633333;;0;1;0;;;0;0;;;149;3;40;8;;2;40;20;7;4;;1;5;1;0;0;;;0;0;
-50741;M. Fabián;Marco Jhonfai;Fabián De La Mora;32;1989-07-21;Guadalajara;Mexico;Mexico;170 cm;65 kg;;https://media.api-sports.io/football/players/50741.png;16;Mexico;https://media.api-sports.io/football/teams/16.png;1;World Cup;World;https://media.api-sports.io/football/leagues/1.png;;2018;1;0;25;;Midfielder;6.700000;;1;0;4;;;0;0;;;11;1;9;1;;;2;1;;;;;1;0;0;0;;;0;0;
-105371;G. dos Santos;Giovani;dos Santos Ramírez;32;1989-05-11;Ciudad de México;Mexico;Mexico;178 cm;71 kg;;https://media.api-sports.io/football/players/105371.png;16;Mexico;https://media.api-sports.io/football/teams/16.png;1;World Cup;World;https://media.api-sports.io/football/leagues/1.png;;2018;1;0;13;;Attacker;6.300000;;1;0;4;;;0;0;;;6;;5;1;;;3;1;;;;;;0;0;0;;;0;0;
-141;M. Wagué;Moussa;Wagué;23;1998-10-04;Bignona;Senegal;Senegal;177 cm;70 kg;;https://media.api-sports.io/football/players/141.png;13;Senegal;https://media.api-sports.io/football/teams/13.png;6;Africa Cup of Nations;World;https://media.api-sports.io/football/leagues/6.png;;2019;3;2;190;;Defender;6.666666;;1;0;5;2;0;0;;;;80;0;54;3;0;1;29;15;4;2;;4;6;0;0;0;;;0;0;
-2989;L. Gassama;Lamine;Gassama;32;1989-10-20;Marseille;France;Senegal;181 cm;74 kg;;https://media.api-sports.io/football/players/2989.png;13;Senegal;https://media.api-sports.io/football/teams/13.png;6;Africa Cup of Nations;World;https://media.api-sports.io/football/leagues/6.png;;2019;5;5;470;;Defender;7.240000;;0;1;2;0;0;0;;2;;124;4;76;3;1;6;40;24;9;6;;10;4;1;0;0;;;0;0;
-3389;S. Sessègnon;Stéphane;Sessègnon;37;1984-06-01;Allahé;Benin;Benin;172 cm;72 kg;;https://media.api-sports.io/football/players/3389.png;1516;Benin;https://media.api-sports.io/football/teams/1516.png;6;Africa Cup of Nations;World;https://media.api-sports.io/football/leagues/6.png;;2019;4;4;390;;Midfielder;6.825000;;0;0;0;6;1;0;;;;90;2;79;4;0;3;39;22;9;6;;9;4;0;0;0;;1;0;0;
-19243;M. Obi;Mikel John;Obi;34;1987-04-22;Jos;Nigeria;Nigeria;188 cm;86 kg;;https://media.api-sports.io/football/players/19243.png;19;Nigeria;https://media.api-sports.io/football/teams/19.png;6;Africa Cup of Nations;World;https://media.api-sports.io/football/leagues/6.png;;2019;2;2;117;;Midfielder;6.500000;;0;2;3;2;0;0;;;;45;1;78;;0;1;16;7;2;2;;4;2;0;0;0;;;0;0;
-20915;E. Seka;Ernest;Seka Boka;34;1987-06-22;Clichy;France;Guinea;185 cm;89 kg;;https://media.api-sports.io/football/players/20915.png;1509;Guinea;https://media.api-sports.io/football/teams/1509.png;6;Africa Cup of Nations;World;https://media.api-sports.io/football/leagues/6.png;;2019;3;3;270;;Defender;6.800000;;0;0;1;0;0;0;;;;112;0;79;4;0;4;22;14;0;0;;3;2;1;0;0;;;0;0;
-25647;I. Traoré;Ibrahima;Traoré;33;1988-04-21;Villepinte;France;Guinea;171 cm;61 kg;;https://media.api-sports.io/football/players/25647.png;1509;Guinea;https://media.api-sports.io/football/teams/1509.png;6;Africa Cup of Nations;World;https://media.api-sports.io/football/leagues/6.png;;2019;4;4;360;;Attacker;6.925000;;0;0;0;9;1;0;;1;;112;11;78;2;0;2;40;18;15;8;;5;3;0;0;0;1;;0;0;
-44789;Y. Mulumbu;Youssouf Chafiq;Mulumbu Ngangu;34;1987-01-25;Kinshasa;Congo DR;Congo DR;177 cm;65 kg;;https://media.api-sports.io/football/players/44789.png;1508;Congo DR;https://media.api-sports.io/football/teams/1508.png;6;Africa Cup of Nations;World;https://media.api-sports.io/football/leagues/6.png;;2019;2;2;143;;Midfielder;6.150000;;0;2;1;0;0;0;;;;53;0;76;5;0;5;34;11;5;2;;2;11;1;0;0;;;0;0;
-50237;H. Saivet;Henri;Saivet;31;1990-10-26;Dakar;Senegal;Senegal;174 cm;76 kg;;https://media.api-sports.io/football/players/50237.png;13;Senegal;https://media.api-sports.io/football/teams/13.png;6;Africa Cup of Nations;World;https://media.api-sports.io/football/leagues/6.png;;2019;6;5;448;;Midfielder;7.183333;;1;2;2;10;4;0;;;;140;10;74;6;1;5;43;25;2;2;;6;4;0;0;0;;;0;1;
-73794;L. Matampi;Vumi Ley;Matampi;32;1989-04-18;Kinshasa;Congo DR;Congo DR;180 cm;75 kg;;https://media.api-sports.io/football/players/73794.png;1508;Congo DR;https://media.api-sports.io/football/teams/1508.png;6;Africa Cup of Nations;World;https://media.api-sports.io/football/leagues/6.png;;2019;4;4;390;;Goalkeeper;6.675000;;0;0;0;0;0;0;6;;11;81;0;69;;0;0;1;1;0;0;;1;0;0;0;0;;;0;0;0
-1256;V. Jovanović;Vukašin;Jovanović;25;1996-05-17;Beograd;Serbia;Serbia;189 cm;88 kg;;https://media.api-sports.io/football/players/1256.png;78;Bordeaux;https://media.api-sports.io/football/teams/78.png;65;Coupe de la Ligue;France;https://media.api-sports.io/football/leagues/65.png;https://media.api-sports.io/flags/fr.svg;2019;1;1;90;;Defender;6.800000;;0;0;0;0;0;0;;;;64;1;83;;1;4;;;0;0;;1;1;0;0;0;;;0;0;
-20701;H. Bazile;Hervé;Bazile;31;1990-03-18;Creteil;France;Haiti;181 cm;78 kg;;https://media.api-sports.io/football/players/20701.png;111;LE Havre;https://media.api-sports.io/football/teams/111.png;65;Coupe de la Ligue;France;https://media.api-sports.io/football/leagues/65.png;https://media.api-sports.io/flags/fr.svg;2019;1;0;13;;Attacker;6.800000;;1;0;1;0;0;0;;;;2;0;40;;0;1;;;0;0;;0;0;0;0;0;;;0;0;
-21021;Abdoulaye Sané;Abdoulaye;Sané;29;1992-10-15;Diouloulou;Senegal;Senegal;180 cm;73 kg;;https://media.api-sports.io/football/players/21021.png;115;Sochaux;https://media.api-sports.io/football/teams/115.png;65;Coupe de la Ligue;France;https://media.api-sports.io/football/leagues/65.png;https://media.api-sports.io/flags/fr.svg;2019;1;0;27;;Attacker;6.300000;;1;0;1;1;0;0;;;;3;0;75;;0;0;;;0;0;;0;2;1;0;0;;;0;0;
-21571;Hilton;Vitorino;Hilton da Silva;44;1977-09-13;Brasília;Brazil;Brazil;180 cm;78 kg;;https://media.api-sports.io/football/players/21571.png;82;Montpellier;https://media.api-sports.io/football/teams/82.png;65;Coupe de la Ligue;France;https://media.api-sports.io/football/leagues/65.png;https://media.api-sports.io/flags/fr.svg;2019;2;1;113;;Defender;6.950000;;1;0;1;1;0;0;;;;51;0;76;3;0;3;;;0;0;;1;0;0;0;0;;;0;0;
-22131;M. Goicoechea;Mauro Daniel;Goicoechea Furia;33;1988-03-27;Montevideo;Uruguay;Uruguay;186 cm;82 kg;;https://media.api-sports.io/football/players/22131.png;96;Toulouse;https://media.api-sports.io/football/teams/96.png;65;Coupe de la Ligue;France;https://media.api-sports.io/football/leagues/65.png;https://media.api-sports.io/flags/fr.svg;2019;2;2;180;;Goalkeeper;6.250000;;0;0;0;0;0;0;5;;8;37;0;64;;0;0;;;0;0;;0;0;0;0;0;;;0;0;0
-22155;Y. Sanogo;Yaya;Sanogo;28;1993-01-27;Massy;France;France;191 cm;74 kg;;https://media.api-sports.io/football/players/22155.png;96;Toulouse;https://media.api-sports.io/football/teams/96.png;65;Coupe de la Ligue;France;https://media.api-sports.io/football/leagues/65.png;https://media.api-sports.io/flags/fr.svg;2019;1;1;90;;Attacker;7.700000;;0;0;0;2;2;1;;;;12;1;66;;0;1;;;2;2;;6;4;0;0;0;;;0;0;
-22246;L. Koné;Lamine;Koné;32;1989-02-01;Paris;France;Côte d'Ivoire;189 cm;90 kg;;https://media.api-sports.io/football/players/22246.png;95;Strasbourg;https://media.api-sports.io/football/teams/95.png;65;Coupe de la Ligue;France;https://media.api-sports.io/football/leagues/65.png;https://media.api-sports.io/flags/fr.svg;2019;1;1;90;;Defender;7.000000;;0;0;0;0;0;0;;;;58;0;87;1;0;1;;;0;0;;2;0;0;0;0;;;0;0;
-179492;Edmilson Indjai Correia;Edmilson;Indjai Correia;21;2000-06-06;;Guinea-Bissau;Guinea-Bissau;;;;https://media.api-sports.io/football/players/179492.png;1063;Saint Etienne;https://media.api-sports.io/football/teams/1063.png;65;Coupe de la Ligue;France;https://media.api-sports.io/football/leagues/65.png;https://media.api-sports.io/flags/fr.svg;2019;2;1;90;;Midfielder;7.350000;;1;1;1;4;3;1;;;;10;0;66;1;0;2;;;2;1;;6;0;0;0;0;1;;0;0;
-36016;L. Martínez;Luis Antonio;Martínez Jiménez;32;1987-04-29;Zacapoaxtla;Mexico;Mexico;176 cm;78 kg;;https://media.api-sports.io/football/players/36016.png;2294;Veracruz;https://media.api-sports.io/football/teams/2294.png;264;Copa MX;Mexico;https://media.api-sports.io/football/leagues/264.png;https://media.api-sports.io/flags/mx.svg;2019;1;1;59;;Midfielder;;;0;1;0;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-1220;Y. Zhirkov;Yuri;Zhirkov;38;1983-08-20;Tambov;Russia;Russia;180 cm;75 kg;;https://media.api-sports.io/football/players/1220.png;4;Russia;https://media.api-sports.io/football/teams/4.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;6;5;450;;Defender;6.666666;;1;2;1;2;;0;0;;;193;3;24;9;1;11;52;25;3;1;;6;8;1;0;0;;;0;0;
-1348;R. Neustädter;Roman;Neustädter;33;1988-02-18;Dnipro;Ukraine;Russia;190 cm;81 kg;;https://media.api-sports.io/football/players/1348.png;4;Russia;https://media.api-sports.io/football/teams/4.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;1;0;13;;Midfielder;5.700000;;1;0;2;;;0;0;;;3;;2;;;;;;;;;;;0;0;0;;;0;0;
-5118;Sebastiá Gómez Pérez;Sebastiá;Gómez Pérez;38;1983-11-01;Montevideo;Uruguay;Andorra;;;;https://media.api-sports.io/football/players/5118.png;1110;andorra;https://media.api-sports.io/football/teams/1110.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;0;0;0;;Attacker;;;0;0;4;;;0;0;;;;;;;;;;;;;;;;0;0;0;;;0;0;
-15419;Beka Mikeltadze;Beka;Mikeltadze;24;1997-11-26;Kutaisi;Georgia;Georgia;185 cm;77 kg;;https://media.api-sports.io/football/players/15419.png;1104;Georgia;https://media.api-sports.io/football/teams/1104.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;2;0;15;;Attacker;6.250000;;2;0;2;;;0;0;;;8;;5;;;;6;3;;;;;2;0;0;0;;;0;0;
-18921;R. Brady;Robbie;Brady;29;1992-01-14;Dublin;Republic of Ireland;Republic of Ireland;176 cm;71 kg;;https://media.api-sports.io/football/players/18921.png;776;Rep. Of Ireland;https://media.api-sports.io/football/teams/776.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;6;4;380;;Midfielder;7.183333;;2;3;2;5;;0;0;1;;181;13;22;7;;3;47;25;9;8;;7;8;0;0;0;;;0;0;
-20232;Ryan McLaughlin;Ryan;McLaughlin;27;1994-09-30;Belfast;Northern Ireland;Northern Ireland;183 cm;75 kg;;https://media.api-sports.io/football/players/20232.png;771;Northern Ireland;https://media.api-sports.io/football/teams/771.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;0;0;0;;Defender;;;0;0;2;;;0;0;;;;;;;;;;;;;;;;0;0;0;;;0;0;
-24984;M. Palionis;Markus;Palionis;34;1987-05-12;Kaunas;Lithuania;Lithuania;194 cm;89 kg;;https://media.api-sports.io/football/players/24984.png;1097;Lithuania;https://media.api-sports.io/football/teams/1097.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;4;4;360;;Defender;6.825000;;0;0;0;1;;0;0;;;145;1;28;3;1;4;32;18;;;;2;4;1;0;0;;;0;0;
-30779;Oscar Hiljemark;Oscar;Hiljemark;29;1992-06-28;Gislaved;Sweden;Sweden;184 cm;77 kg;;https://media.api-sports.io/football/players/30779.png;5;Sweden;https://media.api-sports.io/football/teams/5.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;0;0;0;;Midfielder;;;0;0;0;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-30808;Emil Hallfreðsson;Emil;Hallfreðsson;37;1984-06-29;Hafnarfjörður;Iceland;Iceland;185 cm;83 kg;;https://media.api-sports.io/football/players/30808.png;18;Iceland;https://media.api-sports.io/football/teams/18.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;2;0;50;;Midfielder;6.300000;;2;0;2;;;0;0;;;18;;8;1;;;3;1;;;;;;0;0;0;;;0;0;
-31673;Hysen Memolla;Hysen;Memolla;29;1992-07-03;Kavajë;Albania;Albania;186 cm;78 kg;;https://media.api-sports.io/football/players/31673.png;778;Albania;https://media.api-sports.io/football/teams/778.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;2;1;98;;Defender;6.750000;;1;0;4;;;0;0;1;;36;1;11;2;;;12;6;2;1;;2;1;0;0;0;;;0;0;
-55890;Emilijus Zubas;Emilijus;Zubas;31;1990-07-10;Panevėžys;Lithuania;Lithuania;195 cm;80 kg;;https://media.api-sports.io/football/players/55890.png;1097;Lithuania;https://media.api-sports.io/football/teams/1097.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;0;0;0;;Goalkeeper;;;0;0;0;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-56045;Ferran Pol Pérez;Ferran;Pol Pérez;38;1983-02-28;Andorra la Vella;Andorra;Andorra;;;;https://media.api-sports.io/football/players/56045.png;1110;andorra;https://media.api-sports.io/football/teams/1110.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;0;0;0;;Goalkeeper;;;0;0;0;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-56103;Mattia Giardi;Mattia;Giardi;30;1991-12-15;;San Marino;San Marino;;;;https://media.api-sports.io/football/players/56103.png;1115;San Marino;https://media.api-sports.io/football/teams/1115.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;0;0;0;;Midfielder;;;0;0;4;;;0;0;;;;;;;;;;;;;;;;0;0;0;;;0;0;
-56109;Luca Tosi;Luca;Tosi;27;1994-07-23;;San Marino;San Marino;;;;https://media.api-sports.io/football/players/56109.png;1115;San Marino;https://media.api-sports.io/football/teams/1115.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;1;1;46;;Midfielder;;;0;1;1;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-70402;Alex Gasperoni;Alex;Gasperoni;37;1984-06-30;Città di San Marino;San Marino;San Marino;191 cm;;;https://media.api-sports.io/football/players/70402.png;1115;San Marino;https://media.api-sports.io/football/teams/1115.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;0;0;0;;Midfielder;;;0;0;0;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-76880;Benjamin Tatar;Benjamin;Tatar;27;1994-05-18;Sarajevo;Bosnia and Herzegovina;Bosnia and Herzegovina;180 cm;73 kg;;https://media.api-sports.io/football/players/76880.png;1113;Bosnia & Herzegovina;https://media.api-sports.io/football/teams/1113.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;3;2;145;;Attacker;6.633333;;1;2;2;2;;0;0;;;51;2;13;1;;;14;4;2;1;;2;2;0;0;0;;;0;0;
-76971;Irfan Hadžić;Irfan;Hadžić;28;1993-06-15;Prozor-Rama;Bosnia and Herzegovina;Bosnia and Herzegovina;192 cm;;;https://media.api-sports.io/football/players/76971.png;1113;Bosnia & Herzegovina;https://media.api-sports.io/football/teams/1113.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;1;0;11;;Attacker;6.200000;;1;0;2;;;0;0;;;2;;1;;;;3;1;;;;;;0;0;0;;;0;0;
-124179;Mattia Stefanelli;Mattia;Stefanelli;28;1993-03-12;;San Marino;San Marino;;;;https://media.api-sports.io/football/players/124179.png;1115;San Marino;https://media.api-sports.io/football/teams/1115.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;0;0;0;;Attacker;;;0;0;0;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-124369;Luca Nanni;Luca;Nanni;26;1995-01-30;;San Marino;San Marino;;;;https://media.api-sports.io/football/players/124369.png;1115;San Marino;https://media.api-sports.io/football/teams/1115.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;0;0;0;;Defender;;;0;0;1;;;0;0;;;;;;;;;;;;;;;;0;0;0;;;0;0;
-134461;Adrián Rodrígues Gonçalves;Adrián;Rodrígues Gonçalves;33;1988-08-14;;Andorra;Andorra;;;;https://media.api-sports.io/football/players/134461.png;1110;andorra;https://media.api-sports.io/football/teams/1110.png;5;UEFA Nations League;World;https://media.api-sports.io/football/leagues/5.png;;2020;0;0;0;;Defender;;;0;0;4;;;0;0;;;;;;;;;;;;;;;;0;0;0;;;0;0;
-292393;Anthony Ezequiel Stella Vespa;Anthony Ezequiel;Stella Vespa;20;2000-04-07;Montevideo;Uruguay;Uruguay;172 cm;71 kg;;https://media.api-sports.io/football/players/292393.png;9589;Ejea;https://media.api-sports.io/football/teams/9589.png;692;Segunda B - Group 5;Spain;https://media.api-sports.io/football/leagues/692.png;https://media.api-sports.io/flags/es.svg;2020;0;0;0;;Attacker;;;0;0;4;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-292393;Anthony Ezequiel Stella Vespa;Anthony Ezequiel;Stella Vespa;20;2000-04-07;Montevideo;Uruguay;Uruguay;172 cm;71 kg;;https://media.api-sports.io/football/players/292393.png;9589;Ejea;https://media.api-sports.io/football/teams/9589.png;692;Segunda B - Group 5;Spain;https://media.api-sports.io/football/leagues/692.png;https://media.api-sports.io/flags/es.svg;2020;0;0;0;;Attacker;;;0;0;4;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-292393;Anthony Ezequiel Stella Vespa;Anthony Ezequiel;Stella Vespa;20;2000-04-07;Montevideo;Uruguay;Uruguay;172 cm;71 kg;;https://media.api-sports.io/football/players/292393.png;9589;Ejea;https://media.api-sports.io/football/teams/9589.png;692;Segunda B - Group 5;Spain;https://media.api-sports.io/football/leagues/692.png;https://media.api-sports.io/flags/es.svg;2020;0;0;0;;Attacker;;;0;0;4;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-122991;David Rodríguez Poblador;David;Rodríguez Poblador;30;1991-09-27;Madrid;Spain;Spain;;;;https://media.api-sports.io/football/players/122991.png;5271;Navalcarnero;https://media.api-sports.io/football/teams/5271.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;4;4;267;;Midfielder;6.700000;;0;4;0;1;1;0;0;;;35;;29;2;;2;7;4;;;;2;2;0;0;0;;;0;0;
-141208;Manuel Monteagudo Gil;Manuel;Monteagudo Gil;27;1994-12-19;Albacete;Spain;Spain;;;;https://media.api-sports.io/football/players/141208.png;5271;Navalcarnero;https://media.api-sports.io/football/teams/5271.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;4;3;228;;Midfielder;6.300000;;1;3;1;;;0;0;;;38;;26;;;1;4;2;;;;;;0;0;0;;;0;0;
-141210;David Gómez Prieto;David;Gómez Prieto;28;1993-10-05;Madrid;Spain;Spain;;;;https://media.api-sports.io/football/players/141210.png;5271;Navalcarnero;https://media.api-sports.io/football/teams/5271.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;0;0;0;;Defender;;;0;0;0;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-182505;Álvaro Ramón Álvarez;Álvaro;Ramón Álvarez;21;2000-05-06;Ponferrada;Spain;Spain;;;;https://media.api-sports.io/football/players/182505.png;5271;Navalcarnero;https://media.api-sports.io/football/teams/5271.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;4;1;113;;Defender;6.900000;;3;1;3;1;1;0;0;;;28;1;26;1;;2;1;1;;;;;;0;0;0;;;0;0;
-184517;Gonzalo Sáiz Ramírez;Gonzalo;Sáiz Ramírez;27;1994-02-03;;Spain;Spain;;;;https://media.api-sports.io/football/players/184517.png;5271;Navalcarnero;https://media.api-sports.io/football/teams/5271.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;4;3;246;;Midfielder;6.300000;;1;2;1;1;1;0;0;;;42;2;33;1;;1;5;2;;;;1;1;0;0;0;;;0;0;
-184714;Aitor González González;Aitor;González González;26;1995-01-18;;Spain;Spain;;;;https://media.api-sports.io/football/players/184714.png;5271;Navalcarnero;https://media.api-sports.io/football/teams/5271.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;0;0;0;;Goalkeeper;;;0;0;3;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-184721;Manuel Jaimez Nieto;Manuel;Jaimez Nieto;32;1989-04-24;Madrid;Spain;Spain;;;;https://media.api-sports.io/football/players/184721.png;5271;Navalcarnero;https://media.api-sports.io/football/teams/5271.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;4;4;360;;Defender;6.000000;;0;0;0;;;1;0;;;66;;51;;2;2;5;2;;;;;;0;0;0;;;0;0;
-187540;Alberto Alonso Lozano;Alberto;Alonso Lozano;27;1994-11-14;Fuensalida;Spain;Spain;;;;https://media.api-sports.io/football/players/187540.png;5271;Navalcarnero;https://media.api-sports.io/football/teams/5271.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;2;0;50;;Midfielder;6.700000;;2;0;2;;;0;0;;;31;;26;1;;1;4;4;;;;1;;0;0;0;;;0;0;
-188342;Carlos Saturnino Pérez Molares;Carlos Saturnino;Pérez Molares;22;1999-02-24;;Spain;Spain;;;;https://media.api-sports.io/football/players/188342.png;15306;Ribadumia;https://media.api-sports.io/football/teams/15306.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;1;1;90;;Defender;6.700000;;0;0;0;;;0;0;;;33;;22;1;1;4;8;5;1;;;2;;0;0;0;;;0;0;
-285193;Roberto Pazos Agra;Roberto;Pazos Agra;40;1981-01-21;;Spain;Spain;188 cm;83 kg;;https://media.api-sports.io/football/players/285193.png;15306;Ribadumia;https://media.api-sports.io/football/teams/15306.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;1;1;90;;Goalkeeper;9.300000;;0;0;0;;;0;2;;10;30;;15;;;;;;;;;;;0;0;0;;;0;0;1
-285194;Pablo Rial Agra;Pablo;Rial Agra;20;2001-03-28;;Spain;Spain;;;;https://media.api-sports.io/football/players/285194.png;15306;Ribadumia;https://media.api-sports.io/football/teams/15306.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;0;0;0;;Goalkeeper;;;0;0;1;;;0;0;;;;;;;;;;;;;;;;0;0;0;;;0;0;1
-285195;Eloy Conde Señoráns;Eloy;Conde Señoráns;27;1994-06-25;;Spain;Spain;;;;https://media.api-sports.io/football/players/285195.png;15306;Ribadumia;https://media.api-sports.io/football/teams/15306.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;0;0;0;;Defender;;;0;0;1;;;0;0;;;;;;;;;;;;;;;;0;0;0;;;0;0;
-285196;Javier Domingo Salvador;Javier;Domingo Salvador;25;1996-12-06;;Spain;Spain;;;;https://media.api-sports.io/football/players/285196.png;15306;Ribadumia;https://media.api-sports.io/football/teams/15306.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;1;1;90;;Defender;6.900000;;0;0;0;;;0;0;;;32;;25;1;3;1;7;3;1;1;;;3;1;0;0;;;0;0;
-285197;Santiago Padín Bermúdez;Santiago;Padín Bermúdez;28;1993-07-27;;Spain;Spain;;;;https://media.api-sports.io/football/players/285197.png;15306;Ribadumia;https://media.api-sports.io/football/teams/15306.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;1;1;66;;Defender;6.300000;;0;1;0;;;0;0;;;17;;10;2;;;7;4;1;1;;;1;1;0;0;;;0;0;
-285198;Miguel Ángel Vázquez Bustelo;Miguel Ángel;Vázquez Bustelo;39;1982-02-28;;Spain;Spain;;;;https://media.api-sports.io/football/players/285198.png;15306;Ribadumia;https://media.api-sports.io/football/teams/15306.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;1;1;90;;Defender;6.900000;;0;0;0;;;0;0;;;44;;39;2;1;;7;4;;;;;;0;0;0;;;0;0;
-288668;José Luis Vicente Zornoza;José Luis;Vicente Zornoza;21;2000-09-11;;Spain;Spain;;;;https://media.api-sports.io/football/players/288668.png;5264;Gimnástica Torrelavega;https://media.api-sports.io/football/teams/5264.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;1;0;10;;Midfielder;;;1;0;1;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-288819;Ian Olivera Maxwell;Ian;Olivera Maxwell;;;;Spain;Spain;;;;https://media.api-sports.io/football/players/288819.png;5271;Navalcarnero;https://media.api-sports.io/football/teams/5271.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;0;0;0;;Attacker;;;0;0;4;;;0;0;;;;;;;;;;;;;;;;0;0;0;;;0;0;
-288842;Gastón Alonso Kappes;Gastón;Alonso Kappes;20;2001-02-07;;Spain;Spain;;;;https://media.api-sports.io/football/players/288842.png;5283;Yeclano;https://media.api-sports.io/football/teams/5283.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;0;0;0;;Midfielder;7.300000;;0;0;0;1;1;0;0;;;34;;31;5;1;1;10;6;;;;;1;0;0;0;;;0;0;
-295907;Romaguera;Romaguera;Romaguera;;;;Spain;Spain;;;;https://media.api-sports.io/football/players/295907.png;9381;Atlético Baleares;https://media.api-sports.io/football/teams/9381.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;0;0;0;;Midfielder;;;0;0;1;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-296913;Alejandro Rodríguez-Caso Schwarz;Alejandro;Rodríguez-Caso Schwarz;25;1996-07-10;;Germany;Spain;188 cm;;;https://media.api-sports.io/football/players/296913.png;9408;Portugalete;https://media.api-sports.io/football/teams/9408.png;143;Copa del Rey;Spain;https://media.api-sports.io/football/leagues/143.png;https://media.api-sports.io/flags/es.svg;2020;0;0;0;;Defender;;;0;0;1;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-6796;T. Velaphi;Tando;Velaphi;34;1987-04-17;Perth;Australia;Australia;186 cm;75 kg;;https://media.api-sports.io/football/players/6796.png;940;Perth Glory;https://media.api-sports.io/football/teams/940.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;7;7;630;;Goalkeeper;6.985714;;0;0;19;;;0;11;;29;191;;18;;;1;5;5;;;;2;;1;0;0;;;0;0;1
-6858;Josh Hope;Josh;Hope;22;1998-01-07;Hobart;Australia;Australia;184 cm;;;https://media.api-sports.io/football/players/6858.png;944;Melbourne Victory;https://media.api-sports.io/football/teams/944.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;;;;;Midfielder;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-6873;J. Elsey;Jordan;Elsey;27;1994-03-02;Adelaide;Australia;Australia;188 cm;82 kg;;https://media.api-sports.io/football/players/6873.png;948;Adelaide United;https://media.api-sports.io/football/teams/948.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;27;27;2403;;Defender;6.829629;;0;0;0;8;3;1;0;;;1556;11;47;22;15;28;158;96;4;3;;8;20;4;1;0;;;0;0;
-6891;P. Niyongabire;Pacifique;Niyongabire;21;2000-03-15;;Burundi;Australia;;;;https://media.api-sports.io/football/players/6891.png;948;Adelaide United;https://media.api-sports.io/football/teams/948.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;18;1;275;;Attacker;6.550000;;17;2;18;5;2;0;0;2;;102;6;4;4;;5;69;19;19;5;;6;5;0;0;0;;;0;0;
-6944;N. James;Noah;James;20;2001-02-14;;Australia;Australia;;;;https://media.api-sports.io/football/players/6944.png;946;Newcastle Jets;https://media.api-sports.io/football/teams/946.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;0;0;0;;Goalkeeper;;;0;0;0;;;0;0;;;;;;;;;;;;;;;;0;0;0;;;0;0;0
-6970;V. Janjetović;Vedran;Janjetović;34;1987-08-20;Zagreb;Croatia;Australia;187 cm;84 kg;;https://media.api-sports.io/football/players/6970.png;939;Western Sydney Wanderers;https://media.api-sports.io/football/teams/939.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;0;0;0;;Goalkeeper;;;0;0;0;;;0;;;;;;;;;;;;;;;;;0;0;0;;;;;
-7027;C. Ngoy;Charles Lokoli;Ngoy;24;1997-03-02;;Australia;Australia;;;;https://media.api-sports.io/football/players/7027.png;942;Wellington Phoenix;https://media.api-sports.io/football/teams/942.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;9;0;115;;Attacker;6.644444;;9;0;20;5;1;0;0;;;18;2;1;1;;;23;14;8;4;;1;1;0;0;0;;;0;0;
-7034;J. Clisby;Jack;Clisby;29;1992-02-16;Perth;Australia;Australia;180 cm;72 kg;;https://media.api-sports.io/football/players/7034.png;941;Central Coast Mariners;https://media.api-sports.io/football/teams/941.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;27;27;2445;;Defender;7.103703;;0;2;0;20;9;2;0;1;;1047;48;28;46;14;46;216;113;16;8;;19;33;4;0;0;;;0;0;
-38841;T. Hudson-Wihongi;Te Atawhai;Hudson-Wihongi;26;1995-03-27;;New Zealand;New Zealand;187 cm;83 kg;;https://media.api-sports.io/football/players/38841.png;942;Wellington Phoenix;https://media.api-sports.io/football/teams/942.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;4;0;68;;Defender;6.266666;;4;0;9;;;0;0;;;45;;13;;;1;4;2;;;;;2;0;0;0;;;0;0;
-68037;L. McGing;Liam;McGing;23;1998-12-11;;Australia;Australia;;;;https://media.api-sports.io/football/players/68037.png;942;Wellington Phoenix;https://media.api-sports.io/football/teams/942.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;7;6;562;;Defender;6.928571;;1;0;6;;;0;0;;;261;;34;8;10;7;39;19;;;;4;6;0;0;0;;;0;0;
-130113;G. Colli;Giordano;Colli;20;2000-03-12;;Australia;Australia;;;;https://media.api-sports.io/football/players/130113.png;940;Perth Glory;https://media.api-sports.io/football/teams/940.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;;;;;Midfielder;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-138306;D. Hughes;Declan;Hughes;20;2000-05-27;;England;England;;;;https://media.api-sports.io/football/players/138306.png;940;Perth Glory;https://media.api-sports.io/football/teams/940.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;;;;;Midfielder;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-153633;Y. Petratos;Yerasimakis;Petratos;21;2000-09-11;;Australia;Australia;178 cm;77 kg;;https://media.api-sports.io/football/players/153633.png;946;Newcastle Jets;https://media.api-sports.io/football/teams/946.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;4;0;37;;Attacker;6.475000;;4;0;7;;;0;0;;;16;;3;2;;;9;4;1;;;1;2;0;0;0;;;0;0;
-153637;T. Ostler;Trent;Ostler;18;2002-04-03;;Australia;Australia;;;;https://media.api-sports.io/football/players/153637.png;940;Perth Glory;https://media.api-sports.io/football/teams/940.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;;;;;Attacker;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-156985;Y. Abetew;Yared;Abetew;22;1999-06-15;;Australia;Australia;;;;https://media.api-sports.io/football/players/156985.png;948;Adelaide United;https://media.api-sports.io/football/teams/948.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;8;3;304;;Defender;6.571428;;5;1;11;1;1;0;0;1;;181;3;21;8;1;6;27;13;3;3;;1;7;1;0;0;;;0;0;
-167015;N. Smith;Noah;Smith;21;2000-12-15;;Australia;Australia;;;;https://media.api-sports.io/football/players/167015.png;948;Adelaide United;https://media.api-sports.io/football/teams/948.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;9;9;766;;Defender;7.011111;;0;3;0;;;0;0;;;420;6;36;22;5;26;89;50;17;11;;6;8;3;0;0;;;0;0;
-187948;M. Muratovic;Mirza;Muratovic;21;2000-01-14;;Australia;Australia;;;;https://media.api-sports.io/football/players/187948.png;942;Wellington Phoenix;https://media.api-sports.io/football/teams/942.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;8;3;300;;Attacker;6.512500;;5;3;12;7;4;2;0;;;58;2;5;3;;1;29;7;2;1;;3;4;1;0;0;;;0;0;
-191968;D. Ochsenham;Dakota;Ochsenham;22;1999-09-28;;Australia;Australia;;;;https://media.api-sports.io/football/players/191968.png;948;Adelaide United;https://media.api-sports.io/football/teams/948.png;188;A-League;Australia;https://media.api-sports.io/football/leagues/188.png;https://media.api-sports.io/flags/au.svg;2020;0;0;0;;Goalkeeper;;;0;0;19;;;0;0;;;;;;;;;;;;;;;;0;0;0;;;0;0;1
-`;
+    const customSelect = customSelectWrapper.querySelector('.custom-select');
+    const trigger = customSelect.querySelector('.custom-select__trigger');
+    const options = customSelect.querySelectorAll('.custom-option');
 
-    function loadPlayerStats() {
-        statsBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 40px 0;">جاري تحميل الإحصائيات... <i class="fas fa-spinner fa-spin"></i></td></tr>`;
-        try {
-            const players = parseCSV(csvData);
-            displayPlayerStats(players); // Use a unique function name
-        } catch (error) {
-            console.error('Failed to parse or display player stats:', error);
-            statsBody.innerHTML = `<tr><td colspan="9" style="text-align: center;">عفواً، حدث خطأ أثناء عرض الإحصائيات.</td></tr>`;
-        }
-    }
+    trigger.addEventListener('click', () => customSelect.classList.toggle('open'));
+    window.addEventListener('click', (e) => {
+        if (!customSelect.contains(e.target)) customSelect.classList.remove('open');
+    });
 
-    function parseCSV(data) {
-        const lines = data.trim().split('\n');
-        const headers = lines[0].split(';');
-        const players = [];
-
-        for (let i = 1; i < lines.length; i++) {
-            const values = lines[i].split(';');
-            if (values.length === headers.length) {
-                const player = {};
-                headers.forEach((header, index) => {
-                    player[header.trim()] = values[index].trim();
-                });
-                players.push(player);
+    options.forEach(option => {
+        option.addEventListener('click', function() {
+            if (!this.classList.contains('selected')) {
+                const previouslySelected = customSelect.querySelector('.custom-option.selected');
+                if (previouslySelected) previouslySelected.classList.remove('selected');
+                this.classList.add('selected');
+                trigger.querySelector('span').textContent = this.textContent;
+                fetchTopScorers(this.dataset.value);
             }
+            customSelect.classList.remove('open');
+        });
+    });
+    // --- End Custom Select Logic ---
+
+    const statsBody = document.getElementById('stats-body');
+    const leagueNameTitle = document.getElementById('stats-league-name');
+
+    async function fetchTopScorers(leagueId) {
+        if (!statsBody || !leagueNameTitle) return;
+
+        const selectedOption = customSelect.querySelector(`.custom-option[data-value="${leagueId}"]`);
+        if (selectedOption) {
+            leagueNameTitle.textContent = `قائمة هدافي: ${selectedOption.textContent} - موسم ${SEASON}/${SEASON + 1}`;
         }
-        return players;
+        statsBody.innerHTML = `<tr><td colspan="11" style="text-align: center; padding: 40px 0;">جاري تحميل البيانات... <i class="fas fa-spinner fa-spin"></i></td></tr>`;
+
+        try {
+            // استخدام الدالة الجديدة لجلب أفضل 30 هدافاً
+            const topPlayers = await fetchTopPlayersByGoals(leagueId, 30);
+
+            if (topPlayers && topPlayers.length > 0) {
+                displayTopScorers(topPlayers);
+            } else {
+                statsBody.innerHTML = `<tr><td colspan="11" style="text-align: center;">${NO_DATA_MESSAGE(SEASON)}</td></tr>`;
+            }
+        } catch (error) {
+            console.error("Could not fetch top scorers:", error);
+            statsBody.innerHTML = `<tr><td colspan="11" style="text-align: center;">${error.message}</td></tr>`;
+        }
     }
 
-    function displayPlayerStats(players) { // Renamed function
+    function displayTopScorers(players) {
         statsBody.innerHTML = '';
-        if (players.length === 0) {
-            statsBody.innerHTML = `<tr><td colspan="9" style="text-align: center;">لا توجد بيانات لعرضها.</td></tr>`;
-            return;
-        }
+        players.forEach((playerData, index) => {
+            if (!playerData.statistics || playerData.statistics.length === 0) return;
 
-        players.forEach((player, index) => {
-            const rating = parseFloat(player['Games rating']).toFixed(2);
+            const player = playerData.player;
+            const stats = playerData.statistics[0];
+            
+            // إضافة التنقل الآمن لجميع الكائنات التي قد تكون فارغة
+            const games = stats.games || {};
+            const goals = stats.goals || {};
+            const shots = stats.shots || {};
+            const penalty = stats.penalty || {};
+            const birth = player.birth || {};
+
+            const ratingValue = games.rating ? parseFloat(games.rating) : null;
+            const rating = (ratingValue !== null && !isNaN(ratingValue)) ? ratingValue.toFixed(2) : '-';
+
             const row = `
                 <tr>
                     <td>${index + 1}</td>
                     <td class="team-name-cell">
-                        <img src="${player['Photo']}" alt="${player['Name']}" class="player-photo">
+                        <img src="${player.photo}" alt="${player.name}" class="player-photo" onerror="this.style.display='none'">
                         <div>
-                            <strong>${player['Firstname']} ${player['Lastname']}</strong>
-                            <small style="display: block; color: var(--gray);">${player['Age']} سنة - ${player['Nationality']}</small>
+                            <strong>${player.name || 'غير معروف'}</strong>
+                            <small style="display: block; color: var(--gray);">${player.age || '-'} سنة - ${player.nationality || 'غير معروف'}</small>
                         </div>
                     </td>
-                    <td class="team-name-cell"><img src="${player['Team logo']}" alt="${player['Team name']}"> ${player['Team name']}</td>
-                    <td>${player['League name']}</td>
-                    <td>${player['Games appearences'] || 0}</td>
-                    <td>${player['Games minutes'] || 0}</td>
-                    <td>${player['Goals total'] || 0}</td>
-                    <td>${player['Goals assists'] || 0}</td>
-                    <td class="points">${isNaN(rating) ? 'N/A' : rating}</td>
+                    <td class="team-name-cell">
+                        <a href="team-details.html?id=${stats.team.id}">
+                            <img src="${stats.team.logo}" alt="${stats.team.name}" onerror="this.style.display='none'"> ${stats.team.name || 'غير معروف'}
+                        </a>
+                    </td>
+                    <td>${games.position || '-'}</td>
+                    <td>${birth.date || '-'}</td>
+                    <td>${games.appearences || 0}</td>
+                    <td class="points">${goals.total || 0}</td>
+                    <td>${goals.assists || 0}</td>
+                    <td>${shots.on || 0}</td>
+                    <td>${penalty.scored || 0}</td>
+                    <td class="points">${rating}</td>
                 </tr>
             `;
             statsBody.insertAdjacentHTML('beforeend', row);
         });
     }
 
-    loadPlayerStats();
+    // Fetch data for the initially selected league on page load
+    const initialSelected = customSelect.querySelector('.custom-option.selected');
+    if (initialSelected) {
+        fetchTopScorers(initialSelected.dataset.value);
+    }
+}
+
+function initializeTeamsPage() {
+    const teamsSection = document.getElementById('teams-section');
+    if (!teamsSection) return;
+
+    // --- Custom Select Logic ---
+    const customSelectWrapper = teamsSection.querySelector('.custom-select-wrapper');
+    if (!customSelectWrapper) return;
+
+    const customSelect = customSelectWrapper.querySelector('.custom-select');
+    const trigger = customSelect.querySelector('.custom-select__trigger');
+    const options = customSelect.querySelectorAll('.custom-option');
+
+    trigger.addEventListener('click', () => customSelect.classList.toggle('open'));
+    window.addEventListener('click', (e) => {
+        if (!customSelect.contains(e.target)) customSelect.classList.remove('open');
+    });
+
+    options.forEach(option => {
+        option.addEventListener('click', function() {
+            if (!this.classList.contains('selected')) {
+                const previouslySelected = customSelect.querySelector('.custom-option.selected');
+                if (previouslySelected) previouslySelected.classList.remove('selected');
+                this.classList.add('selected');
+                trigger.querySelector('span').textContent = this.textContent;
+                fetchTeams(this.dataset.value);
+            }
+            customSelect.classList.remove('open');
+        });
+    });
+    // --- End Custom Select Logic ---
+
+    const teamsGrid = document.getElementById('teams-grid');
+
+    async function fetchTeams(leagueId) {
+        if (!teamsGrid) return;
+
+        teamsGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; padding: 40px 0;">جاري تحميل الفرق... <i class="fas fa-spinner fa-spin"></i></p>';
+
+        const API_URL = `https://${API_HOST}/teams?league=${leagueId}&season=${SEASON}`;
+
+        try {
+            const data = await fetchData(API_URL);
+            if (data.response && data.response.length > 0) {
+                displayTeams(data.response);
+            } else {
+                teamsGrid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">${NO_DATA_MESSAGE(SEASON)}</p>`;
+            }
+        } catch (error) {
+            console.error("Could not fetch teams:", error);
+            teamsGrid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">${error.message}</p>`;
+        }
+    }
+
+    function displayTeams(teams) {
+        teamsGrid.innerHTML = '';
+        teams.forEach(teamData => {
+            const team = teamData.team;
+            const venue = teamData.venue;
+
+            const teamCardHTML = `
+                <a href="team-details.html?id=${team.id}" class="team-card-link">
+                    <div class="team-card">
+                        <div class="team-logo">
+                            <img src="${team.logo}" alt="شعار ${team.name}" loading="lazy" onerror="this.style.display='none'">
+                        </div>
+                        <div class="team-info">
+                            <h3 class="team-name">${team.name}</h3>
+                            <p class="team-country">${team.country} <span class="team-founded">(${team.founded})</span></p>
+                            <small style="color: var(--gray); display: block; margin-top: 5px;">${venue.name || ''}</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+            teamsGrid.insertAdjacentHTML('beforeend', teamCardHTML);
+        });
+    }
+
+    // Fetch data for the initially selected league on page load
+    const initialSelected = customSelect.querySelector('.custom-option.selected');
+    if (initialSelected) {
+        fetchTeams(initialSelected.dataset.value);
+    }
+}
+
+// دالة لتهيئة قسم الأخبار
+function initializeNews() {
+    const newsGridOnIndex = document.querySelector('#news .news-grid');
+    const newsGridOnNewsPage = document.querySelector('section.news#news .news-grid');
+
+    // The newsData is now a global constant.
+
+    function createNewsCard(article) {
+        return `
+            <div class="news-card">
+                <a href="${article.link}" class="news-card-link">
+                    <div class="news-image">
+                        <img src="${article.image}" alt="${article.title}" loading="lazy" onerror="this.parentElement.style.display='none'">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-category">${article.category}</span>
+                        <h3 class="news-title">${article.title}</h3>
+                        <div class="news-meta">
+                            <span><i class="far fa-calendar-alt"></i> ${article.date}</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        `;
+    }
+
+    if (newsGridOnNewsPage) {
+        // On news.html, display all articles
+        newsGridOnNewsPage.innerHTML = newsData.map(createNewsCard).join('');
+    } else if (newsGridOnIndex) {
+        // On index.html, display first 3 articles
+        newsGridOnIndex.innerHTML = newsData.slice(0, 3).map(createNewsCard).join('');
+    }
+}
+
+// --- Translation Logic ---
+const translations = {
+    ar: {
+        navHome: "الرئيسية",
+        navTeams: "الفرق",
+        navPlayers: "اللاعبين",
+        navStandings: "الترتيب",
+        navStats: "الإحصائيات",
+        navNews: "الأخبار",
+        navContact: "اتصل بنا",
+        heroTitle: "استكشف عالم كرة القدم بمنظور ثلاثي الأبعاد",
+        heroSubtitle: "Football 3D Hub يمنحك تجربة فريدة لمشاهدة إحصائيات اللاعبين، تشكيلات الفرق، وأداء الأندية في بيئة تفاعلية ثلاثية الأبعاد غامرة.",
+        quickLinks: "روابط سريعة",
+        aboutUs: "عن الموقع",
+        features: "المميزات",
+        aboutTitle: "عن Football 3D Hub",
+    },
+    en: {
+        navHome: "Home",
+        navTeams: "Teams",
+        navPlayers: "Players",
+        navStandings: "Standings",
+        navStats: "Stats",
+        navNews: "News",
+        navContact: "Contact Us",
+        heroTitle: "Explore the World of Football in a 3D Perspective",
+        heroSubtitle: "Football 3D Hub offers a unique experience to view player stats, team formations, and club performance in an immersive 3D interactive environment.",
+        quickLinks: "Quick Links",
+        aboutUs: "About",
+        features: "Features",
+        aboutTitle: "About Football 3D Hub",
+    },
+    es: {
+        navHome: "Inicio",
+        navTeams: "Equipos",
+        navPlayers: "Jugadores",
+        navStandings: "Clasificación",
+        navStats: "Estadísticas",
+        navNews: "Noticias",
+        navContact: "Contacto",
+        heroTitle: "Explora el mundo del fútbol en una perspectiva 3D",
+        heroSubtitle: "Football 3D Hub te ofrece una experiencia única para ver estadísticas de jugadores, formaciones de equipos y rendimiento de clubes en un entorno interactivo 3D inmersivo.",
+        quickLinks: "Enlaces Rápidos",
+        aboutUs: "Sobre Nosotros",
+        features: "Características",
+        aboutTitle: "Sobre Football 3D Hub",
+    }
+    ,
+    fr: {
+        navHome: "Accueil",
+        navTeams: "Équipes",
+        navPlayers: "Joueurs",
+        navStandings: "Classement",
+        navStats: "Statistiques",
+        navNews: "Actualités",
+        navContact: "Contact",
+        heroTitle: "Explorez le monde du football en 3D",
+        heroSubtitle: "Football 3D Hub offre une expérience unique pour voir les statistiques des joueurs, les formations d'équipes et les performances des clubs dans un environnement 3D interactif immersif.",
+        quickLinks: "Liens Rapides",
+        aboutUs: "À Propos",
+        features: "Fonctionnalités",
+        aboutTitle: "À propos de Football 3D Hub",
+    },
+    de: {
+        navHome: "Startseite",
+        navTeams: "Mannschaften",
+        navPlayers: "Spieler",
+        navStandings: "Tabelle",
+        navStats: "Statistiken",
+        navNews: "Nachrichten",
+        navContact: "Kontakt",
+        heroTitle: "Entdecken Sie die Welt des Fußballs in 3D",
+        heroSubtitle: "Football 3D Hub bietet ein einzigartiges Erlebnis, um Spielerstatistiken, Mannschaftsaufstellungen und Vereinsleistungen in einer immersiven interaktiven 3D-Umgebung anzuzeigen.",
+        quickLinks: "Schnell-Links",
+        aboutUs: "Über Uns",
+        features: "Merkmale",
+        aboutTitle: "Über Football 3D Hub",
+    },
+    it: {
+        navHome: "Home",
+        navTeams: "Squadre",
+        navPlayers: "Giocatori",
+        navStandings: "Classifiche",
+        navStats: "Statistiche",
+        navNews: "Notizie",
+        navContact: "Contatti",
+        heroTitle: "Esplora il mondo del calcio in una prospettiva 3D",
+        heroSubtitle: "Football 3D Hub offre un'esperienza unica per visualizzare statistiche dei giocatori, formazioni delle squadre e prestazioni dei club in un ambiente 3D interattivo e coinvolgente.",
+        quickLinks: "Link Rapidi",
+        aboutUs: "Chi Siamo",
+        features: "Caratteristiche",
+        aboutTitle: "Informazioni su Football 3D Hub",
+    }
+};
+
+function translatePage(lang) {
+    const dict = translations[lang] || translations.en;
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (dict[key]) element.textContent = dict[key];
+    });
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    localStorage.setItem('preferredLanguage', lang);
+}
+
+// دالة لتهيئة واجهة تغيير اللغة
+function initializeLanguageSwitcher() {
+    const switcherContainer = document.getElementById('language-switcher');
+    if (!switcherContainer) return;
+
+    const languages = [
+        { code: 'ar', name: 'العربية', flag: 'https://flagcdn.com/w20/sa.png' },
+        { code: 'en', name: 'English', flag: 'https://flagcdn.com/w20/gb.png' },
+        { code: 'es', name: 'Español', flag: 'https://flagcdn.com/w20/es.png' },
+        { code: 'fr', name: 'Français', flag: 'https://flagcdn.com/w20/fr.png' },
+        { code: 'de', name: 'Deutsch', flag: 'https://flagcdn.com/w20/de.png' },
+        { code: 'pt', name: 'Português', flag: 'https://flagcdn.com/w20/pt.png' },
+        { code: 'it', name: 'Italiano', flag: 'https://flagcdn.com/w20/it.png' },
+        { code: 'ru', name: 'Русский', flag: 'https://flagcdn.com/w20/ru.png' },
+        { code: 'zh', name: '中文', flag: 'https://flagcdn.com/w20/cn.png' },
+        { code: 'ja', name: '日本語', flag: 'https://flagcdn.com/w20/jp.png' },
+        { code: 'hi', name: 'हिन्दी', flag: 'https://flagcdn.com/w20/in.png' },
+        { code: 'tr', name: 'Türkçe', flag: 'https://flagcdn.com/w20/tr.png' },
+        { code: 'nl', name: 'Nederlands', flag: 'https://flagcdn.com/w20/nl.png' },
+        { code: 'ko', name: '한국어', flag: 'https://flagcdn.com/w20/kr.png' },
+        { code: 'pl', name: 'Polski', flag: 'https://flagcdn.com/w20/pl.png' },
+        { code: 'sv', name: 'Svenska', flag: 'https://flagcdn.com/w20/se.png' },
+        { code: 'no', name: 'Norsk', flag: 'https://flagcdn.com/w20/no.png' },
+        { code: 'da', name: 'Dansk', flag: 'https://flagcdn.com/w20/dk.png' },
+        { code: 'fi', name: 'Suomi', flag: 'https://flagcdn.com/w20/fi.png' },
+        { code: 'el', name: 'Ελληνικά', flag: 'https://flagcdn.com/w20/gr.png' }
+    ];
+
+    let optionsHTML = languages.map(lang => `<div class="lang-option" data-lang="${lang.code}"><img src="${lang.flag}" alt="${lang.name}"> ${lang.name}</div>`).join('');
+
+    // Set initial state from the first language in the array
+    let initialLang = languages.find(l => l.code === localStorage.getItem('preferredLanguage')) || languages[0];
+    switcherContainer.innerHTML = `
+        <div class="lang-select">
+            <div class="lang-trigger">
+                <img src="${initialLang.flag}" alt="${initialLang.name}"> ${initialLang.name} <i class="fas fa-chevron-up"></i>
+            </div>
+            <div class="lang-options">
+                ${optionsHTML}
+            </div>
+        </div>
+    `;
+
+    const select = switcherContainer.querySelector('.lang-select');
+    const trigger = switcherContainer.querySelector('.lang-trigger');
+    const options = switcherContainer.querySelectorAll('.lang-option');
+
+    trigger.addEventListener('click', () => {
+        select.classList.toggle('open');
+    });
+
+    window.addEventListener('click', (e) => {
+        if (!select.contains(e.target)) {
+            select.classList.remove('open');
+        }
+    });
+
+    options.forEach(option => {
+        option.addEventListener('click', function() {
+            const langCode = this.dataset.lang;
+            const selectedLang = languages.find(l => l.code === langCode);
+            if (selectedLang) {
+                trigger.innerHTML = `<img src="${selectedLang.flag}" alt="${selectedLang.name}"> ${selectedLang.name} <i class="fas fa-chevron-up"></i>`;
+                translatePage(langCode);
+                console.log(`Language changed to: ${selectedLang.name}`);
+            }
+            select.classList.remove('open');
+        });
+    });
+
+    // On page load, apply the saved language or default
+    const savedLang = localStorage.getItem('preferredLanguage') || 'ar';
+    translatePage(savedLang);
+}
+
+// دالة لتهيئة قسم اللاعبين المميزين في الصفحة الرئيسية
+function initializeFeaturedPlayers() {
+    const grid = document.getElementById('featured-players-grid');
+    if (!grid) return;
+
+    grid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; padding: 40px 0;">جاري تحميل اللاعبين المميزين... <i class="fas fa-spinner fa-spin"></i></p>';
+
+    // جلب أفضل الهدافين من الدوري الإنجليزي لعرضهم كلاعبين مميزين
+    const LEAGUE_ID_FOR_FEATURED = 39; // Premier League
+
+    async function fetchAndDisplay() {
+        try {
+            // استخدام الدالة الجديدة لجلب أفضل 3 لاعبين
+            const topPlayers = await fetchTopPlayersByGoals(LEAGUE_ID_FOR_FEATURED, 3);
+            if (topPlayers && topPlayers.length > 0) {
+                displayFeaturedPlayers(topPlayers); // عرض أفضل 3 لاعبين بناءً على طلبك
+            } else {
+                console.error("API Error:", 'No featured players found');
+                grid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">لا يمكن تحميل اللاعبين المميزين حالياً.</p>`;
+            }
+        } catch (error) {
+            console.error("Could not fetch featured players:", error);
+            grid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">${error.message}</p>`;
+        }
+    }
+
+    function displayFeaturedPlayers(players) {
+        grid.innerHTML = '';
+        players.forEach(playerData => {
+            if (!playerData.statistics || playerData.statistics.length === 0) return;
+
+            const player = playerData.player;
+            const stats = playerData.statistics[0];
+            const games = stats.games || {};
+            const goals = stats.goals || {};
+            const rating = games.rating ? parseFloat(games.rating).toFixed(1) : '-';
+
+            const playerCardHTML = `
+                <a href="players.html" class="player-card-link">
+                    <div class="player-card">
+                        <div class="player-image">
+                            <img src="${player.photo}" alt="${player.name}" loading="lazy" onerror="this.parentElement.style.display='none'">
+                        </div>
+                        <div class="player-info">
+                            <h3 class="player-name">${player.name || 'غير معروف'}</h3>
+                            <div class="player-team">
+                                <img src="${stats.team.logo}" alt="${stats.team.name}" class="team-logo-small" onerror="this.style.display='none'">
+                                ${stats.team.name || 'غير معروف'}
+                            </div>
+                            <p style="color: var(--gray); margin-bottom: 15px; font-size: 0.9rem;">${games.position || 'غير محدد'} - ${player.age || '-'} سنة</p>
+                            <div class="player-card-stats">
+                                <div class="stats-grid">
+                                    <div class="stat-item">
+                                        <span class="stat-value">${games.appearences || 0}</span>
+                                        <span class="stat-label">مباريات</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value">${goals.total || 0}</span>
+                                        <span class="stat-label">أهداف</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value">${goals.assists || 0}</span>
+                                        <span class="stat-label">صناعة</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value">${rating}</span>
+                                        <span class="stat-label">تقييم</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>`;
+            grid.insertAdjacentHTML('beforeend', playerCardHTML);
+        });
+    }
+
+    fetchAndDisplay();
+}
+
+// دالة لتهيئة صفحة تفاصيل الخبر
+function initializeNewsArticle() {
+    const articleContainer = document.getElementById('article-container');
+    if (!articleContainer) return;
+
+    // استخراج id المقال من رابط الصفحة
+    const urlParams = new URLSearchParams(window.location.search);
+    const articleId = parseInt(urlParams.get('id'));
+
+    // newsData is now a global constant
+    const article = newsData.find(art => art.id === articleId);
+
+    if (article) {
+        document.title = `${article.title} - Football 3D Hub`; // تحديث عنوان الصفحة
+        articleContainer.innerHTML = `
+            <img src="${article.image}" alt="${article.title}" id="article-image" onerror="this.style.display='none'">
+            <h3 id="article-title">${article.title}</h3>
+            <div class="article-meta">
+                <span class="news-category">${article.category}</span>
+                <span><i class="far fa-calendar-alt"></i> ${article.date}</span>
+            </div>
+            <div id="article-body">
+                ${article.content.split('\n').map(p => `<p>${p}</p>`).join('')}
+            </div>
+        `;
+    } else {
+        articleContainer.innerHTML = '<h3 style="text-align: center;">عفواً، المقال المطلوب غير موجود.</h3>';
+    }
+}
+
+// دالة لتهيئة صفحة تفاصيل المباراة
+function initializeMatchDetails() {
+    const matchDetailsContainer = document.getElementById('match-details-container');
+    if (!matchDetailsContainer) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const fixtureId = urlParams.get('id');
+
+    if (!fixtureId) {
+        matchDetailsContainer.innerHTML = '<p class="error-message">لم يتم تحديد المباراة.</p>';
+        return;
+    }
+
+    async function fetchMatchDetails() {
+        matchDetailsContainer.innerHTML = '<p style="text-align: center; padding: 50px;">جاري تحميل تفاصيل المباراة... <i class="fas fa-spinner fa-spin"></i></p>';
+        const API_URL = `https://${API_HOST}/fixtures?id=${fixtureId}`;
+
+        try {
+            const data = await fetchData(API_URL);
+            if (data.response && data.response.length > 0) {
+                displayMatchDetails(data.response[0]);
+            } else {
+                matchDetailsContainer.innerHTML = `<p class="error-message">لا توجد تفاصيل لهذه المباراة.</p>`;
+            }
+        } catch (error) {
+            console.error("Could not fetch match details:", error);
+            matchDetailsContainer.innerHTML = `<p class="error-message">${error.message}</p>`;
+        }
+    }
+
+    function displayMatchDetails(data) {
+        const { fixture, league, teams, lineups } = data;
+        const homeTeam = lineups.find(l => l.team.id === teams.home.id) || { team: teams.home, formation: 'N/A', startXI: [], substitutes: [] };
+        const awayTeam = lineups.find(l => l.team.id === teams.away.id) || { team: teams.away, formation: 'N/A', startXI: [], substitutes: [] };
+
+        document.title = `${teams.home.name} ضد ${teams.away.name} - تفاصيل المباراة`;
+
+        matchDetailsContainer.innerHTML = `
+            <div class="match-info-header">
+                <h2>${league.name} - ${league.round}</h2>
+                <p><i class="fas fa-calendar-alt"></i> ${new Date(fixture.date).toLocaleString('ar-EG')} | <i class="fas fa-map-marker-alt"></i> ${fixture.venue.name || 'غير محدد'}</p>
+                <p><i class="fas fa-user"></i> الحكم: ${fixture.referee || 'غير محدد'}</p>
+            </div>
+            <div class="lineups-container">
+                ${createTeamLineupHTML(homeTeam)}
+                ${createTeamLineupHTML(awayTeam)}
+            </div>
+        `;
+    }
+
+    function createTeamLineupHTML(teamData) {
+        const { team, formation, startXI, substitutes } = teamData;
+        return `
+            <div class="team-lineup">
+                <div class="team-lineup-header">
+                    <img src="${team.logo}" alt="${team.name}" onerror="this.style.display='none'">
+                    <h3>${team.name}</h3>
+                    <span>الخطة: ${formation || 'غير محددة'}</span>
+                </div>
+                <h4>اللاعبون الأساسيون</h4>
+                <ul class="player-list">
+                    ${startXI.map(p => `<li><span class="player-number">${p.player.number}</span> ${p.player.name} <span class="player-pos">${p.player.pos}</span></li>`).join('')}
+                </ul>
+                <h4>اللاعبون الاحتياط</h4>
+                <ul class="player-list">
+                    ${substitutes.map(s => `<li><span class="player-number">${s.player.number}</span> ${s.player.name}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    fetchMatchDetails();
+}
+
+// دالة لتهيئة صفحة تفاصيل الفريق
+function initializeTeamDetails() {
+    const container = document.getElementById('team-details-container');
+    if (!container) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const teamId = urlParams.get('id');
+
+    if (!teamId) {
+        container.innerHTML = '<p class="error-message">لم يتم تحديد الفريق.</p>';
+        return;
+    }
+
+    async function fetchTeamDetails() {
+        container.innerHTML = '<p style="text-align: center; padding: 50px;">جاري تحميل تفاصيل الفريق... <i class="fas fa-spinner fa-spin"></i></p>';
+        
+        try {
+            const teamData = await fetchData(`https://${API_HOST}/teams?id=${teamId}`);
+            const squadData = await fetchData(`https://${API_HOST}/players/squads?team=${teamId}`);
+
+            if (!teamData.response || teamData.response.length === 0) throw new Error('Team not found');
+            
+            const teamInfo = teamData.response[0];
+
+            // البحث عن دوري صالح لجلب الإحصائيات
+            const leaguesData = await fetchData(`https://${API_HOST}/leagues?team=${teamId}&season=${SEASON}`);
+            
+            let statsData = null;
+            if (leaguesData.response && leaguesData.response.length > 0) {
+                // إعطاء الأولوية للدوريات الكبرى ثم أي دوري من نوع "League"
+                const majorLeagueIds = [39, 140, 135, 78, 61, 2, 307, 233];
+                let league = leaguesData.response.find(l => majorLeagueIds.includes(l.league.id));
+                if (!league) league = leaguesData.response.find(l => l.league.type.toLowerCase() === 'league');
+                if (!league) league = leaguesData.response[0]; // اختيار أول دوري كحل أخير
+
+                const leagueId = league.league.id;
+                try {
+                    const statsJson = await fetchData(`https://${API_HOST}/teams/statistics?league=${leagueId}&season=${SEASON}&team=${teamId}`);
+                    if (statsJson.response) statsData = statsJson.response;
+                } catch (statsError) {
+                    console.error("Could not fetch team statistics, continuing without them.", statsError);
+                    statsData = null;
+                }
+            }
+
+            displayTeamDetails(teamInfo, statsData, squadData.response[0]);
+
+        } catch (error) {
+            console.error("Could not fetch team details:", error);
+            container.innerHTML = `<p class="error-message">${error.message}</p>`;
+        }
+    }
+
+    function displayTeamDetails(teamInfo, stats, squad) {
+        const team = teamInfo.team;
+        const venue = teamInfo.venue;
+        document.title = `${team.name} - تفاصيل الفريق`;
+
+        const statsHTML = stats ? `
+            <h3>إحصائيات الفريق (${stats.league.name} ${SEASON}/${SEASON+1})</h3>
+            <div class="team-stats-grid">
+                <div class="stat-item"><span>لعب</span><span>${stats.fixtures.played.total}</span></div>
+                <div class="stat-item"><span>فاز</span><span>${stats.fixtures.wins.total}</span></div>
+                <div class="stat-item"><span>تعادل</span><span>${stats.fixtures.draws.total}</span></div>
+                <div class="stat-item"><span>خسر</span><span>${stats.fixtures.loses.total}</span></div>
+            </div>
+            <h4>الأهداف</h4>
+            <div class="team-stats-grid">
+                <div class="stat-item"><span>سجل</span><span>${stats.goals.for.total.total || 0}</span></div>
+                <div class="stat-item"><span>استقبل</span><span>${stats.goals.against.total.total || 0}</span></div>
+                <div class="stat-item"><span>متوسط التسجيل</span><span>${stats.goals.for.average.total || 0}</span></div>
+                <div class="stat-item"><span>متوسط الاستقبال</span><span>${stats.goals.against.average.total || 0}</span></div>
+            </div>
+            <h4>التشكيلات الأكثر استخداماً</h4>
+            <ul class="formations-list">
+                ${stats.lineups.map(f => `<li>${f.formation} <span>(${f.played} مباريات)</span></li>`).join('')}
+            </ul>
+        ` : '<p>لا توجد إحصائيات متاحة لهذا الفريق في الموسم الحالي.</p>';
+
+        const squadHTML = squad && squad.players ? `
+            <h3>قائمة اللاعبين</h3>
+            <ul class="squad-player-list">
+                ${squad.players.map(p => `
+                    <li>
+                        <img src="${p.photo}" alt="${p.name}" class="player-photo" onerror="this.style.display='none'">
+                        <div class="squad-player-info">
+                            <strong>${p.name}</strong>
+                            <span>العمر: ${p.age} | المركز: ${p.position}</span>
+                        </div>
+                    </li>
+                `).join('')}
+            </ul>
+        ` : '<p>لا توجد بيانات عن قائمة اللاعبين.</p>';
+
+        container.innerHTML = `
+            <div class="team-details-header">
+                <img src="${team.logo}" alt="${team.name}" class="team-details-logo">
+                <div class="team-details-info">
+                    <h1>${team.name}</h1>
+                    <p>${team.country} - تأسس عام ${team.founded}</p>
+                    <p><i class="fas fa-map-marker-alt"></i> الملعب: ${venue.name} (${venue.city}) | السعة: ${venue.capacity ? venue.capacity.toLocaleString('ar-EG') : 'غير معروف'}</p>
+                </div>
+            </div>
+            <div class="team-details-content">
+                <div class="team-stats-container">${statsHTML}</div>
+                <div class="team-squad-container">${squadHTML}</div>
+            </div>
+        `;
+    }
+
+    fetchTeamDetails();
+}
+
+// دالة لتهيئة قسم الإحصائيات في الصفحة الرئيسية
+async function initializeHomepageStats() {
+    const goalsElement = document.querySelector('#stat-goals .stat-number');
+    const goalsDescElement = document.querySelector('#stat-goals .stat-desc');
+    const playersElement = document.querySelector('#stat-players .stat-number');
+    const teamsElement = document.querySelector('#stat-teams .stat-number');
+    const leaguesElement = document.querySelector('#stat-leagues .stat-number');
+
+    if (!goalsElement) return; // We are not on the homepage
+
+    // تحديث الأرقام الثابتة لتكون أكثر واقعية
+    if (playersElement) playersElement.textContent = '15,000+';
+    if (teamsElement) teamsElement.textContent = '400+';
+    if (leaguesElement) leaguesElement.textContent = '8'; // بناءً على عدد الدوريات في القوائم المنسدلة
+
+    // جلب إجمالي الأهداف ديناميكيًا لأحد الدوريات الكبرى
+    goalsElement.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>';
+    const LEAGUE_ID_FOR_GOALS = 39; // Premier League
+    const API_URL = `https://${API_HOST}/standings?league=${LEAGUE_ID_FOR_GOALS}&season=${SEASON}`;
+
+    try {
+        const data = await fetchData(API_URL);
+
+        if (data.response && data.response.length > 0 && data.response[0].league.standings.length > 0) {
+            const standings = data.response[0].league.standings[0];
+            const totalGoals = standings.reduce((sum, team) => sum + team.all.goals.for, 0);
+            goalsElement.textContent = totalGoals.toLocaleString('ar-EG');
+            if (goalsDescElement) goalsDescElement.textContent = `هدف في الدوري الإنجليزي موسم ${SEASON}/${(SEASON + 1).toString().slice(-2)}`;
+        } else {
+            goalsElement.textContent = '950+'; // قيمة احتياطية
+            if (goalsDescElement) goalsDescElement.textContent = `هدف في الدوريات الكبرى`;
+        }
+    } catch (error) {
+        console.error('Could not fetch homepage stats:', error);
+        goalsElement.textContent = '950+'; // قيمة احتياطية عند حدوث خطأ
+        if (goalsDescElement) goalsDescElement.textContent = `هدف في الدوريات الكبرى`;
+    }
+}
+
+// دالة لتفعيل نموذج الاتصال
+function initializeContactForm() {
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('form-status');
+
+    if (!form || !status) return;
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        
+        // التحقق مما إذا كان رابط النموذج لا يزال هو الرابط المؤقت
+        if (form.action.includes('YOUR_UNIQUE_ID')) {
+            status.textContent = 'النموذج غير مُفعّل. يرجى اتباع التعليمات في الكود لتفعيله.';
+            status.style.color = 'var(--secondary)';
+            return;
+        }
+
+        const data = new FormData(event.target);
+        status.textContent = 'جاري إرسال الرسالة...';
+        status.style.color = 'var(--gray)';
+
+        try {
+            const response = await fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                status.textContent = 'تم إرسال رسالتك بنجاح. شكراً لك!';
+                status.style.color = 'var(--accent)';
+                form.reset();
+            } else {
+                const responseData = await response.json();
+                if (Object.hasOwn(responseData, 'errors')) {
+                    status.textContent = responseData["errors"].map(error => error["message"]).join(", ");
+                } else {
+                    status.textContent = 'عفواً، حدث خطأ ما أثناء إرسال الرسالة.';
+                }
+                status.style.color = 'var(--secondary)';
+            }
+        } catch (error) {
+            status.textContent = 'عفواً، حدث خطأ ما. يرجى المحاولة مرة أخرى.';
+            status.style.color = 'var(--secondary)';
+        }
+    }
+
+    form.addEventListener("submit", handleSubmit);
 }
 
 // دالة رئيسية لتشغيل كل شيء عند تحميل الصفحة
 document.addEventListener("DOMContentLoaded", function() {
+    initThreeJS();
     initializeActiveNavLinks();
     initializeCookieNotice();
     initializePlayerSearch();
+    initializeFeaturedPlayers();
     initializeLiveMatches();
+    initializeHomepageStats();
     initializeStandings();
-    initializePlayerStats();
+    initializeTopScorers();
+    initializeTeamsPage();
+    initializeNews();
+    initializeNewsArticle();
+    initializeMatchDetails();
+    initializeTeamDetails();
+    initializePlayersPage();
+    initializeLanguageSwitcher();
+    initializeContactForm();
 });
+
+function initializePlayersPage() {
+    const playersSection = document.getElementById('players-page');
+    if (!playersSection) return;
+
+    const customSelectWrapper = playersSection.querySelector('.custom-select-wrapper');
+    if (!customSelectWrapper) return;
+
+    const customSelect = customSelectWrapper.querySelector('.custom-select');
+    const trigger = customSelect.querySelector('.custom-select__trigger');
+    const options = customSelect.querySelectorAll('.custom-option');
+
+    trigger.addEventListener('click', () => customSelect.classList.toggle('open'));
+    window.addEventListener('click', (e) => {
+        if (!customSelect.contains(e.target)) customSelect.classList.remove('open');
+    });
+
+    options.forEach(option => {
+        option.addEventListener('click', function() {
+            if (!this.classList.contains('selected')) {
+                const previouslySelected = customSelect.querySelector('.custom-option.selected');
+                if (previouslySelected) previouslySelected.classList.remove('selected');
+                this.classList.add('selected');
+                trigger.querySelector('span').textContent = this.textContent;
+                fetchPlayers(this.dataset.value);
+            }
+            customSelect.classList.remove('open');
+        });
+    });
+
+    const playersGrid = document.getElementById('players-grid-dynamic');
+
+    async function fetchPlayers(leagueId) {
+        if (!playersGrid) return;
+        playersGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; padding: 40px 0;">جاري تحميل اللاعبين... <i class="fas fa-spinner fa-spin"></i></p>';
+        try {
+            let allPlayers = [];
+            let currentPage = 1;
+            const maxPages = 5; // جلب 5 صفحات للحصول على ~100 لاعب
+            let hasMorePages = true;
+
+            while (currentPage <= maxPages && hasMorePages) {
+                const API_URL = `https://${API_HOST}/players?league=${leagueId}&season=${SEASON}&page=${currentPage}`;
+                try {
+                    const data = await fetchData(API_URL);
+                    if (data.response && data.response.length > 0) {
+                        allPlayers.push(...data.response);
+                        if (data.paging.current >= data.paging.total) {
+                            hasMorePages = false; // وصلنا للصفحة الأخيرة
+                        } else {
+                            currentPage++;
+                        }
+                    } else {
+                        hasMorePages = false; // لا يوجد المزيد من اللاعبين
+                    }
+                } catch (error) {
+                    console.error(`Could not fetch players for page ${currentPage}:`, error);
+                    if (currentPage === 1) throw error;
+                    hasMorePages = false; // إيقاف المحاولة عند حدوث خطأ
+                }
+            }
+
+            if (allPlayers.length > 0) {
+                displayPlayers(allPlayers);
+            } else {
+                    playersGrid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">${NO_DATA_MESSAGE(SEASON)}</p>`;
+                }
+        } catch (error) {
+            console.error("Could not fetch players:", error);
+            playersGrid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">${error.message}</p>`;
+        }
+    }
+
+    function displayPlayers(players) {
+        playersGrid.innerHTML = '';
+        players.forEach(playerData => {
+            if (!playerData.statistics || playerData.statistics.length === 0) return;
+
+            const player = playerData.player;
+            const stats = playerData.statistics[0]; // First team in the season
+            const birth = player.birth || {};
+            const games = stats.games || {};
+            const goals = stats.goals || {};
+            const rating = games.rating ? parseFloat(games.rating).toFixed(1) : '-';
+
+            const playerCardHTML = `
+                <div class="player-card">
+                    <div class="player-image">
+                        <img src="${player.photo}" alt="${player.name}" loading="lazy" onerror="this.parentElement.style.display='none'">
+                    </div>
+                    <div class="player-info">
+                        <h3 class="player-name">${player.name || 'غير معروف'}</h3>
+                        <div class="player-team">
+                            <img src="${stats.team.logo}" alt="${stats.team.name}" class="team-logo-small" onerror="this.style.display='none'">
+                            ${stats.team.name || 'غير معروف'}
+                        </div>
+                        <div class="player-details">
+                            <span><strong>العمر:</strong> ${player.age || '-'}</span>
+                            <span><strong>الجنسية:</strong> ${player.nationality || '-'}</span>
+                            <span><strong>المركز:</strong> ${games.position || '-'}</span>
+                            <span><strong>الطول:</strong> ${player.height || '-'}</span>
+                            <span><strong>الوزن:</strong> ${player.weight || '-'}</span>
+                        </div>
+                        <div class="player-card-stats">
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-value">${games.appearences || 0}</span>
+                                    <span class="stat-label">مباريات</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">${goals.total || 0}</span>
+                                    <span class="stat-label">أهداف</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">${goals.assists || 0}</span>
+                                    <span class="stat-label">صناعة</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">${rating}</span>
+                                    <span class="stat-label">تقييم</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            playersGrid.insertAdjacentHTML('beforeend', playerCardHTML);
+        });
+    }
+
+    const initialSelected = customSelect.querySelector('.custom-option.selected');
+    if (initialSelected) {
+        fetchPlayers(initialSelected.dataset.value);
+    }
+}

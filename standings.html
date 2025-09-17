@@ -8,121 +8,6 @@
     <title>ترتيب الفرق - Football 3D Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Custom Select Dropdown Styles */
-        .standings-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        .standings-controls label {
-            margin-left: 15px;
-            font-size: 1.1rem;
-        }
-        .custom-select-wrapper {
-            position: relative;
-            display: inline-block;
-            user-select: none;
-            width: 280px;
-        }
-        .custom-select {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-        .custom-select__trigger {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 16px;
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--light);
-            background-color: var(--dark-blue);
-            border: 1px solid var(--primary-color);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.1);
-        }
-        .custom-select__trigger:hover {
-            border-color: #00aaff; /* Brighter primary color on hover */
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
-        }
-        .arrow {
-            transition: transform 0.3s ease;
-            color: var(--primary-color);
-        }
-        .custom-select.open .arrow {
-            transform: rotate(180deg);
-        }
-        .custom-options {
-            position: absolute;
-            top: calc(100% + 5px);
-            left: 0;
-            right: 0;
-            border: 1px solid var(--primary-color);
-            border-radius: 8px;
-            background-color: #1a2c4a;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            z-index: 10;
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            overflow: hidden;
-        }
-        .custom-select.open .custom-options {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: all;
-            transform: translateY(0);
-        }
-        .custom-option {
-            display: block;
-            padding: 12px 16px;
-            color: var(--light);
-            cursor: pointer;
-            transition: background-color 0.2s, color 0.2s;
-        }
-        .custom-option:hover {
-            background-color: var(--primary-color);
-            color: var(--dark-blue);
-        }
-        .custom-option.selected {
-            background-color: #004a7c; /* A darker shade for selected */
-            font-weight: 600;
-        }
-
-        /* 3D Table Effect Styles */
-        .table-container {
-            perspective: 1000px; /* Add perspective to the container */
-        }
-        .standings-table {
-            transform-style: preserve-3d; /* Allow 3D transforms on children */
-            transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        .standings-table tbody tr {
-            transition: all 0.3s ease-out;
-            transform-origin: center;
-        }
-        .standings-table tbody tr:hover {
-            transform: scale(1.02) translateZ(15px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            background: rgba(40, 58, 85, 0.8); /* Slightly lighter background on hover */
-            border-color: var(--primary);
-        }
-        /* Style the rank number */
-        .standings-table td:first-child {
-            font-weight: 700;
-            color: var(--light);
-            font-size: 1.1rem;
-        }
-    </style>
 </head>
 <body>
     <!-- الرأس -->
@@ -138,13 +23,13 @@
                 
                 <nav>
                     <ul>
-                        <li><a href="blackbox-output-code-RTX7MLD937.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-                        <li><a href="teams.html"><i class="fas fa-shield-alt"></i> الفرق</a></li>
-                        <li><a href="players.html"><i class="fas fa-star"></i> اللاعبين</a></li>
-                        <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i> الترتيب</a></li>
-                        <li><a href="stats.html"><i class="fas fa-chart-line"></i> الإحصائيات</a></li>
-                        <li><a href="news.html"><i class="far fa-newspaper"></i> الأخبار</a></li>
-                        <li><a href="contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+                        <li><a href="index.html"><i class="fas fa-home"></i><span data-i18n="navHome"> الرئيسية</span></a></li>
+                        <li><a href="teams.html"><i class="fas fa-shield-alt"></i><span data-i18n="navTeams"> الفرق</span></a></li>
+                        <li><a href="players.html"><i class="fas fa-star"></i><span data-i18n="navPlayers"> اللاعبين</span></a></li>
+                        <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i><span data-i18n="navStandings"> الترتيب</span></a></li>
+                        <li><a href="stats.html"><i class="fas fa-chart-line"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
+                        <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                        <li><a href="contact.html"><i class="fas fa-envelope"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
                     </ul>
                 </nav>
             </div>
@@ -168,6 +53,8 @@
                             <span class="custom-option" data-value="78">الدوري الألماني</span>
                             <span class="custom-option" data-value="61">الدوري الفرنسي</span>
                             <span class="custom-option" data-value="307">دوري روشن السعودي</span>
+                            <span class="custom-option" data-value="2">دوري أبطال أوروبا</span>
+                            <span class="custom-option" data-value="233">الدوري المصري الممتاز</span>
                         </div>
                     </div>
                 </div>
@@ -199,8 +86,73 @@
     <!-- التذييل -->
     <footer>
         <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">
+                        <i class="fas fa-futbol"></i>
+                        <span>Football 3D Hub</span>
+                    </div>
+                    <p class="footer-description">
+                        منصة متكاملة لعشاق كرة القدم تجمع بين التحليل الرياضي الدقيق والتجربة البصرية ثلاثية الأبعاد الغامرة.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title" data-i18n="quickLinks">روابط سريعة</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html"><i class="fas fa-angle-left"></i><span data-i18n="aboutUs"> عن الموقع</span></a></li>
+                        <li><a href="features.html"><i class="fas fa-angle-left"></i><span data-i18n="features"> المميزات</span></a></li>
+                        <li><a href="teams.html"><i class="fas fa-angle-left"></i><span data-i18n="navTeams"> الفرق</span></a></li>
+                        <li><a href="news.html"><i class="fas fa-angle-left"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                        <li><a href="stats.html"><i class="fas fa-angle-left"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
+                        <li><a href="contact.html"><i class="fas fa-angle-left"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
+                        <li><a href="sitemap.html"><i class="fas fa-angle-left"></i> خريطة الموقع</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">اتصل بنا</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:football3dhub@gmail.com"><i class="fas fa-envelope"></i> football3dhub@gmail.com</a></li>
+                        <li><a href="tel:+201279082485"><i class="fas fa-phone"></i> +20 127 908 2485</a></li>
+                        <li><a href="contact.html"><i class="fas fa-map-marker-alt"></i> مصر</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-extra-content">
+                <div class="footer-keywords">
+                    <h3 class="footer-title">كلمات مفتاحية</h3>
+                    <ul class="keywords-list">
+                        <li>نتائج مباشرة</li>
+                        <li>أخبار كرة القدم</li>
+                        <li>الدوري الإنجليزي</li>
+                        <li>الدوري الإسباني</li>
+                        <li>دوري أبطال أوروبا</li>
+                        <li>ترتيب الفرق</li>
+                        <li>إحصائيات اللاعبين</li>
+                        <li>سوق الانتقالات</li>
+                        <li>مباريات اليوم</li>
+                        <li>أهداف المباريات</li>
+                        <li>محمد صلاح</li>
+                        <li>ليونيل ميسي</li>
+                        <li>كريستيانو رونالdo</li>
+                    </ul>
+                </div>
+                <div class="footer-language">
+                    <h3 class="footer-title">اللغة</h3>
+                    <div id="language-switcher"></div>
+                </div>
+            </div>
+
             <div class="copyright">
-                © 2023 Football 3D Hub. جميع الحقوق محفوظة.
+                © 2024 Football 3D Hub. جميع الحقوق محفوظة.
             </div>
         </div>
     </footer>
