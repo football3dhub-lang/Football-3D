@@ -1,57 +1,133 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!--  
+  ملاحظات هامة:
+  1. تم استبدال "https://www.yourwebsite.com" بالنطاق الفعلي لموقعك: "https://football3.netlify.app".
+  2. تاريخ <lastmod> يجب أن يعكس تاريخ آخر تعديل لكل صفحة. تم وضع تاريخ اليوم كمثال.
+  3. <changefreq> هو تلميح لمحركات البحث وليس أمرًا، ولكنه يساعدها على فهم طبيعة محتوى الصفحة.
+ -->
 <url>
-  <loc>https://www.yourwebsite.com/blackbox-output-code-RTX7MLD937.html</loc>
-  <lastmod>2023-10-27T00:00:00+00:00</lastmod>
-  <priority>1.00</priority>
+<loc>https://football3.netlify.app/index.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>1.00</priority>
 </url>
 <url>
-  <loc>https://www.yourwebsite.com/features.html</loc>
-  <lastmod>2023-10-27T00:00:00+00:00</lastmod>
-  <priority>0.80</priority>
+<loc>https://football3.netlify.app/features.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.80</priority>
 </url>
 <url>
-  <loc>https://www.yourwebsite.com/players.html</loc>
-  <lastmod>2023-10-27T00:00:00+00:00</lastmod>
-  <priority>0.80</priority>
+<loc>https://football3.netlify.app/teams.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.80</priority>
 </url>
 <url>
-  <loc>https://www.yourwebsite.com/news.html</loc>
-  <lastmod>2023-10-27T00:00:00+00:00</lastmod>
-  <priority>0.80</priority>
+<loc>https://football3.netlify.app/players.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.80</priority>
 </url>
 <url>
-  <loc>https://www.yourwebsite.com/contact.html</loc>
-  <lastmod>2023-10-27T00:00:00+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-
-</urlset>
-<url>
-  <loc>https://www.yourwebsite.com/stats.html</loc>
-  <lastmod>2023-10-27T00:00:00+00:00</lastmod>
-  <priority>0.80</priority>
+<loc>https://football3.netlify.app/standings.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.80</priority>
 </url>
 <url>
-  <loc>https://www.yourwebsite.com/teams.html</loc>
-  <lastmod>2023-10-27T00:00:00+00:00</lastmod>
-  <priority>0.80</priority>
+<loc>https://football3.netlify.app/stats.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.80</priority>
 </url>
 <url>
-  <loc>https://www.yourwebsite.com/standings.html</loc>
-  <lastmod>2023-10-27T00:00:00+00:00</lastmod>
-  <priority>0.80</priority>
+<loc>https://football3.netlify.app/news.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.70</priority>
 </url>
 <url>
-  <loc>https://www.yourwebsite.com/about.html</loc>
-  <lastmod>2023-10-27T00:00:00+00:00</lastmod>
-  <priority>0.50</priority>
+<loc>https://football3.netlify.app/contact.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.50</priority>
 </url>
-
-</urlset>
+<url>
+<loc>https://football3.netlify.app/about.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.50</priority>
+</url>
+<url>
+<loc>https://football3.netlify.app/privacy-policy.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.30</priority>
+</url>
+<url>
+<loc>https://football3.netlify.app/terms-and-conditions.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.30</priority>
+</url>
+<url>
+<loc>https://football3.netlify.app/sitemap.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.30</priority>
+</url>
+<url>
+<loc>https://football3.netlify.app/team-details.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.70</priority>
+</url>
+<url>
+<loc>https://football3.netlify.app/match-details.html</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.70</priority>
+</url>
+<!--  صفحات المقالات الإخبارية (محتوى ديناميكي)  -->
+<url>
+<loc>https://football3.netlify.app/news-article.html?id=1</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.60</priority>
+</url>
+<url>
+<loc>https://football3.netlify.app/news-article.html?id=2</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.60</priority>
+</url>
+<url>
+<loc>https://football3.netlify.app/news-article.html?id=3</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.60</priority>
+</url>
+<url>
+<loc>https://football3.netlify.app/news-article.html?id=4</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.60</priority>
+</url>
+<url>
+<loc>https://football3.netlify.app/news-article.html?id=5</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.60</priority>
+</url>
+<url>
+<loc>https://football3.netlify.app/news-article.html?id=6</loc>
+<lastmod>2024-07-25T12:00:00+00:00</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.60</priority>
+</url>
+<!--  
+  ملاحظة: الصفحات التي يتم إنشاؤها ديناميكيًا بالكامل من واجهة برمجة التطبيقات (API) مثل تفاصيل كل فريق أو كل مباراة،
+  تتطلب عادةً نصًا برمجيًا (script) لإنشاء خريطة موقع شاملة تلقائيًا.
+ -->
 </urlset>

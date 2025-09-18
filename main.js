@@ -1288,46 +1288,40 @@ function initializeContactForm() {
 
     if (!form || !status) return;
 
-    async function handleSubmit(event) {
+    function handleSubmit(event) {
         event.preventDefault();
-        
-        // التحقق مما إذا كان رابط النموذج لا يزال هو الرابط المؤقت
-        if (form.action.includes('YOUR_UNIQUE_ID')) {
-            status.textContent = 'النموذج غير مُفعّل. يرجى اتباع التعليمات في الكود لتفعيله.';
+
+        // استخراج بيانات النموذج
+        const formData = new FormData(form);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const subject = formData.get('subject') || 'رسالة من موقع Football 3D Hub'; // موضوع افتراضي
+        const message = formData.get('message');
+
+        // التحقق من أن حقل الرسالة ليس فارغًا
+        if (!message || !name || !email) {
+            status.textContent = 'يرجى ملء جميع الحقول المطلوبة.';
             status.style.color = 'var(--secondary)';
             return;
         }
 
-        const data = new FormData(event.target);
-        status.textContent = 'جاري إرسال الرسالة...';
-        status.style.color = 'var(--gray)';
+        // البريد الإلكتروني الذي ستستقبل عليه الرسائل
+        const recipientEmail = 'football3dhub@gmail.com';
 
-        try {
-            const response = await fetch(event.target.action, {
-                method: form.method,
-                body: data,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
+        // تجهيز محتوى البريد الإلكتروني
+        const mailtoSubject = `رسالة من ${name}: ${subject}`;
+        const mailtoBody = `لقد تلقيت رسالة جديدة من موقع Football 3D Hub.\n\nالاسم: ${name}\nالبريد الإلكتروني: ${email}\n\nالرسالة:\n${message}`;
 
-            if (response.ok) {
-                status.textContent = 'تم إرسال رسالتك بنجاح. شكراً لك!';
-                status.style.color = 'var(--accent)';
-                form.reset();
-            } else {
-                const responseData = await response.json();
-                if (Object.hasOwn(responseData, 'errors')) {
-                    status.textContent = responseData["errors"].map(error => error["message"]).join(", ");
-                } else {
-                    status.textContent = 'عفواً، حدث خطأ ما أثناء إرسال الرسالة.';
-                }
-                status.style.color = 'var(--secondary)';
-            }
-        } catch (error) {
-            status.textContent = 'عفواً، حدث خطأ ما. يرجى المحاولة مرة أخرى.';
-            status.style.color = 'var(--secondary)';
-        }
+        // إنشاء رابط mailto
+        const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(mailtoSubject)}&body=${encodeURIComponent(mailtoBody)}`;
+
+        // فتح برنامج البريد الإلكتروني الافتراضي لدى المستخدم
+        window.location.href = mailtoLink;
+
+        // إعطاء رسالة للمستخدم لتوضيح ما حدث
+        status.textContent = 'تم فتح برنامج البريد الإلكتروني لديك. يرجى إكمال الإرسال من هناك.';
+        status.style.color = 'var(--accent)';
+        form.reset();
     }
 
     form.addEventListener("submit", handleSubmit);
