@@ -1,10 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!--  
-  ملاحظات هامة:
-  1. تم استبدال "https://www.yourwebsite.com" بالنطاق الفعلي لموقعك: "https://football3.netlify.app".
-  2. تاريخ <lastmod> يجب أن يعكس تاريخ آخر تعديل لكل صفحة. تم وضع تاريخ اليوم كمثال.
-  3. <changefreq> هو تلميح لمحركات البحث وليس أمرًا، ولكنه يساعدها على فهم طبيعة محتوى الصفحة.
- -->
 <url>
 <loc>https://football3.netlify.app/index.html</loc>
 <lastmod>2024-07-25T12:00:00+00:00</lastmod>
@@ -89,7 +84,6 @@
 <changefreq>weekly</changefreq>
 <priority>0.70</priority>
 </url>
-<!--  صفحات المقالات الإخبارية (محتوى ديناميكي)  -->
 <url>
 <loc>https://football3.netlify.app/news-article.html?id=1</loc>
 <lastmod>2024-07-25T12:00:00+00:00</lastmod>
@@ -126,8 +120,4 @@
 <changefreq>yearly</changefreq>
 <priority>0.60</priority>
 </url>
-<!--  
-  ملاحظة: الصفحات التي يتم إنشاؤها ديناميكيًا بالكامل من واجهة برمجة التطبيقات (API) مثل تفاصيل كل فريق أو كل مباراة،
-  تتطلب عادةً نصًا برمجيًا (script) لإنشاء خريطة موقع شاملة تلقائيًا.
- -->
 </urlset>
