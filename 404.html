@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصفحة غير موجودة - Football 3D Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .error-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 60vh;
+            padding: 40px 20px;
+        }
+        .error-code {
+            font-size: 10rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+        .error-message-h2 {
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 10px;
+        }
+        .error-description {
+            color: var(--gray);
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <!-- الرأس -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <div class="logo-text">Football 3D Hub</div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-home"></i><span data-i18n="navHome"> الرئيسية</span></a></li>
+                        <li><a href="teams.html"><i class="fas fa-shield-alt"></i><span data-i18n="navTeams"> الفرق</span></a></li>
+                        <li><a href="players.html"><i class="fas fa-star"></i><span data-i18n="navPlayers"> اللاعبين</span></a></li>
+                        <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i><span data-i18n="navStandings"> الترتيب</span></a></li>
+                        <li><a href="stats.html"><i class="fas fa-chart-line"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
+                        <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                        <li><a href="contact.html"><i class="fas fa-envelope"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
+                        <li class="nav-search">
+                            <form action="search.html" method="GET" class="header-search-form">
+                                <input type="search" name="q" placeholder="ابحث في الموقع..." required>
+                                <button type="submit"><i class="fas fa-search"></i></button>
+                            </form>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- محتوى الخطأ -->
+    <section class="error-page">
+        <div class="error-code">404</div>
+        <h2 class="error-message-h2">عفواً، الصفحة غير موجودة</h2>
+        <p class="error-description">
+            يبدو أن الرابط الذي تحاول الوصول إليه غير صحيح أو تم حذفه. يمكنك العودة إلى الصفحة الرئيسية.
+        </p>
+        <a href="index.html" class="btn btn-primary">
+            <i class="fas fa-home"></i> العودة إلى الرئيسية
+        </a>
+    </section>
+
+    <!-- التذييل -->
+    <footer>
+        <!-- التذييل هنا (يمكن نسخه من أي صفحة أخرى) -->
+    </footer>
+
+    <script src="main.js" defer></script>
+</body>
+</html>

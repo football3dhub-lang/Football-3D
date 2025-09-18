@@ -211,6 +211,23 @@ const newsData = [
     }
 ];
 
+// --- New Global Leagues Data ---
+const leagues = [
+    { id: 39, name: 'الدوري الإنجليزي الممتاز', logo: 'https://media.api-sports.io/football/leagues/39.png' },
+    { id: 140, name: 'الدوري الإسباني', logo: 'https://media.api-sports.io/football/leagues/140.png' },
+    { id: 135, name: 'الدوري الإيطالي', logo: 'https://media.api-sports.io/football/leagues/135.png' },
+    { id: 78, name: 'الدوري الألماني', logo: 'https://media.api-sports.io/football/leagues/78.png' },
+    { id: 61, name: 'الدوري الفرنسي', logo: 'https://media.api-sports.io/football/leagues/61.png' },
+    { id: 307, name: 'دوري روشن السعودي', logo: 'https://media.api-sports.io/football/leagues/307.png' },
+    { id: 233, name: 'الدوري المصري الممتاز', logo: 'https://media.api-sports.io/football/leagues/233.png' },
+    { id: 2, name: 'دوري أبطال أوروبا', logo: 'https://media.api-sports.io/football/leagues/2.png' },
+    { id: 3, name: 'الدوري الأوروبي', logo: 'https://media.api-sports.io/football/leagues/3.png' },
+    { id: 88, name: 'الدوري الهولندي', logo: 'https://media.api-sports.io/football/leagues/88.png' },
+    { id: 94, name: 'الدوري البرتغالي', logo: 'https://media.api-sports.io/football/leagues/94.png' },
+    { id: 71, name: 'الدوري البرازيلي', logo: 'https://media.api-sports.io/football/leagues/71.png' },
+    { id: 253, name: 'الدوري الأمريكي', logo: 'https://media.api-sports.io/football/leagues/253.png' }
+];
+
 // --- Global Messages ---
 const API_ERROR_MESSAGE = 'عفواً، حدث خطأ في جلب البيانات. قد يكون سبب ذلك انتهاء صلاحية مفتاح الـ API أو تجاوز الحد اليومي للطلبات. يرجى مراجعة لوحة التحكم الخاصة بـ API-Football.';
 const NO_DATA_MESSAGE = (season) => `لا توجد بيانات لهذا الدوري في موسم ${season}/${season + 1} حالياً. قد تبدأ البيانات بالظهور مع انطلاق الموسم.`;
@@ -267,27 +284,6 @@ function initializeCookieNotice() {
     acceptBtn.addEventListener('click', () => {
         localStorage.setItem('cookiesAccepted', 'true');
         cookieNotice.classList.remove('show');
-    });
-}
-
-function initializePlayerSearch() {
-    const searchInput = document.getElementById('player-search');
-    if (!searchInput) return; // Only run on pages with a search bar
-
-    searchInput.addEventListener('keyup', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        // Select cards within the dynamic grid
-        const playerCards = document.querySelectorAll('#players-grid-dynamic .player-card'); 
-
-        playerCards.forEach(card => {
-            const playerName = card.querySelector('.player-name')?.textContent.toLowerCase() || '';
-            
-            if (playerName.includes(searchTerm)) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
     });
 }
 
@@ -397,43 +393,67 @@ function initializeLiveMatches() {
     fetchLiveMatches();
 }
 
-function initializeStandings() {
-    const standingsContainer = document.getElementById('standings');
-    if (!standingsContainer) return;
+function initializeLeagueSelector(wrapper, onSelectCallback) {
+    if (!wrapper) return;
 
-    // --- Custom Select Logic ---
-    const customSelectWrapper = document.querySelector('.custom-select-wrapper');
-    if (!customSelectWrapper) return;
+    const defaultLeague = leagues[0];
 
-    const customSelect = customSelectWrapper.querySelector('.custom-select');
-    const trigger = customSelect.querySelector('.custom-select__trigger');
-    const options = customSelect.querySelectorAll('.custom-option');
+    // Build the selector HTML
+    wrapper.innerHTML = `
+        <div class="league-select-trigger">
+            <img src="${defaultLeague.logo}" alt="${defaultLeague.name}" onerror="this.style.display='none'">
+            <span>${defaultLeague.name}</span>
+            <div class="arrow"><i class="fas fa-chevron-down"></i></div>
+        </div>
+        <div class="league-select-options">
+            <div class="league-search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" class="league-search-input" placeholder="ابحث عن دوري...">
+            </div>
+            <div class="league-options-list">
+                ${leagues.map(league => `
+                    <div class="league-option ${league.id === defaultLeague.id ? 'selected' : ''}" data-value="${league.id}" data-name="${league.name}" data-logo="${league.logo}">
+                        <img src="${league.logo}" alt="${league.name}" onerror="this.style.display='none'">
+                        <span>${league.name}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
 
-    trigger.addEventListener('click', () => {
-        customSelect.classList.toggle('open');
-    });
+    // Add event listeners
+    const trigger = wrapper.querySelector('.league-select-trigger');
+    const optionsContainer = wrapper.querySelector('.league-select-options');
+    const searchInput = wrapper.querySelector('.league-search-input');
+    const options = wrapper.querySelectorAll('.league-option');
+
+    trigger.addEventListener('click', () => wrapper.classList.toggle('open'));
 
     window.addEventListener('click', (e) => {
-        if (!customSelect.contains(e.target)) {
-            customSelect.classList.remove('open');
-        }
+        if (!wrapper.contains(e.target)) wrapper.classList.remove('open');
     });
 
     options.forEach(option => {
         option.addEventListener('click', function() {
-            if (!this.classList.contains('selected')) {
-                const previouslySelected = customSelect.querySelector('.custom-option.selected');
-                if (previouslySelected) {
-                    previouslySelected.classList.remove('selected');
-                }
-                this.classList.add('selected');
-                trigger.querySelector('span').textContent = this.textContent;
-                fetchStandings(this.dataset.value);
-            }
-            customSelect.classList.remove('open');
+            wrapper.querySelector('.league-option.selected')?.classList.remove('selected');
+            this.classList.add('selected');
+            trigger.innerHTML = `<img src="${this.dataset.logo}" alt="${this.dataset.name}" onerror="this.style.display='none'"> <span>${this.dataset.name}</span> <div class="arrow"><i class="fas fa-chevron-down"></i></div>`;
+            wrapper.classList.remove('open');
+            onSelectCallback(this.dataset.value);
         });
     });
-    // --- End Custom Select Logic ---
+
+    searchInput.addEventListener('keyup', function() {
+        const filter = this.value.toLowerCase();
+        options.forEach(opt => {
+            opt.style.display = opt.dataset.name.toLowerCase().includes(filter) ? '' : 'none';
+        });
+    });
+}
+
+function initializeStandings() {
+    const standingsContainer = document.getElementById('standings');
+    if (!standingsContainer) return;
 
     const standingsBody = document.getElementById('standings-body');
     const leagueNameTitle = document.getElementById('standings-league-name');
@@ -443,9 +463,9 @@ function initializeStandings() {
         if (!standingsBody || !leagueNameTitle) return;
 
         // تحديث العنوان وعرض حالة التحميل فوراً
-        const selectedOption = customSelect.querySelector(`.custom-option[data-value="${leagueId}"]`);
-        if (selectedOption) {
-            leagueNameTitle.textContent = `جدول ترتيب: ${selectedOption.textContent} - موسم ${SEASON}/${SEASON + 1}`;
+        const selectedLeague = leagues.find(l => l.id == leagueId);
+        if (selectedLeague) {
+            leagueNameTitle.textContent = `جدول ترتيب: ${selectedLeague.name} - موسم ${SEASON}/${SEASON + 1}`;
         }
         standingsBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 40px 0;">جاري تحميل البيانات... <i class="fas fa-spinner fa-spin"></i></td></tr>`;
 
@@ -491,78 +511,33 @@ function initializeStandings() {
         });
     }
 
-    // جلب بيانات الدوري المحدد افتراضياً عند تحميل الصفحة
-    const initialSelected = customSelect.querySelector('.custom-option.selected');
-    if (initialSelected) {
-        fetchStandings(initialSelected.dataset.value);
-    }
+    initializeLeagueSelector(document.querySelector('#standings .league-select-wrapper'), fetchStandings);
+    fetchStandings(leagues[0].id); // Fetch for the default league on page load
 }
 
 // دالة جديدة لجلب أفضل اللاعبين حسب الأهداف
 async function fetchTopPlayersByGoals(leagueId, count) {
-    let allPlayers = [];
-    let currentPage = 1;
-    // نحتاج لجلب صفحات إضافية لضمان وجود عدد كافٍ من اللاعبين بعد الفلترة
-    const maxPagesToFetch = Math.ceil(count / 20) + 2; 
-    let hasMorePages = true;
-
-    while (currentPage <= maxPagesToFetch && hasMorePages) {
-        const API_URL = `https://${API_HOST}/players?league=${leagueId}&season=${SEASON}&page=${currentPage}`;
-        try {
-            const data = await fetchData(API_URL);
-            if (data.response && data.response.length > 0) {
-                allPlayers.push(...data.response);
-                if (data.paging.current >= data.paging.total) {
-                    hasMorePages = false; // وصلنا للصفحة الأخيرة
-                } else {
-                    currentPage++;
-                }
-            } else {
-                hasMorePages = false; // لا يوجد المزيد من اللاعبين
-            }
-        } catch (error) {
-            console.error(`Could not fetch players for page ${currentPage}:`, error);
-            hasMorePages = false; // إيقاف المحاولة عند حدوث خطأ
+    // استخدام نقطة النهاية المخصصة للهدافين لزيادة الكفاءة والدقة
+    const API_URL = `https://${API_HOST}/players/topscorers?league=${leagueId}&season=${SEASON}`;
+    try {
+        const data = await fetchData(API_URL);
+        if (data.response && data.response.length > 0) {
+            // The API returns players sorted by goals. We just slice to the desired count.
+            return data.response.slice(0, count);
+        } else {
+            // Return an empty array if the API returns no players for this league.
+            return [];
         }
+    } catch (error) {
+        console.error(`Could not fetch top scorers for league ${leagueId}:`, error);
+        // Return an empty array on error to prevent Promise.all from failing.
+        return [];
     }
-
-    // فلترة اللاعبين الذين لديهم إحصائيات أهداف، ثم ترتيبهم تنازلياً
-    const sortedPlayers = allPlayers
-        .filter(p => p.statistics && p.statistics.length > 0 && p.statistics[0].goals && p.statistics[0].goals.total !== null)
-        .sort((a, b) => (b.statistics[0].goals.total || 0) - (a.statistics[0].goals.total || 0));
-
-    return sortedPlayers.slice(0, count); // إرجاع العدد المطلوب من اللاعبين
 }
 
 function initializeTopScorers() {
     const statsSection = document.getElementById('player-stats-section');
     if (!statsSection) return; // تأكد من أننا في صفحة الإحصائيات فقط
-    // --- Custom Select Logic ---
-    const customSelectWrapper = statsSection.querySelector('.custom-select-wrapper');
-    if (!customSelectWrapper) return;
-
-    const customSelect = customSelectWrapper.querySelector('.custom-select');
-    const trigger = customSelect.querySelector('.custom-select__trigger');
-    const options = customSelect.querySelectorAll('.custom-option');
-
-    trigger.addEventListener('click', () => customSelect.classList.toggle('open'));
-    window.addEventListener('click', (e) => {
-        if (!customSelect.contains(e.target)) customSelect.classList.remove('open');
-    });
-
-    options.forEach(option => {
-        option.addEventListener('click', function() {
-            if (!this.classList.contains('selected')) {
-                const previouslySelected = customSelect.querySelector('.custom-option.selected');
-                if (previouslySelected) previouslySelected.classList.remove('selected');
-                this.classList.add('selected');
-                trigger.querySelector('span').textContent = this.textContent;
-                fetchTopScorers(this.dataset.value);
-            }
-            customSelect.classList.remove('open');
-        });
-    });
-    // --- End Custom Select Logic ---
 
     const statsBody = document.getElementById('stats-body');
     const leagueNameTitle = document.getElementById('stats-league-name');
@@ -570,9 +545,9 @@ function initializeTopScorers() {
     async function fetchTopScorers(leagueId) {
         if (!statsBody || !leagueNameTitle) return;
 
-        const selectedOption = customSelect.querySelector(`.custom-option[data-value="${leagueId}"]`);
-        if (selectedOption) {
-            leagueNameTitle.textContent = `قائمة هدافي: ${selectedOption.textContent} - موسم ${SEASON}/${SEASON + 1}`;
+        const selectedLeague = leagues.find(l => l.id == leagueId);
+        if (selectedLeague) {
+            leagueNameTitle.textContent = `قائمة هدافي: ${selectedLeague.name} - موسم ${SEASON}/${SEASON + 1}`;
         }
         statsBody.innerHTML = `<tr><td colspan="11" style="text-align: center; padding: 40px 0;">جاري تحميل البيانات... <i class="fas fa-spinner fa-spin"></i></td></tr>`;
 
@@ -638,43 +613,13 @@ function initializeTopScorers() {
         });
     }
 
-    // Fetch data for the initially selected league on page load
-    const initialSelected = customSelect.querySelector('.custom-option.selected');
-    if (initialSelected) {
-        fetchTopScorers(initialSelected.dataset.value);
-    }
+    initializeLeagueSelector(document.querySelector('#player-stats-section .league-select-wrapper'), fetchTopScorers);
+    fetchTopScorers(leagues[0].id); // Fetch for the default league on page load
 }
 
 function initializeTeamsPage() {
     const teamsSection = document.getElementById('teams-section');
     if (!teamsSection) return;
-
-    // --- Custom Select Logic ---
-    const customSelectWrapper = teamsSection.querySelector('.custom-select-wrapper');
-    if (!customSelectWrapper) return;
-
-    const customSelect = customSelectWrapper.querySelector('.custom-select');
-    const trigger = customSelect.querySelector('.custom-select__trigger');
-    const options = customSelect.querySelectorAll('.custom-option');
-
-    trigger.addEventListener('click', () => customSelect.classList.toggle('open'));
-    window.addEventListener('click', (e) => {
-        if (!customSelect.contains(e.target)) customSelect.classList.remove('open');
-    });
-
-    options.forEach(option => {
-        option.addEventListener('click', function() {
-            if (!this.classList.contains('selected')) {
-                const previouslySelected = customSelect.querySelector('.custom-option.selected');
-                if (previouslySelected) previouslySelected.classList.remove('selected');
-                this.classList.add('selected');
-                trigger.querySelector('span').textContent = this.textContent;
-                fetchTeams(this.dataset.value);
-            }
-            customSelect.classList.remove('open');
-        });
-    });
-    // --- End Custom Select Logic ---
 
     const teamsGrid = document.getElementById('teams-grid');
 
@@ -722,11 +667,8 @@ function initializeTeamsPage() {
         });
     }
 
-    // Fetch data for the initially selected league on page load
-    const initialSelected = customSelect.querySelector('.custom-option.selected');
-    if (initialSelected) {
-        fetchTeams(initialSelected.dataset.value);
-    }
+    initializeLeagueSelector(document.querySelector('#teams-section .league-select-wrapper'), fetchTeams);
+    fetchTeams(leagues[0].id); // Fetch for the default league on page load
 }
 
 // دالة لتهيئة قسم الأخبار
@@ -952,17 +894,31 @@ function initializeFeaturedPlayers() {
 
     grid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; padding: 40px 0;">جاري تحميل اللاعبين المميزين... <i class="fas fa-spinner fa-spin"></i></p>';
 
-    // جلب أفضل الهدافين من الدوري الإنجليزي لعرضهم كلاعبين مميزين
-    const LEAGUE_ID_FOR_FEATURED = 39; // Premier League
-
     async function fetchAndDisplay() {
         try {
-            // استخدام الدالة الجديدة لجلب أفضل 3 لاعبين
-            const topPlayers = await fetchTopPlayersByGoals(LEAGUE_ID_FOR_FEATURED, 3);
-            if (topPlayers && topPlayers.length > 0) {
-                displayFeaturedPlayers(topPlayers); // عرض أفضل 3 لاعبين بناءً على طلبك
+            const topLeagueIds = [39, 140, 135, 78, 61]; // Premier League, La Liga, Serie A, Bundesliga, Ligue 1
+            const playersPerLeague = 8; // Fetch more to get a good pool
+
+            const promises = topLeagueIds.map(id => fetchTopPlayersByGoals(id, playersPerLeague));
+            const results = await Promise.all(promises);
+
+            // Flatten the array of arrays and remove duplicates by player ID
+            const allPlayers = results.flat();
+            const uniquePlayers = Array.from(new Map(allPlayers.map(p => [p.player.id, p])).values());
+
+            // Sort all unique players by goals
+            const sortedPlayers = uniquePlayers.sort((a, b) => {
+                const goalsA = a.statistics[0]?.goals?.total || 0;
+                const goalsB = b.statistics[0]?.goals?.total || 0;
+                return goalsB - goalsA;
+            });
+
+            // Get the top 24 players
+            const topGlobalPlayers = sortedPlayers.slice(0, 24);
+
+            if (topGlobalPlayers.length > 0) {
+                renderFeaturedPlayers(topGlobalPlayers);
             } else {
-                console.error("API Error:", 'No featured players found');
                 grid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">لا يمكن تحميل اللاعبين المميزين حالياً.</p>`;
             }
         } catch (error) {
@@ -971,7 +927,7 @@ function initializeFeaturedPlayers() {
         }
     }
 
-    function displayFeaturedPlayers(players) {
+    function renderFeaturedPlayers(players) {
         grid.innerHTML = '';
         players.forEach(playerData => {
             if (!playerData.statistics || playerData.statistics.length === 0) return;
@@ -983,7 +939,7 @@ function initializeFeaturedPlayers() {
             const rating = games.rating ? parseFloat(games.rating).toFixed(1) : '-';
 
             const playerCardHTML = `
-                <a href="players.html" class="player-card-link">
+                <a href="player-details.html?id=${player.id}" class="player-card-link">
                     <div class="player-card">
                         <div class="player-image">
                             <img src="${player.photo}" alt="${player.name}" loading="lazy" onerror="this.parentElement.style.display='none'">
@@ -994,7 +950,6 @@ function initializeFeaturedPlayers() {
                                 <img src="${stats.team.logo}" alt="${stats.team.name}" class="team-logo-small" onerror="this.style.display='none'">
                                 ${stats.team.name || 'غير معروف'}
                             </div>
-                            <p style="color: var(--gray); margin-bottom: 15px; font-size: 0.9rem;">${games.position || 'غير محدد'} - ${player.age || '-'} سنة</p>
                             <div class="player-card-stats">
                                 <div class="stats-grid">
                                     <div class="stat-item">
@@ -1022,7 +977,7 @@ function initializeFeaturedPlayers() {
         });
     }
 
-    fetchAndDisplay();
+    fetchAndDisplay(); // استدعاء الدالة لبدء عملية جلب وعرض اللاعبين
 }
 
 // دالة لتهيئة صفحة تفاصيل الخبر
@@ -1127,6 +1082,87 @@ function initializeMatchDetails() {
     }
 
     fetchMatchDetails();
+}
+
+// دالة لتهيئة صفحة تفاصيل اللاعب
+async function initializePlayerDetails() {
+    const container = document.getElementById('player-details-container');
+    if (!container) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const playerId = urlParams.get('id');
+
+    if (!playerId) {
+        container.innerHTML = '<p class="error-message">لم يتم تحديد اللاعب.</p>';
+        return;
+    }
+
+    container.innerHTML = '<p style="text-align: center; padding: 50px;">جاري تحميل بيانات اللاعب... <i class="fas fa-spinner fa-spin"></i></p>';
+
+    try {
+        // Fetch player data for the current season
+        const API_URL = `https://${API_HOST}/players?id=${playerId}&season=${SEASON}`;
+        const data = await fetchData(API_URL);
+
+        if (data.response && data.response.length > 0) {
+            displayPlayerDetails(data.response[0]);
+        } else {
+            throw new Error('لم يتم العثور على بيانات اللاعب.');
+        }
+    } catch (error) {
+        console.error("Could not fetch player details:", error);
+        container.innerHTML = `<p class="error-message">${error.message}</p>`;
+    }
+}
+
+function displayPlayerDetails(playerData) {
+    const container = document.getElementById('player-details-container');
+    const player = playerData.player;
+    const stats = playerData.statistics[0] || {}; // Use first stats object, or empty if none
+    
+    document.title = `${player.name || 'تفاصيل اللاعب'} - Football 3D Hub`;
+
+    const games = stats.games || {};
+    const goals = stats.goals || {};
+    const passes = stats.passes || {};
+    const tackles = stats.tackles || {};
+    const duels = stats.duels || {};
+    const dribbles = stats.dribbles || {};
+    const penalty = stats.penalty || {};
+    const rating = games.rating ? parseFloat(games.rating).toFixed(2) : '-';
+
+    const detailsHTML = `
+        <div class="player-details-header">
+            <div class="player-details-photo">
+                <img src="${player.photo}" alt="${player.name}" onerror="this.style.display='none'">
+            </div>
+            <div class="player-details-info">
+                <h1>${player.firstname || ''} ${player.lastname || ''}</h1>
+                <div class="player-details-team">
+                    <img src="${stats.team?.logo}" alt="${stats.team?.name}" onerror="this.style.display='none'">
+                    <span>${stats.team?.name || 'غير معروف'}</span>
+                </div>
+                <div class="player-quick-info">
+                    <span><strong>العمر:</strong> ${player.age || '-'}</span>
+                    <span><strong>الجنسية:</strong> ${player.nationality || '-'}</span>
+                    <span><strong>المركز:</strong> ${games.position || '-'}</span>
+                    <span><strong>الطول:</strong> ${player.height || '-'}</span>
+                    <span><strong>الوزن:</strong> ${player.weight || '-'}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="player-details-body">
+            <h3>إحصائيات موسم ${SEASON}/${SEASON + 1}</h3>
+            <div class="player-stats-grid">
+                <div class="stat-category"><h4><i class="fas fa-futbol"></i> الهجوم</h4><div class="stat-item"><span>المباريات</span> <span>${games.appearences || 0}</span></div><div class="stat-item"><span>الأهداف</span> <span>${goals.total || 0}</span></div><div class="stat-item"><span>صناعة الأهداف</span> <span>${goals.assists || 0}</span></div><div class="stat-item"><span>التسديدات (على المرمى)</span> <span>${stats.shots?.total || 0} (${stats.shots?.on || 0})</span></div><div class="stat-item"><span>ركلات الجزاء (مسجلة)</span> <span>${penalty.taken || 0} (${penalty.scored || 0})</span></div></div>
+                <div class="stat-category"><h4><i class="fas fa-exchange-alt"></i> التمرير</h4><div class="stat-item"><span>إجمالي التمريرات</span> <span>${passes.total || 0}</span></div><div class="stat-item"><span>التمريرات المفتاحية</span> <span>${passes.key || 0}</span></div><div class="stat-item"><span>دقة التمرير</span> <span>${passes.accuracy || '-'}%</span></div></div>
+                <div class="stat-category"><h4><i class="fas fa-shield-alt"></i> الدفاع</h4><div class="stat-item"><span>التدخلات الناجحة</span> <span>${tackles.total || 0}</span></div><div class="stat-item"><span>اعتراضات</span> <span>${tackles.interceptions || 0}</span></div><div class="stat-item"><span>الالتحامات (فوز)</span> <span>${duels.total || 0} (${duels.won || 0})</span></div></div>
+                <div class="stat-category"><h4><i class="fas fa-star-half-alt"></i> عام</h4><div class="stat-item"><span>دقائق اللعب</span> <span>${games.minutes || 0}</span></div><div class="stat-item"><span>التقييم العام</span> <span class="points">${rating}</span></div><div class="stat-item"><span>المراوغات الناجحة</span> <span>${dribbles.success || 0}</span></div></div>
+            </div>
+        </div>
+    `;
+    container.innerHTML = detailsHTML;
 }
 
 // دالة لتهيئة صفحة تفاصيل الفريق
@@ -1327,12 +1363,100 @@ function initializeContactForm() {
     form.addEventListener("submit", handleSubmit);
 }
 
+function initializeHeaderSearch() {
+    const forms = document.querySelectorAll('.header-search-form');
+    forms.forEach(form => {
+        form.addEventListener('submit', (e) => {
+            const input = form.querySelector('input[name="q"]');
+            if (!input || !input.value.trim()) {
+                e.preventDefault(); // Prevent submitting an empty search
+                input?.focus();
+            }
+        });
+    });
+}
+
+function initializeSearchPage() {
+    const searchPage = document.getElementById('search-results-page');
+    if (!searchPage) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('q');
+
+    const titleEl = document.getElementById('search-title');
+    const resultsContainer = document.getElementById('search-results-container');
+
+    if (!query) {
+        titleEl.textContent = 'الرجاء إدخال مصطلح للبحث';
+        resultsContainer.innerHTML = '';
+        return;
+    }
+
+    document.title = `نتائج البحث عن "${query}" - Football 3D Hub`;
+    titleEl.textContent = `نتائج البحث عن: "${query}"`;
+    resultsContainer.innerHTML = '<p style="text-align: center; padding: 50px;">جاري البحث... <i class="fas fa-spinner fa-spin"></i></p>';
+
+    performSearch(query);
+}
+
+async function performSearch(query) {
+    const resultsContainer = document.getElementById('search-results-container');
+    
+    try {
+        const [teams, players, news] = await Promise.all([
+            fetchData(`https://${API_HOST}/teams?search=${query}`),
+            fetchData(`https://${API_HOST}/players?search=${query}&season=${SEASON}`),
+            searchNews(query) // This will be a local search
+        ]);
+
+        let resultsHTML = '';
+        let resultsFound = false;
+
+        // Display Teams
+        if (teams.response && teams.response.length > 0) {
+            resultsFound = true;
+            resultsHTML += `<div class="search-results-section"><h3><i class="fas fa-shield-alt"></i> الفرق (${teams.response.length})</h3><div class="teams-grid">${teams.response.map(teamData => { const team = teamData.team; return `<a href="team-details.html?id=${team.id}" class="team-card-link"><div class="team-card"><div class="team-logo"><img src="${team.logo}" alt="${team.name}" loading="lazy" onerror="this.style.display='none'"></div><h3 class="team-name">${team.name}</h3><p class="team-country">${team.country}</p></div></a>`; }).join('')}</div></div>`;
+        }
+
+        // Display Players
+        if (players.response && players.response.length > 0) {
+            resultsFound = true;
+            resultsHTML += `<div class="search-results-section"><h3><i class="fas fa-star"></i> اللاعبون (${players.response.length})</h3><div class="players-grid">${players.response.map(playerData => { const player = playerData.player; const stats = playerData.statistics[0] || {}; return `<a href="player-details.html?id=${player.id}" class="player-card-link"><div class="player-card"><div class="player-image"><img src="${player.photo}" alt="${player.name}" loading="lazy" onerror="this.parentElement.style.display='none'"></div><div class="player-info"><h3 class="player-name">${player.name}</h3><div class="player-team"><img src="${stats.team?.logo}" alt="${stats.team?.name}" class="team-logo-small" onerror="this.style.display='none'">${stats.team?.name || 'N/A'}</div></div></div></a>`; }).join('')}</div></div>`;
+        }
+
+        // Display News
+        if (news.length > 0) {
+            resultsFound = true;
+            resultsHTML += `<div class="search-results-section"><h3><i class="far fa-newspaper"></i> الأخبار (${news.length})</h3><div class="news-grid">${news.map(article => { return `<div class="news-card"><a href="${article.link}" class="news-card-link"><div class="news-image"><img src="${article.image}" alt="${article.title}" loading="lazy" onerror="this.parentElement.style.display='none'"></div><div class="news-content"><span class="news-category">${article.category}</span><h3 class="news-title">${article.title}</h3><div class="news-meta"><span><i class="far fa-calendar-alt"></i> ${article.date}</span></div></div></a></div>`; }).join('')}</div></div>`;
+        }
+
+        if (!resultsFound) {
+            resultsContainer.innerHTML = `<div class="no-results-message">لم يتم العثور على نتائج للبحث عن "${query}".</div>`;
+        } else {
+            resultsContainer.innerHTML = resultsHTML;
+        }
+
+    } catch (error) {
+        console.error("Search failed:", error);
+        resultsContainer.innerHTML = `<p class="error-message">${error.message}</p>`;
+    }
+}
+
+function searchNews(query) {
+    const lowerCaseQuery = query.toLowerCase();
+    // newsData is a global constant
+    return newsData.filter(article => 
+        article.title.toLowerCase().includes(lowerCaseQuery) || 
+        article.content.toLowerCase().includes(lowerCaseQuery) ||
+        article.category.toLowerCase().includes(lowerCaseQuery)
+    );
+}
+
 // دالة رئيسية لتشغيل كل شيء عند تحميل الصفحة
 document.addEventListener("DOMContentLoaded", function() {
     initThreeJS();
     initializeActiveNavLinks();
-    initializeCookieNotice();
-    initializePlayerSearch();
+    initializeCookieNotice();    
     initializeFeaturedPlayers();
     initializeLiveMatches();
     initializeHomepageStats();
@@ -1344,76 +1468,84 @@ document.addEventListener("DOMContentLoaded", function() {
     initializeMatchDetails();
     initializeTeamDetails();
     initializePlayersPage();
+    initializePlayerDetails();
     initializeLanguageSwitcher();
     initializeContactForm();
+    initializeHeaderSearch();
+    initializeSearchPage();
 });
 
 function initializePlayersPage() {
     const playersSection = document.getElementById('players-page');
     if (!playersSection) return;
 
-    const customSelectWrapper = playersSection.querySelector('.custom-select-wrapper');
-    if (!customSelectWrapper) return;
+    // --- Filter and Search Logic ---
+    const searchInput = document.getElementById('player-search');
+    const filterContainer = playersSection.querySelector('.filter-container');
 
-    const customSelect = customSelectWrapper.querySelector('.custom-select');
-    const trigger = customSelect.querySelector('.custom-select__trigger');
-    const options = customSelect.querySelectorAll('.custom-option');
+    function applyFilters() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const activePositionFilter = filterContainer?.querySelector('.active')?.dataset.position || 'All';
+        
+        const playerCards = document.querySelectorAll('#players-grid-dynamic .player-card-link');
+        
+        playerCards.forEach(card => {
+            const playerName = card.querySelector('.player-name')?.textContent.toLowerCase() || '';
+            const playerPosition = card.dataset.position;
 
-    trigger.addEventListener('click', () => customSelect.classList.toggle('open'));
-    window.addEventListener('click', (e) => {
-        if (!customSelect.contains(e.target)) customSelect.classList.remove('open');
-    });
+            const nameMatch = playerName.includes(searchTerm);
+            const positionMatch = (activePositionFilter === 'All' || playerPosition === activePositionFilter);
 
-    options.forEach(option => {
-        option.addEventListener('click', function() {
-            if (!this.classList.contains('selected')) {
-                const previouslySelected = customSelect.querySelector('.custom-option.selected');
-                if (previouslySelected) previouslySelected.classList.remove('selected');
-                this.classList.add('selected');
-                trigger.querySelector('span').textContent = this.textContent;
-                fetchPlayers(this.dataset.value);
+            if (nameMatch && positionMatch) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
             }
-            customSelect.classList.remove('open');
         });
-    });
+    }
+
+    searchInput.addEventListener('keyup', applyFilters);
+
+    if (filterContainer) {
+        filterContainer.querySelectorAll('.segmented-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                filterContainer.querySelector('.segmented-btn.active')?.classList.remove('active');
+                this.classList.add('active');
+                applyFilters();
+            });
+        });
+    }
+    // --- End Filter and Search Logic ---
+
+    const leagueSubtitle = document.getElementById('players-league-subtitle');
 
     const playersGrid = document.getElementById('players-grid-dynamic');
 
     async function fetchPlayers(leagueId) {
         if (!playersGrid) return;
+
+        const selectedLeague = leagues.find(l => l.id == leagueId);
+        if (selectedLeague && leagueSubtitle) {
+            const leagueName = selectedLeague.name;
+            document.title = `لاعبو ${leagueName} - Football 3D Hub`;
+            leagueSubtitle.textContent = `استعرض لاعبي ${leagueName} لموسم ${SEASON}/${SEASON + 1}`;
+        }
+
         playersGrid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; padding: 40px 0;">جاري تحميل اللاعبين... <i class="fas fa-spinner fa-spin"></i></p>';
+        
         try {
             let allPlayers = [];
             let currentPage = 1;
             const maxPages = 5; // جلب 5 صفحات للحصول على ~100 لاعب
             let hasMorePages = true;
 
-            while (currentPage <= maxPages && hasMorePages) {
-                const API_URL = `https://${API_HOST}/players?league=${leagueId}&season=${SEASON}&page=${currentPage}`;
-                try {
-                    const data = await fetchData(API_URL);
-                    if (data.response && data.response.length > 0) {
-                        allPlayers.push(...data.response);
-                        if (data.paging.current >= data.paging.total) {
-                            hasMorePages = false; // وصلنا للصفحة الأخيرة
-                        } else {
-                            currentPage++;
-                        }
-                    } else {
-                        hasMorePages = false; // لا يوجد المزيد من اللاعبين
-                    }
-                } catch (error) {
-                    console.error(`Could not fetch players for page ${currentPage}:`, error);
-                    if (currentPage === 1) throw error;
-                    hasMorePages = false; // إيقاف المحاولة عند حدوث خطأ
-                }
-            }
+            while (currentPage <= maxPages && hasMorePages) { const API_URL = `https://${API_HOST}/players?league=${leagueId}&season=${SEASON}&page=${currentPage}`; try { const data = await fetchData(API_URL); if (data.response && data.response.length > 0) { allPlayers.push(...data.response); if (data.paging.current >= data.paging.total) { hasMorePages = false; } else { currentPage++; } } else { hasMorePages = false; } } catch (error) { console.error(`Could not fetch players for page ${currentPage}:`, error); if (currentPage === 1) throw error; hasMorePages = false; } }
 
             if (allPlayers.length > 0) {
                 displayPlayers(allPlayers);
             } else {
-                    playersGrid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">${NO_DATA_MESSAGE(SEASON)}</p>`;
-                }
+                playersGrid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">${NO_DATA_MESSAGE(SEASON)}</p>`;
+            }
         } catch (error) {
             console.error("Could not fetch players:", error);
             playersGrid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">${error.message}</p>`;
@@ -1422,63 +1554,58 @@ function initializePlayersPage() {
 
     function displayPlayers(players) {
         playersGrid.innerHTML = '';
-        players.forEach(playerData => {
-            if (!playerData.statistics || playerData.statistics.length === 0) return;
-
+        players.forEach(playerData => { if (!playerData.statistics || playerData.statistics.length === 0) return;
             const player = playerData.player;
-            const stats = playerData.statistics[0]; // First team in the season
-            const birth = player.birth || {};
+            const stats = playerData.statistics[0];
             const games = stats.games || {};
             const goals = stats.goals || {};
-            const rating = games.rating ? parseFloat(games.rating).toFixed(1) : '-';
 
             const playerCardHTML = `
-                <div class="player-card">
-                    <div class="player-image">
-                        <img src="${player.photo}" alt="${player.name}" loading="lazy" onerror="this.parentElement.style.display='none'">
-                    </div>
-                    <div class="player-info">
-                        <h3 class="player-name">${player.name || 'غير معروف'}</h3>
-                        <div class="player-team">
-                            <img src="${stats.team.logo}" alt="${stats.team.name}" class="team-logo-small" onerror="this.style.display='none'">
-                            ${stats.team.name || 'غير معروف'}
+                <a href="player-details.html?id=${player.id}" class="player-card-link" data-position="${games.position || 'Unknown'}">
+                    <div class="player-card">
+                        <div class="player-image">
+                            <img src="${player.photo}" alt="${player.name}" loading="lazy" onerror="this.parentElement.style.display='none'">
                         </div>
-                        <div class="player-details">
-                            <span><strong>العمر:</strong> ${player.age || '-'}</span>
-                            <span><strong>الجنسية:</strong> ${player.nationality || '-'}</span>
-                            <span><strong>المركز:</strong> ${games.position || '-'}</span>
-                            <span><strong>الطول:</strong> ${player.height || '-'}</span>
-                            <span><strong>الوزن:</strong> ${player.weight || '-'}</span>
-                        </div>
-                        <div class="player-card-stats">
-                            <div class="stats-grid">
-                                <div class="stat-item">
-                                    <span class="stat-value">${games.appearences || 0}</span>
-                                    <span class="stat-label">مباريات</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value">${goals.total || 0}</span>
-                                    <span class="stat-label">أهداف</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value">${goals.assists || 0}</span>
-                                    <span class="stat-label">صناعة</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value">${rating}</span>
-                                    <span class="stat-label">تقييم</span>
+                        <div class="player-info">
+                            <h3 class="player-name">${player.name || 'غير معروف'}</h3>
+                            <div class="player-team">
+                                <img src="${stats.team.logo}" alt="${stats.team.name}" class="team-logo-small" onerror="this.style.display='none'">
+                                ${stats.team.name || 'غير معروف'}
+                            </div>
+                            <div class="player-details">
+                                <span><strong>المركز:</strong> ${games.position || '-'}</span>
+                            </div>
+                            <div class="player-card-stats">
+                                <div class="stats-grid">
+                                    <div class="stat-item">
+                                        <span class="stat-value">${games.appearences || 0}</span>
+                                        <span class="stat-label"><i class="fas fa-tshirt"></i> مباريات</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value">${goals.total || 0}</span>
+                                        <span class="stat-label"><i class="fas fa-futbol"></i> أهداف</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value">${goals.assists || 0}</span>
+                                        <span class="stat-label"><i class="fas fa-hands-helping"></i> صناعة</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             `;
             playersGrid.insertAdjacentHTML('beforeend', playerCardHTML);
         });
+
+        // Reset filters after loading new league
+        searchInput.value = '';
+        if (filterContainer) {
+            filterContainer.querySelector('.segmented-btn.active')?.classList.remove('active');
+            filterContainer.querySelector('.segmented-btn[data-position="All"]')?.classList.add('active');
+        }
     }
 
-    const initialSelected = customSelect.querySelector('.custom-option.selected');
-    if (initialSelected) {
-        fetchPlayers(initialSelected.dataset.value);
-    }
+    initializeLeagueSelector(document.querySelector('#players-page .league-select-wrapper'), fetchPlayers);
+    fetchPlayers(leagues[0].id); // Fetch for the default league on page load
 }

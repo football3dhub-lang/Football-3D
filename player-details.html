@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="تعرف على النجوم المتألقين في عالم كرة القدم. استعرض إحصائيات وتقييمات أفضل اللاعبين مثل ميسي، رونالدو، مبابي، وهالاند.">
-    <meta name="keywords" content="لاعبين, نجوم, كرة قدم, ميسي, رونالدو, مبابي, هالاند, تقييمات, أهداف, تمريرات حاسمة, ملفات اللاعبين">
-    <title>استعراض اللاعبين - Football 3D Hub</title>
+    <meta name="description" content="تفاصيل وإحصائيات اللاعبين في موقع Football 3D Hub.">
+    <title>تفاصيل اللاعب - Football 3D Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -20,7 +19,6 @@
                     </div>
                     <div class="logo-text">Football 3D Hub</div>
                 </div>
-                
                 <nav>
                     <ul>
                         <li><a href="index.html"><i class="fas fa-home"></i><span data-i18n="navHome"> الرئيسية</span></a></li>
@@ -36,38 +34,11 @@
         </div>
     </header>
 
-    <!-- اللاعبون المميزون -->
-    <section class="players" id="players-page">
-        <div class="container">
-            <h2 class="section-title">استعراض اللاعبين</h2>
-            <p class="section-subtitle" id="players-league-subtitle">اختر دوريًا واستعرض لاعبيه، أو ابحث بالاسم والمركز</p>
-
-            <div class="search-container">
-                <i class="fas fa-search"></i>
-                <input type="text" id="player-search" placeholder="ابحث عن لاعب بالاسم...">
-            </div>
-
-            <div class="filter-container">
-                <label>فلترة حسب المركز:</label>
-                <div class="segmented-control">
-                    <button class="segmented-btn active" data-position="All"><i class="fas fa-globe"></i> الكل</button>
-                    <button class="segmented-btn" data-position="Goalkeeper"><i class="fas fa-mitten"></i> حارس</button>
-                    <button class="segmented-btn" data-position="Defender"><i class="fas fa-shield-alt"></i> دفاع</button>
-                    <button class="segmented-btn" data-position="Midfielder"><i class="fas fa-users"></i> وسط</button>
-                    <button class="segmented-btn" data-position="Attacker"><i class="fas fa-bullseye"></i> هجوم</button>
-                </div>
-            </div>
-            
-            <div class="standings-controls">
-                <label>اختر الدوري:</label>
-                <div class="league-select-wrapper">
-                    <!-- The new league selector will be initialized here by JavaScript -->
-                </div>
-            </div>
-
-            <div class="players-grid" id="players-grid-dynamic">
-                <!-- سيتم ملء بطاقات اللاعبين هنا بواسطة JavaScript -->
-            </div>
+    <!-- محتوى تفاصيل اللاعب -->
+    <section class="page-content">
+        <div class="container" id="player-details-container">
+            <!-- سيتم تحميل تفاصيل اللاعب هنا بواسطة JavaScript -->
+            <p style="text-align: center; padding: 50px;">جاري تحميل بيانات اللاعب... <i class="fas fa-spinner fa-spin"></i></p>
         </div>
     </section>
 
@@ -113,43 +84,12 @@
                     </ul>
                 </div>
             </div>
-            
-            <div class="footer-extra-content">
-                <div class="footer-keywords">
-                    <h3 class="footer-title">كلمات مفتاحية</h3>
-                    <ul class="keywords-list">
-                        <li>نتائج مباشرة</li>
-                        <li>أخبار كرة القدم</li>
-                        <li>الدوري الإنجليزي</li>
-                        <li>الدوري الإسباني</li>
-                        <li>دوري أبطال أوروبا</li>
-                        <li>ترتيب الفرق</li>
-                        <li>إحصائيات اللاعبين</li>
-                        <li>سوق الانتقالات</li>
-                        <li>مباريات اليوم</li>
-                        <li>أهداف المباريات</li>
-                        <li>محمد صلاح</li>
-                        <li>ليونيل ميسي</li>
-                        <li>كريستيانو رونالدو</li>
-                    </ul>
-                </div>
-                <div class="footer-language">
-                    <h3 class="footer-title">اللغة</h3>
-                    <div id="language-switcher"></div>
-                </div>
-            </div>
 
             <div class="copyright">
                 © 2024 Football 3D Hub. جميع الحقوق محفوظة.
             </div>
         </div>
     </footer>
-
-    <!-- إشعار ملفات تعريف الارتباط -->
-    <div id="cookie-notice">
-        <p>يستخدم هذا الموقع ملفات تعريف الارتباط لضمان حصولك على أفضل تجربة. <a href="privacy-policy.html">اعرف المزيد</a></p>
-        <button id="cookie-accept-btn">أوافق</button>
-    </div>
 
     <script src="main.js" defer></script>
 </body>
