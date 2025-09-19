@@ -1324,40 +1324,47 @@ function initializeContactForm() {
 
     if (!form || !status) return;
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
+        const formData = new FormData(event.target);
 
-        // استخراج بيانات النموذج
-        const formData = new FormData(form);
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const subject = formData.get('subject') || 'رسالة من موقع Football 3D Hub'; // موضوع افتراضي
-        const message = formData.get('message');
-
-        // التحقق من أن حقل الرسالة ليس فارغًا
-        if (!message || !name || !email) {
-            status.textContent = 'يرجى ملء جميع الحقول المطلوبة.';
+        // التحقق من الحقول قبل الإرسال
+        if (!formData.get('name') || !formData.get('email') || !formData.get('message')) {
+            status.textContent = 'يرجى ملء جميع الحقول الإلزامية.';
             status.style.color = 'var(--secondary)';
             return;
         }
 
-        // البريد الإلكتروني الذي ستستقبل عليه الرسائل
-        const recipientEmail = 'football3dhub@gmail.com';
+        status.textContent = 'جاري إرسال الرسالة...';
+        status.style.color = 'var(--gray)';
 
-        // تجهيز محتوى البريد الإلكتروني
-        const mailtoSubject = `رسالة من ${name}: ${subject}`;
-        const mailtoBody = `لقد تلقيت رسالة جديدة من موقع Football 3D Hub.\n\nالاسم: ${name}\nالبريد الإلكتروني: ${email}\n\nالرسالة:\n${message}`;
+        try {
+            const response = await fetch(event.target.action, {
+                method: form.method,
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
 
-        // إنشاء رابط mailto
-        const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(mailtoSubject)}&body=${encodeURIComponent(mailtoBody)}`;
-
-        // فتح برنامج البريد الإلكتروني الافتراضي لدى المستخدم
-        window.location.href = mailtoLink;
-
-        // إعطاء رسالة للمستخدم لتوضيح ما حدث
-        status.textContent = 'تم فتح برنامج البريد الإلكتروني لديك. يرجى إكمال الإرسال من هناك.';
-        status.style.color = 'var(--accent)';
-        form.reset();
+            if (response.ok) {
+                status.textContent = 'شكراً لك! تم إرسال رسالتك بنجاح.';
+                status.style.color = 'var(--accent)';
+                form.reset();
+            } else {
+                const data = await response.json();
+                if (Object.hasOwn(data, 'errors')) {
+                    status.textContent = data["errors"].map(error => error["message"]).join(", ");
+                } else {
+                    status.textContent = 'عفواً، حدث خطأ أثناء إرسال الرسالة.';
+                }
+                status.style.color = 'var(--secondary)';
+            }
+        } catch (error) {
+            console.error('Contact form submission error:', error);
+            status.textContent = 'عفواً، حدث خطأ في الشبكة. يرجى المحاولة مرة أخرى.';
+            status.style.color = 'var(--secondary)';
+        }
     }
 
     form.addEventListener("submit", handleSubmit);
@@ -1539,7 +1546,30 @@ function initializePlayersPage() {
             const maxPages = 5; // جلب 5 صفحات للحصول على ~100 لاعب
             let hasMorePages = true;
 
-            while (currentPage <= maxPages && hasMorePages) { const API_URL = `https://${API_HOST}/players?league=${leagueId}&season=${SEASON}&page=${currentPage}`; try { const data = await fetchData(API_URL); if (data.response && data.response.length > 0) { allPlayers.push(...data.response); if (data.paging.current >= data.paging.total) { hasMorePages = false; } else { currentPage++; } } else { hasMorePages = false; } } catch (error) { console.error(`Could not fetch players for page ${currentPage}:`, error); if (currentPage === 1) throw error; hasMorePages = false; } }
+            while (currentPage <= maxPages && hasMorePages) {
+                const API_URL = `https://${API_HOST}/players?league=${leagueId}&season=${SEASON}&page=${currentPage}`;
+                try {
+                    const data = await fetchData(API_URL);
+                    if (data.response && data.response.length > 0) {
+                        allPlayers.push(...data.response);
+                        // Check if there are more pages to fetch from the API's paging info
+                        if (data.paging.current >= data.paging.total) {
+                            hasMorePages = false;
+                        } else {
+                            currentPage++;
+                        }
+                    } else {
+                        // No more players returned from the API
+                        hasMorePages = false;
+                    }
+                } catch (error) {
+                    console.error(`Could not fetch players for page ${currentPage}:`, error);
+                    // If the first page fails, throw the error to show the message.
+                    // For subsequent pages, just stop fetching.
+                    if (currentPage === 1) throw error;
+                    hasMorePages = false;
+                }
+            }
 
             if (allPlayers.length > 0) {
                 displayPlayers(allPlayers);
