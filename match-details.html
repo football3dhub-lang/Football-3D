@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="تفاصيل المباراة، التشكيلات، واللاعبين الاحتياط.">
     <title>تفاصيل المباراة - Football 3D Hub</title>
+
+    <!-- Favicon & SEO Meta -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <meta name="theme-color" content="#ffffff">
+    <meta property="og:image" content="https://football3.netlify.app/logo.png">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -27,23 +36,79 @@
                         <li><a href="players.html"><i class="fas fa-star"></i><span data-i18n="navPlayers"> اللاعبين</span></a></li>
                         <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i><span data-i18n="navStandings"> الترتيب</span></a></li>
                         <li><a href="stats.html"><i class="fas fa-chart-line"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
-                        <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                        <li><a href="transfers.html"><i class="fas fa-random"></i><span data-i18n="navTransfers"> الانتقالات</span></a></li>
+                        <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>                        
+                        <li><a href="football-ai.html"><i class="fas fa-robot"></i><span data-i18n="navAI">Football 3D AI</span></a></li>
                         <li><a href="contact.html"><i class="fas fa-envelope"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
                     </ul>
+                    <div class="nav-controls">
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="theme-checkbox" title="تبديل الوضع">
+                                <input type="checkbox" id="theme-checkbox" />
+                                <div class="slider"></div>
+                            </label>
+                        </div>
+                        <!-- World Clock Dropdown -->
+                        <div class="world-clock-dropdown" id="world-clock-dropdown">
+                            <button class="world-clock-trigger" title="التوقيت العالمي">
+                                <i class="fas fa-globe-americas"></i>
+                            </button>
+                            <div class="world-clock-options">
+                                <!-- Clocks will be populated by JS -->
+                            </div>
+                        </div>
+                        <div class="language-switcher-dropdown" id="language-switcher-dropdown">
+                            <button class="lang-switcher-trigger"></button>
+                            <div class="lang-switcher-options"></div>
+                        </div>
+                    </div>
                 </nav>
             </div>
         </div>
-    </header>
-
-    <!-- قسم تفاصيل المباراة -->
-    <section class="features" style="padding: 80px 0;">
+    <main class="match-details-page" id="match-details-page">
         <div class="container">
-            <h2 class="section-title">تفاصيل المباراة</h2>
-            <div id="match-details-container">
-                <!-- سيتم ملء محتوى تفاصيل المباراة هنا بواسطة JavaScript -->
+            <!-- Match Header -->
+            <div id="match-header-placeholder" class="loading-placeholder" style="height: 200px;"></div>
+            <div id="match-header-content" style="display: none;">
+                <!-- سيتم ملء هذا القسم بواسطة JavaScript -->
+            </div>
+
+            <!-- Tabs for Details -->
+            <div class="tabs-container">
+                <div class="tabs">
+                    <button class="tab-link active" data-tab="events"><i class="fas fa-stream"></i> أحداث المباراة</button>
+                    <button class="tab-link" data-tab="stats"><i class="fas fa-chart-pie"></i> الإحصائيات</button>
+                    <button class="tab-link" data-tab="lineups"><i class="fas fa-users"></i> التشكيلات</button>
+                    <button class="tab-link" data-tab="h2h"><i class="fas fa-history"></i> المواجهات</button>
+                </div>
+
+                <div id="events" class="tab-content active">
+                    <div id="events-timeline" class="events-timeline">
+                        <!-- سيتم ملء أحداث المباراة هنا -->
+                    </div>
+                </div>
+
+                <div id="stats" class="tab-content">
+                    <div id="stats-comparison" class="stats-comparison">
+                        <!-- سيتم ملء مقارنة الإحصائيات هنا -->
+                    </div>
+                </div>
+
+                <div id="lineups" class="tab-content">
+                    <div id="lineups-container" class="lineups-container">
+                        <!-- سيتم ملء التشكيلات هنا -->
+                    </div>
+                </div>
+
+                <div id="h2h" class="tab-content">
+                    <div id="h2h-container" class="h2h-section">
+                        <!-- سيتم ملء بيانات المواجهات المباشرة هنا -->
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
+    </main>
+    </header>
 
     <!-- التذييل -->
     <footer>
@@ -57,6 +122,12 @@
                     <p class="footer-description">
                         منصة متكاملة لعشاق كرة القدم تجمع بين التحليل الرياضي الدقيق والتجربة البصرية ثلاثية الأبعاد الغامرة.
                     </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
                 </div>
                 
                 <div>
@@ -81,46 +152,66 @@
                     </ul>
                 </div>
             </div>
-
-            <div class="footer-extra-content">
-                <div class="footer-keywords">
-                    <h3 class="footer-title">كلمات مفتاحية</h3>
-                    <ul class="keywords-list">
-                        <li>نتائج مباشرة</li>
-                        <li>أخبار كرة القدم</li>
-                        <li>الدوري الإنجليزي</li>
-                        <li>الدوري الإسباني</li>
-                        <li>دوري أبطال أوروبا</li>
-                        <li>ترتيب الفرق</li>
-                        <li>إحصائيات اللاعبين</li>
-                        <li>سوق الانتقالات</li>
-                        <li>مباريات اليوم</li>
-                        <li>أهداف المباريات</li>
-                        <li>محمد صلاح</li>
-                        <li>ليونيل ميسي</li>
-                        <li>كريستيانو رونالدو</li>
-                    </ul>
-                </div>
-                <div class="footer-language">
-                    <h3 class="footer-title">اللغة</h3>
-                    <div id="language-switcher"></div>
-                </div>
-            </div>
-
+            
             <div class="footer-legal">
                 <ul class="footer-links">
                     <li><a href="privacy-policy.html">سياسة الخصوصية</a></li>
                     <li><a href="terms-and-conditions.html">الشروط والأحكام</a></li>
                 </ul>
-                <p class="data-source-notice">بيانات المباريات والترتيب مقدمة بواسطة <a href="https://www.api-football.com/" target="_blank" rel="noopener noreferrer">API-Football</a>.</p>
             </div>
-            
-            <div class="copyright" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 30px; margin-top: 30px;">
+
+            <div class="copyright">
                 © 2024 Football 3D Hub. جميع الحقوق محفوظة.
             </div>
         </div>
     </footer>
 
+    <!-- إشعار ملفات تعريف الارتباط -->
+    <div id="cookie-notice">
+        <p>يستخدم هذا الموقع ملفات تعريف الارتباط لضمان حصولك على أفضل تجربة. <a href="privacy-policy.html">اعرف المزيد</a></p>
+        <button id="cookie-accept-btn">أوافق</button>
+    </div>
+
+    <!-- Floating Ad Widget -->
+    <div class="ad-widget" id="ad-widget">
+        <button class="ad-widget-close" id="ad-widget-close" aria-label="إغلاق">&times;</button>
+        <h4><i class="fas fa-bullhorn"></i> أعلن معنا</h4>
+        <p>هل ترغب في الوصول إلى جمهورنا الشغوف بكرة القدم؟ تواصل معنا الآن!</p>
+        <div class="contact-links">
+            <a href="https://wa.me/201279082485" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="mailto:football3dhub@gmail.com">
+                <i class="fas fa-envelope"></i> البريد الإلكتروني
+            </a>
+        </div>
+    </div>
+
+    <button id="back-to-top" title="الرجوع للأعلى"><i class="fas fa-arrow-up"></i></button>
+
     <script src="main.js" defer></script>
+    <script>
+        // هذا الكود مخصص لتهيئة الصفحة عند تحميلها
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof initializeMatchDetailsPage === 'function') {
+                initializeMatchDetailsPage();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-link');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab).classList.add('active');
+                });
+            });
+        });
+    </script>
 </body>
 </html>

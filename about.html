@@ -4,8 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="تعرف على قصة ورؤية Football 3D Hub، المنصة التي تهدف إلى تغيير طريقة متابعتك لعالم كرة القدم من خلال تجربة تفاعلية ثلاثية الأبعاد.">
-    <meta name="keywords" content="عن الموقع, رؤيتنا, كرة قدم, تحليل, 3D">
+    <meta name="keywords" content="عن الموقع, رؤيتنا, كرة قدم, تحليل, 3D, football 3d hub, football3">
     <title>عن الموقع - Football 3D Hub</title>
+
+    <!-- Ultimate Favicon & SEO Meta -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <meta name="theme-color" content="#ffffff">
+    <meta property="og:image" content="https://football3.netlify.app/logo.png">
+
+    <meta property="og:title" content="عن الموقع - Football 3D Hub">
+    <meta property="og:description" content="تعرف على قصة ورؤية Football 3D Hub، المنصة التي تهدف إلى تغيير طريقة متابعتك لعالم كرة القدم.">
+    <meta property="og:url" content="https://football3.netlify.app">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Structured Data for Google -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Football 3D Hub",
+    "url": "https://football3.netlify.app/about.html",
+    "logo": "https://football3.netlify.app/logo.png"
+    }
+    </script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -27,13 +53,39 @@
                         <li><a href="players.html"><i class="fas fa-star"></i><span data-i18n="navPlayers"> اللاعبين</span></a></li>
                         <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i><span data-i18n="navStandings"> الترتيب</span></a></li>
                         <li><a href="stats.html"><i class="fas fa-chart-line"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
-                        <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                        <li><a href="transfers.html"><i class="fas fa-random"></i><span data-i18n="navTransfers"> الانتقالات</span></a></li>
+                        <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>                        
+                        <li><a href="football-ai.html"><i class="fas fa-robot"></i><span data-i18n="navAI">Football 3D AI</span></a></li>
                         <li><a href="contact.html"><i class="fas fa-envelope"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
                     </ul>
+                    <div class="nav-controls">
+                        <!-- New Theme Toggle Switch -->
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="theme-checkbox" title="تبديل الوضع">
+                                <input type="checkbox" id="theme-checkbox" />
+                                <div class="slider"></div>
+                            </label>
+                        </div>
+                        <!-- World Clock Dropdown -->
+                        <div class="world-clock-dropdown" id="world-clock-dropdown">
+                            <button class="world-clock-trigger" title="التوقيت العالمي">
+                                <i class="fas fa-globe-americas"></i>
+                            </button>
+                            <div class="world-clock-options">
+                                <!-- Clocks will be populated by JS -->
+                            </div>
+                        </div>
+                        <!-- New Language Switcher Dropdown -->
+                        <div class="language-switcher-dropdown" id="language-switcher-dropdown">
+                            <button class="lang-switcher-trigger">
+                                <!-- المحتوى سيوضع بواسطة JavaScript -->
+                            </button>
+                            <div class="lang-switcher-options"></div>
+                        </div>
+                    </div>
                 </nav>
             </div>
-        </div>
-    </header>
+        </div>    </header>
 
     <!-- محتوى الصفحة -->
     <section class="features">
@@ -52,7 +104,7 @@
                 <p>
                     من خلال استخدام تقنيات مثل WebGL و Three.js، نقدم لك:
                     <ul>
-                        <li>عرض تكتيكي للمباريات على ملاعب افتراضية.</li>
+                        <li>عرض تكتيكي للمباريات على ملاعب افتراضية (قيد التطوير).</li>
                         <li>بطاقات لاعبين وفرق بتصميمات تفاعلية.</li>
                         <li>بيانات وإحصائيات حية يتم تحديثها باستمرار.</li>
                         <li>محتوى تحليلي غني يساعدك على رؤية ما وراء الأرقام.</li>
@@ -127,10 +179,7 @@
                         <li>كريستيانو رونالدو</li>
                     </ul>
                 </div>
-                <div class="footer-language">
-                    <h3 class="footer-title">اللغة</h3>
-                    <div id="language-switcher"></div>
-                </div>
+                <!-- Language switcher removed from here -->
             </div>
 
             <div class="footer-legal">
@@ -147,6 +196,28 @@
         </div>
     </footer>
 
-    <script src="main.js" defer></script>
+    <div id="cookie-notice">
+        <p>يستخدم هذا الموقع ملفات تعريف الارتباط لضمان حصولك على أفضل تجربة. <a href="privacy-policy.html">اعرف المزيد</a></p>
+        <button id="cookie-accept-btn">أوافق</button>
+    </div>
+
+    <!-- Floating Ad Widget -->
+    <div class="ad-widget" id="ad-widget">
+        <button class="ad-widget-close" id="ad-widget-close" aria-label="إغلاق">&times;</button>
+        <h4><i class="fas fa-bullhorn"></i> أعلن معنا</h4>
+        <p>هل ترغب في الوصول إلى جمهورنا الشغوف بكرة القدم؟ تواصل معنا الآن!</p>
+        <div class="contact-links">
+            <a href="https://wa.me/201279082485" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="mailto:football3dhub@gmail.com">
+                <i class="fas fa-envelope"></i> البريد الإلكتروني
+            </a>
+        </div>
+    </div>
+
+    <button id="back-to-top" title="الرجوع للأعلى"><i class="fas fa-arrow-up"></i></button>
+
+    <script src="main.js?v=1.0.0" defer></script>
 </body>
 </html>

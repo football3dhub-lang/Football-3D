@@ -6,6 +6,30 @@
     <meta name="description" content="تابع ترتيب الفرق في الدوريات الكبرى حول العالم. جدول محدث للنقاط، الفوز، التعادل، والخسارة.">
     <meta name="keywords" content="ترتيب, جدول, دوري, نقاط, الدوري الإنجليزي, الدوري الإسباني">
     <title>ترتيب الفرق - Football 3D Hub</title>
+
+    <!-- Favicon & SEO Meta -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <meta name="theme-color" content="#ffffff">
+    <meta property="og:image" content="https://football3.netlify.app/logo.png">
+    <meta property="og:title" content="ترتيب الفرق - Football 3D Hub">
+    <meta property="og:description" content="تابع ترتيب الفرق في الدوريات الكبرى حول العالم. جدول محدث للنقاط، الفوز، التعادل، والخسارة.">
+    <meta property="og:url" content="https://football3.netlify.app/standings.html">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Structured Data for Google -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "ترتيب الفرق - Football 3D Hub",
+    "url": "https://football3.netlify.app/standings.html"
+    }
+    </script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -28,13 +52,39 @@
                         <li><a href="players.html"><i class="fas fa-star"></i><span data-i18n="navPlayers"> اللاعبين</span></a></li>
                         <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i><span data-i18n="navStandings"> الترتيب</span></a></li>
                         <li><a href="stats.html"><i class="fas fa-chart-line"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
+                        <li><a href="transfers.html"><i class="fas fa-random"></i><span data-i18n="navTransfers"> الانتقالات</span></a></li>
                         <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                        <li><a href="ask-the-expert.html"><i class="fas fa-comments"></i><span data-i18n="navAskExpert"> اسأل الخبير</span></a></li>
                         <li><a href="contact.html"><i class="fas fa-envelope"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
                     </ul>
+                    <div class="nav-controls">
+                        <!-- New Theme Toggle Switch -->
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="theme-checkbox" title="تبديل الوضع">
+                                <input type="checkbox" id="theme-checkbox" />
+                                <div class="slider"></div>
+                            </label>
+                        </div>
+                        <!-- World Clock Dropdown -->
+                        <div class="world-clock-dropdown" id="world-clock-dropdown">
+                            <button class="world-clock-trigger" title="التوقيت العالمي">
+                                <i class="fas fa-globe-americas"></i>
+                            </button>
+                            <div class="world-clock-options">
+                                <!-- Clocks will be populated by JS -->
+                            </div>
+                        </div>
+                        <!-- New Language Switcher Dropdown -->
+                        <div class="language-switcher-dropdown" id="language-switcher-dropdown">
+                            <button class="lang-switcher-trigger">
+                                <!-- المحتوى سيوضع بواسطة JavaScript -->
+                            </button>
+                            <div class="lang-switcher-options"></div>
+                        </div>
+                    </div>
                 </nav>
             </div>
-        </div>
-    </header>
+        </div>    </header>
 
     <!-- قسم الترتيب -->
     <section class="standings" id="standings">
@@ -45,6 +95,10 @@
                 <label>اختر الدوري:</label>
                 <div class="league-select-wrapper">
                     <!-- The new league selector will be initialized here by JavaScript -->
+                </div>
+                <label>اختر الموسم:</label>
+                <div class="season-select-wrapper">
+                    <!-- The new season selector will be initialized here by JavaScript -->
                 </div>
             </div>
             
@@ -133,10 +187,7 @@
                         <li>كريستيانو رونالdo</li>
                     </ul>
                 </div>
-                <div class="footer-language">
-                    <h3 class="footer-title">اللغة</h3>
-                    <div id="language-switcher"></div>
-                </div>
+                <!-- Language switcher removed from here -->
             </div>
 
             <div class="copyright">
@@ -144,6 +195,27 @@
             </div>
         </div>
     </footer>
+
+    <!-- إشعار ملفات تعريف الارتباط -->
+    <div id="cookie-notice">
+        <p>يستخدم هذا الموقع ملفات تعريف الارتباط لضمان حصولك على أفضل تجربة. <a href="privacy-policy.html">اعرف المزيد</a></p>
+        <button id="cookie-accept-btn">أوافق</button>
+    </div>
+
+    <!-- Floating Ad Widget -->
+    <div class="ad-widget" id="ad-widget">
+        <button class="ad-widget-close" id="ad-widget-close" aria-label="إغلاق">&times;</button>
+        <h4><i class="fas fa-bullhorn"></i> أعلن معنا</h4>
+        <p>هل ترغب في الوصول إلى جمهورنا الشغوف بكرة القدم؟ تواصل معنا الآن!</p>
+        <div class="contact-links">
+            <a href="https://wa.me/201279082485" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="mailto:football3dhub@gmail.com">
+                <i class="fas fa-envelope"></i> البريد الإلكتروني
+            </a>
+        </div>
+    </div>
 
     <script src="main.js" defer></script>
 </body>

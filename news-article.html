@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="تفاصيل الخبر - تابع آخر أخبار كرة القدم على منصة Football 3D Hub.">
+    <meta name="robots" content="noindex"> <!-- To avoid duplicate content issues with source -->
     <title>تفاصيل الخبر - Football 3D Hub</title>
+
+    <!-- ️ Football3 Logo & SEO Meta -->
+    <link rel="icon" type="image/png" href="https://football3.netlify.app/logo.png">
+    <meta property="og:image" content="https://football3.netlify.app/logo.png">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -19,7 +24,6 @@
                     </div>
                     <div class="logo-text">Football 3D Hub</div>
                 </div>
-                
                 <nav>
                     <ul>
                         <li><a href="index.html"><i class="fas fa-home"></i><span data-i18n="navHome"> الرئيسية</span></a></li>
@@ -27,20 +31,36 @@
                         <li><a href="players.html"><i class="fas fa-star"></i><span data-i18n="navPlayers"> اللاعبين</span></a></li>
                         <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i><span data-i18n="navStandings"> الترتيب</span></a></li>
                         <li><a href="stats.html"><i class="fas fa-chart-line"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
+                        <li><a href="transfers.html"><i class="fas fa-random"></i><span data-i18n="navTransfers"> الانتقالات</span></a></li>
                         <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>
                         <li><a href="contact.html"><i class="fas fa-envelope"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
                     </ul>
+                    <div class="nav-controls">
+                        <!-- New Theme Toggle Switch -->
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="theme-checkbox" title="تبديل الوضع">
+                                <input type="checkbox" id="theme-checkbox" />
+                                <div class="slider"></div>
+                            </label>
+                        </div>
+                        <!-- New Language Switcher Dropdown -->
+                        <div class="language-switcher-dropdown" id="language-switcher-dropdown">
+                            <button class="lang-switcher-trigger">
+                                <!-- المحتوى سيوضع بواسطة JavaScript -->
+                            </button>
+                            <div class="lang-switcher-options"></div>
+                        </div>
+                    </div>
                 </nav>
             </div>
         </div>
     </header>
 
-    <!-- قسم تفاصيل الخبر -->
-    <section class="features" style="padding: 80px 0;">
+    <!-- محتوى المقال -->
+    <section class="page-content">
         <div class="container">
-            <div class="article-container" id="article-container">
-                <!-- سيتم ملء محتوى المقال هنا بواسطة JavaScript -->
-                <p style="text-align: center; padding: 50px;">جاري تحميل المقال... <i class="fas fa-spinner fa-spin"></i></p>
+            <div id="article-container">
+                <!-- سيتم تحميل محتوى المقال هنا بواسطة JavaScript -->
             </div>
         </div>
     </section>
@@ -57,12 +77,6 @@
                     <p class="footer-description">
                         منصة متكاملة لعشاق كرة القدم تجمع بين التحليل الرياضي الدقيق والتجربة البصرية ثلاثية الأبعاد الغامرة.
                     </p>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
-                    </div>
                 </div>
                 
                 <div>
@@ -74,6 +88,7 @@
                         <li><a href="news.html"><i class="fas fa-angle-left"></i><span data-i18n="navNews"> الأخبار</span></a></li>
                         <li><a href="stats.html"><i class="fas fa-angle-left"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
                         <li><a href="contact.html"><i class="fas fa-angle-left"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
+                        <li><a href="sitemap.html"><i class="fas fa-angle-left"></i> خريطة الموقع</a></li>
                     </ul>
                 </div>
                 
@@ -87,44 +102,26 @@
                 </div>
             </div>
 
-            <div class="footer-extra-content">
-                <div class="footer-keywords">
-                    <h3 class="footer-title">كلمات مفتاحية</h3>
-                    <ul class="keywords-list">
-                        <li>نتائج مباشرة</li>
-                        <li>أخبار كرة القدم</li>
-                        <li>الدوري الإنجليزي</li>
-                        <li>الدوري الإسباني</li>
-                        <li>دوري أبطال أوروبا</li>
-                        <li>ترتيب الفرق</li>
-                        <li>إحصائيات اللاعبين</li>
-                        <li>سوق الانتقالات</li>
-                        <li>مباريات اليوم</li>
-                        <li>أهداف المباريات</li>
-                        <li>محمد صلاح</li>
-                        <li>ليونيل ميسي</li>
-                        <li>كريستيانو رونالدو</li>
-                    </ul>
-                </div>
-                <div class="footer-language">
-                    <h3 class="footer-title">اللغة</h3>
-                    <div id="language-switcher"></div>
-                </div>
-            </div>
-
-            <div class="footer-legal">
-                <ul class="footer-links">
-                    <li><a href="privacy-policy.html">سياسة الخصوصية</a></li>
-                    <li><a href="terms-and-conditions.html">الشروط والأحكام</a></li>
-                </ul>
-                <p class="data-source-notice">بيانات المباريات والترتيب مقدمة بواسطة <a href="https://www.api-football.com/" target="_blank" rel="noopener noreferrer">API-Football</a>.</p>
-            </div>
-
-            <div class="copyright" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 30px; margin-top: 30px;">
+            <div class="copyright">
                 © 2024 Football 3D Hub. جميع الحقوق محفوظة.
             </div>
         </div>
     </footer>
+
+    <!-- Floating Ad Widget -->
+    <div class="ad-widget" id="ad-widget">
+        <button class="ad-widget-close" id="ad-widget-close" aria-label="إغلاق">&times;</button>
+        <h4><i class="fas fa-bullhorn"></i> أعلن معنا</h4>
+        <p>هل ترغب في الوصول إلى جمهورنا الشغوف بكرة القدم؟ تواصل معنا الآن!</p>
+        <div class="contact-links">
+            <a href="https://wa.me/201279082485" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="mailto:football3dhub@gmail.com">
+                <i class="fas fa-envelope"></i> البريد الإلكتروني
+            </a>
+        </div>
+    </div>
 
     <script src="main.js" defer></script>
 </body>

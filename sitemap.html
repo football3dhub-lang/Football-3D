@@ -3,9 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="خريطة موقع Football 3D Hub. تصفح جميع صفحات الموقع بسهولة.">
-    <meta name="keywords" content="خريطة الموقع, sitemap, روابط, صفحات, football 3d hub">
+    <meta name="description" content="Football3 يقدم نتائج مباشرة، جداول مباريات، وتحليلات فورية لأهم الدوريات حول العالم.">
+    <meta name="keywords" content="كرة القدم, نتائج المباريات, مباريات اليوم, أخبار كرة القدم, football3">
     <title>خريطة الموقع - Football 3D Hub</title>
+
+    <!-- Favicon & SEO Meta -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <meta property="og:image" content="https://football3.netlify.app/logo.png">
+    <meta property="og:title" content="خريطة الموقع - Football 3D Hub">
+    <meta property="og:description" content="أحدث الأخبار، التحليلات، والإحصائيات من عالم كرة القدم. تابع كل جديد عن البطولات واللاعبين على موقع Football3.">
+    <meta property="og:url" content="https://football3.netlify.app/sitemap.html">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Structured Data for Google -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Football 3D Hub",
+    "url": "https://football3.netlify.app/sitemap.html",
+    "logo": "https://football3.netlify.app/logo.png"
+    }
+    </script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -27,32 +51,60 @@
                         <li><a href="players.html"><i class="fas fa-star"></i><span data-i18n="navPlayers"> اللاعبين</span></a></li>
                         <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i><span data-i18n="navStandings"> الترتيب</span></a></li>
                         <li><a href="stats.html"><i class="fas fa-chart-line"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
-                        <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                        <li><a href="transfers.html"><i class="fas fa-random"></i><span data-i18n="navTransfers"> الانتقالات</span></a></li>
+                        <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>                        
+                        <li><a href="football-ai.html"><i class="fas fa-robot"></i><span data-i18n="navAI">Football 3D AI</span></a></li>
                         <li><a href="contact.html"><i class="fas fa-envelope"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
                     </ul>
+                    <div class="nav-controls">
+                        <!-- New Theme Toggle Switch -->
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="theme-checkbox" title="تبديل الوضع">
+                                <input type="checkbox" id="theme-checkbox" />
+                                <div class="slider"></div>
+                            </label>
+                        </div>
+                        <!-- World Clock Dropdown -->
+                        <div class="world-clock-dropdown" id="world-clock-dropdown">
+                            <button class="world-clock-trigger" title="التوقيت العالمي">
+                                <i class="fas fa-globe-americas"></i>
+                            </button>
+                            <div class="world-clock-options">
+                                <!-- Clocks will be populated by JS -->
+                            </div>
+                        </div>
+                        <!-- New Language Switcher Dropdown -->
+                        <div class="language-switcher-dropdown" id="language-switcher-dropdown">
+                            <button class="lang-switcher-trigger">
+                                <!-- المحتوى سيوضع بواسطة JavaScript -->
+                            </button>
+                            <div class="lang-switcher-options"></div>
+                        </div>
+                    </div>
                 </nav>
             </div>
-        </div>
-    </header>
+        </div>    </header>
 
     <!-- محتوى الصفحة -->
     <section class="features">
         <div class="container">
             <h2 class="section-title">خريطة الموقع</h2>
-            <p class="section-subtitle">تصفح جميع صفحات موقع Football 3D Hub من هنا.</p>
+            <p class="section-subtitle">تصفح جميع صفحات موقع Football3 من هنا.</p>
             <div style="max-width: 800px; margin: auto; text-align: right; line-height: 1.8; color: var(--gray);">
                 <div class="sitemap-section">
                     <h3 style="color: var(--light); margin-top: 20px; margin-bottom: 15px; border-bottom: 1px solid var(--primary); padding-bottom: 10px;">الصفحات الرئيسية</h3>
                     <ul class="footer-links" style="list-style: none; padding: 0;">
-                        <li><a href="index.html"><i class="fas fa-angle-left"></i> الرئيسية</a></li>
-                        <li><a href="about.html"><i class="fas fa-angle-left"></i> عن الموقع</a></li>
-                        <li><a href="features.html"><i class="fas fa-angle-left"></i> المميزات</a></li>
-                        <li><a href="teams.html"><i class="fas fa-angle-left"></i> الفرق</a></li>
-                        <li><a href="players.html"><i class="fas fa-angle-left"></i> اللاعبين</a></li>
-                        <li><a href="standings.html"><i class="fas fa-angle-left"></i> الترتيب</a></li>
-                        <li><a href="stats.html"><i class="fas fa-angle-left"></i> الإحصائيات (الهدافين)</a></li>
-                        <li><a href="news.html"><i class="fas fa-angle-left"></i> الأخبار</a></li>
-                        <li><a href="contact.html"><i class="fas fa-angle-left"></i> اتصل بنا</a></li>
+                        <li><a href="index.html"><i class="fas fa-angle-left"></i><span data-i18n="navHome"> الرئيسية</span></a></li>
+                        <li><a href="teams.html"><i class="fas fa-angle-left"></i><span data-i18n="navTeams"> الفرق</span></a></li>
+                        <li><a href="players.html"><i class="fas fa-angle-left"></i><span data-i18n="navPlayers"> اللاعبين</span></a></li>
+                        <li><a href="standings.html"><i class="fas fa-angle-left"></i><span data-i18n="navStandings"> الترتيب</span></a></li>
+                        <li><a href="stats.html"><i class="fas fa-angle-left"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
+                        <li><a href="transfers.html"><i class="fas fa-angle-left"></i><span data-i18n="navTransfers"> الانتقالات</span></a></li>
+                        <li><a href="news.html"><i class="fas fa-angle-left"></i><span data-i18n="navNews"> الأخبار</span></a></li>                        
+                        <li><a href="football-ai.html"><i class="fas fa-angle-left"></i><span data-i18n="navAI">Football 3D AI</span></a></li>
+                        <li><a href="features.html"><i class="fas fa-angle-left"></i><span data-i18n="features"> المميزات</span></a></li>
+                        <li><a href="about.html"><i class="fas fa-angle-left"></i><span data-i18n="aboutUs"> عن الموقع</span></a></li>
+                        <li><a href="contact.html"><i class="fas fa-angle-left"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
                     </ul>
                 </div>
                 <div class="sitemap-section">
@@ -119,12 +171,37 @@
                 </div>
             </div>
 
+            <div class="footer-legal">
+                <ul class="footer-links">
+                    <li><a href="privacy-policy.html">سياسة الخصوصية</a></li>
+                    <li><a href="terms-and-conditions.html">الشروط والأحكام</a></li>
+                </ul>
+            </div>
+
             <div class="copyright">
                 © 2024 Football 3D Hub. جميع الحقوق محفوظة.
             </div>
         </div>
     </footer>
 
-    <script src="main.js" defer></script>
+    <!-- Floating Ad Widget -->
+    <div class="ad-widget" id="ad-widget">
+        <button class="ad-widget-close" id="ad-widget-close" aria-label="إغلاق">&times;</button>
+        <h4><i class="fas fa-bullhorn"></i> أعلن معنا</h4>
+        <p>هل ترغب في الوصول إلى جمهورنا الشغوف بكرة القدم؟ تواصل معنا الآن!</p>
+        <div class="contact-links">
+            <a href="https://wa.me/201279082485" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="mailto:football3dhub@gmail.com">
+                <i class="fas fa-envelope"></i> البريد الإلكتروني
+            </a>
+        </div>
+    </div>
+
+    <button id="back-to-top" title="الرجوع للأعلى"><i class="fas fa-arrow-up"></i></button>
+
+    <script src="main.js?v=1.0.0" defer></script>
+
 </body>
 </html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تحدث مع مساعد كرة القدم الذكي Football 3D AI. احصل على تحليلات فورية، توقعات للمباريات، ومقارنات بين اللاعبين باستخدام الذكاء الاصطناعي.">
+    <meta name="keywords" content="خبير كرة قدم, ذكاء اصطناعي, تحليل مباريات, توقعات, AI football expert, football chat, Football 3D AI">
+    <title>Football 3D AI - مساعدك الذكي</title>
+
+    <!-- Favicon & SEO Meta -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <meta name="theme-color" content="#111827">
+    <meta property="og:image" content="https://football3.netlify.app/logo.png">
+    <meta property="og:title" content="Football 3D AI - مساعدك الذكي">
+    <meta property="og:description" content="تحدث مع مساعد كرة القدم الذكي. احصل على تحليلات فورية، توقعات للمباريات، ومقارنات بين اللاعبين.">
+    <meta property="og:url" content="https://football3.netlify.app/football-ai.html">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Google Fonts: Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Modern Font: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="ai-page-body">
+    <!-- الرأس -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon"><i class="fas fa-futbol"></i></div>
+                    <div class="logo-text">Football 3D Hub</div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-home"></i><span data-i18n="navHome"> الرئيسية</span></a></li>
+                        <li><a href="teams.html"><i class="fas fa-shield-alt"></i><span data-i18n="navTeams"> الفرق</span></a></li>
+                        <li><a href="players.html"><i class="fas fa-star"></i><span data-i18n="navPlayers"> اللاعبين</span></a></li>
+                        <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i><span data-i18n="navStandings"> الترتيب</span></a></li>
+                        <li><a href="stats.html"><i class="fas fa-chart-line"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
+                        <li><a href="transfers.html"><i class="fas fa-random"></i><span data-i18n="navTransfers"> الانتقالات</span></a></li>
+                        <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                        <li><a href="football-ai.html"><i class="fas fa-robot"></i><span data-i18n="navAI">Football 3D AI</span></a></li>
+                        <li><a href="contact.html"><i class="fas fa-envelope"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
+                    </ul>
+                    <div class="nav-controls">
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="theme-checkbox" title="تبديل الوضع"><input type="checkbox" id="theme-checkbox" /><div class="slider"></div></label>
+                        </div>
+                        <div class="world-clock-dropdown" id="world-clock-dropdown">
+                            <button class="world-clock-trigger" title="التوقيت العالمي"><i class="fas fa-globe-americas"></i></button>
+                            <div class="world-clock-options"></div>
+                        </div>
+                        <div class="language-switcher-dropdown" id="language-switcher-dropdown">
+                            <button class="lang-switcher-trigger"></button>
+                            <div class="lang-switcher-options"></div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+<!-- ================================================== -->
+<!-- واجهة الذكاء الاصطناعي -->
+<!-- ================================================== -->
+<main class="ai-page-main" id="football-ai-page">
+    <!-- منطقة عرض الرسائل (الشاشة) -->
+    <div class="chat-messages" id="chat-messages">
+        <!-- الرسائل ستظهر هنا -->
+    </div>
+
+    <!-- منطقة الإدخال (شريط البحث) -->
+    <div class="chat-input-area" id="chat-input-area">
+        <div class="input-wrapper">
+            <button id="new-chat-btn" class="input-icon-btn" title="محادثة جديدة">
+                <i class="fas fa-plus"></i>
+            </button>
+            <textarea id="chat-input" placeholder="اسأل نونو شات..." rows="1"></textarea>
+            <button id="mic-btn" class="input-icon-btn" title="استخدام الميكروفون">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <button id="send-btn" class="input-icon-btn send-btn-modern" title="إرسال">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+        </div>
+        <p class="footer-disclaimer">
+            قد يقدم Football 3D AI معلومات غير دقيقة أحياناً. 
+            <a href="terms-and-conditions.html">الشروط والأحكام</a>
+        </p>
+    </div>
+</main>
+
+    <!-- التذييل -->
+    <footer>
+        <div class="container">
+             <div class="footer-content">
+                 <div>
+                     <div class="footer-logo">
+                         <i class="fas fa-futbol"></i>
+                         <span>Football 3D Hub</span>
+                     </div>
+                     <p class="footer-description">
+                         منصة متكاملة لعشاق كرة القدم تجمع بين التحليل الرياضي الدقيق والتجربة البصرية ثلاثية الأبعاد الغامرة.
+                     </p>
+                     <div class="social-links">
+                         <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                         <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                         <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                         <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                     </div>
+                 </div>
+                
+                 <div>
+                     <h3 class="footer-title" data-i18n="quickLinks">روابط سريعة</h3>
+                     <ul class="footer-links">
+                         <li><a href="about.html"><i class="fas fa-angle-left"></i><span data-i18n="aboutUs"> عن الموقع</span></a></li>
+                         <li><a href="features.html"><i class="fas fa-angle-left"></i><span data-i18n="features"> المميزات</span></a></li>
+                         <li><a href="teams.html"><i class="fas fa-angle-left"></i><span data-i18n="navTeams"> الفرق</span></a></li>
+                         <li><a href="news.html"><i class="fas fa-angle-left"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                         <li><a href="stats.html"><i class="fas fa-angle-left"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
+                         <li><a href="football-ai.html"><i class="fas fa-angle-left"></i><span data-i18n="navAI">Football 3D AI</span></a></li>
+                         <li><a href="contact.html"><i class="fas fa-angle-left"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
+                         <li><a href="sitemap.html"><i class="fas fa-angle-left"></i> خريطة الموقع</a></li>
+                     </ul>
+                 </div>
+                
+                 <div>
+                     <h3 class="footer-title">اتصل بنا</h3>
+                     <ul class="footer-links">
+                         <li><a href="mailto:football3dhub@gmail.com"><i class="fas fa-envelope"></i> football3dhub@gmail.com</a></li>
+                         <li><a href="tel:+201279082485"><i class="fas fa-phone"></i> +20 127 908 2485</a></li>
+                         <li><a href="contact.html"><i class="fas fa-map-marker-alt"></i> مصر</a></li>
+                     </ul>
+                 </div>
+             </div>
+            
+             <div class="footer-extra-content">
+                 <div class="footer-keywords">
+                     <h3 class="footer-title">كلمات مفتاحية</h3>
+                     <ul class="keywords-list">
+                         <li>نتائج مباشرة</li>
+                         <li>أخبار كرة القدم</li>
+                         <li>الدوري الإنجليزي</li>
+                         <li>الدوري الإسباني</li>
+                         <li>دوري أبطال أوروبا</li>
+                         <li>ترتيب الفرق</li>
+                         <li>إحصائيات اللاعبين</li>
+                         <li>سوق الانتقالات</li>
+                     </ul>
+                 </div>
+             </div>
+ 
+             <div class="footer-legal">
+                 <ul class="footer-links">
+                     <li><a href="privacy-policy.html">سياسة الخصوصية</a></li>
+                     <li><a href="terms-and-conditions.html">الشروط والأحكام</a></li>
+                 </ul>
+                 <p class="data-source-notice">بيانات المباريات والترتيب مقدمة بواسطة <a href="https://www.api-football.com/" target="_blank" rel="noopener noreferrer">API-Football</a>.</p>
+             </div>
+ 
+             <div class="copyright">
+                 © 2024 Football 3D Hub. جميع الحقوق محفوظة.
+             </div>
+        </div>
+    </footer>
+
+    <!-- عناصر الصوت -->
+    <audio id="notification-sound" src="sounds/notification.mp3" preload="auto"></audio>
+
+    <!-- إشعار ملفات تعريف الارتباط -->
+    <div id="cookie-notice">
+        <p>يستخدم هذا الموقع ملفات تعريف الارتباط لضمان حصولك على أفضل تجربة. <a href="privacy-policy.html">اعرف المزيد</a></p>
+        <button id="cookie-accept-btn">أوافق</button>
+    </div>
+
+    <!-- Floating Ad Widget -->
+    <div class="ad-widget" id="ad-widget">
+        <button class="ad-widget-close" id="ad-widget-close" aria-label="إغلاق">&times;</button>
+        <h4><i class="fas fa-bullhorn"></i> أعلن معنا</h4>
+        <p>هل ترغب في الوصول إلى جمهورنا الشغوف بكرة القدم؟ تواصل معنا الآن!</p>
+        <div class="contact-links">
+            <a href="https://wa.me/201279082485" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="mailto:football3dhub@gmail.com">
+                <i class="fas fa-envelope"></i> البريد الإلكتروني
+            </a>
+        </div>
+    </div>
+
+    <!-- زر العودة للأعلى -->
+    <button id="back-to-top" title="الرجوع للأعلى"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- Scripts -->
+    <script src="main.js?v=1.0.0" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/14.1.0/markdown-it.min.js" defer></script>
+</body>
+</html>

@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تفاصيل الفريق - Football 3D Hub</title>
+    <meta name="description" content="تابع آخر أخبار سوق الانتقالات، الشائعات، والانتقالات المؤكدة للاعبين والأندية في عالم كرة القدم على Football 3D Hub.">
+    <meta name="keywords" content="سوق الانتقالات, انتقالات اللاعبين, ميركاتو, أخبار الانتقالات, football transfers">
+    <title>سوق الانتقالات - Football 3D Hub</title>
 
     <!-- Favicon & SEO Meta -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -13,7 +15,21 @@
     <link rel="icon" href="favicon.ico" sizes="any">
     <meta name="theme-color" content="#ffffff">
     <meta property="og:image" content="https://football3.netlify.app/logo.png">
+    <meta property="og:title" content="سوق الانتقالات - Football 3D Hub">
+    <meta property="og:description" content="تابع آخر أخبار سوق الانتقالات، الشائعات، والانتقالات المؤكدة للاعبين والأندية.">
+    <meta property="og:url" content="https://football3.netlify.app/transfers.html">
+    <meta name="twitter:card" content="summary_large_image">
     
+    <!-- Structured Data for Google -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "سوق الانتقالات - Football 3D Hub",
+    "url": "https://football3.netlify.app/transfers.html"
+    }
+    </script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -36,49 +52,56 @@
                         <li><a href="players.html"><i class="fas fa-star"></i><span data-i18n="navPlayers"> اللاعبين</span></a></li>
                         <li><a href="standings.html"><i class="fas fa-sort-amount-up"></i><span data-i18n="navStandings"> الترتيب</span></a></li>
                         <li><a href="stats.html"><i class="fas fa-chart-line"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
-                        <li><a href="transfers.html"><i class="fas fa-random"></i><span data-i18n="navTransfers"> الانتقالات</span></a></li>
-                        <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>                        
+                        <li><a href="transfers.html" class="active"><i class="fas fa-random"></i><span data-i18n="navTransfers"> الانتقالات</span></a></li>
+                        <li><a href="news.html"><i class="far fa-newspaper"></i><span data-i18n="navNews"> الأخبار</span></a></li>
                         <li><a href="football-ai.html"><i class="fas fa-robot"></i><span data-i18n="navAI">Football 3D AI</span></a></li>
                         <li><a href="contact.html"><i class="fas fa-envelope"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
                     </ul>
                     <div class="nav-controls">
+                        <!-- New Theme Toggle Switch -->
                         <div class="theme-switch-wrapper">
                             <label class="theme-switch" for="theme-checkbox" title="تبديل الوضع">
                                 <input type="checkbox" id="theme-checkbox" />
                                 <div class="slider"></div>
                             </label>
                         </div>
+                        <!-- World Clock Dropdown -->
                         <div class="world-clock-dropdown" id="world-clock-dropdown">
-                            <button class="world-clock-trigger" title="التوقيت العالمي"><i class="fas fa-globe-americas"></i></button>
-                            <div class="world-clock-options"></div>
+                            <button class="world-clock-trigger" title="التوقيت العالمي">
+                                <i class="fas fa-globe-americas"></i>
+                            </button>
+                            <div class="world-clock-options">
+                                <!-- Clocks will be populated by JS -->
+                            </div>
                         </div>
+                        <!-- New Language Switcher Dropdown -->
                         <div class="language-switcher-dropdown" id="language-switcher-dropdown">
-                            <button class="lang-switcher-trigger"></button>
+                            <button class="lang-switcher-trigger">
+                                <!-- المحتوى سيوضع بواسطة JavaScript -->
+                            </button>
                             <div class="lang-switcher-options"></div>
                         </div>
                     </div>
                 </nav>
             </div>
-        </div>
-    </header>
+        </div>    </header>
 
-    <main class="team-details-page" id="team-details-page">
+    <!-- قسم الانتقالات -->
+    <section class="standings" id="transfers-section">
         <div class="container">
-            <!-- Team Header -->
-            <div id="team-header-placeholder" class="loading-placeholder" style="height: 250px;"></div>
-            <div id="team-header-content" style="display: none;">
-                <!-- سيتم ملء هذا القسم بواسطة JavaScript -->
+            <h2 class="section-title">سوق الانتقالات</h2>
+            <p class="section-subtitle">أحدث انتقالات اللاعبين بين الأندية العالمية</p>
+            
+            <div class="standings-controls" id="transfers-controls">
+                <!-- سيتم إضافة الفلاتر هنا بواسطة JavaScript -->
             </div>
 
-            <!-- Transfers Section -->
-            <section class="transfers-section" id="transfers-section">
-                <h2 class="section-title" style="text-align: right; margin-bottom: 30px;">آخر الانتقالات</h2>
-                <div id="transfers-list-container">
-                    <!-- سيتم ملء قائمة الانتقالات هنا -->
-                </div>
-            </section>
+            <div class="transfers-grid" id="transfers-grid">
+                <!-- سيتم ملء بطاقات الانتقالات هنا بواسطة JavaScript -->
+            </div>
+            <div id="pagination-controls" style="text-align: center; margin-top: 30px;"></div>
         </div>
-    </main>
+    </section>
 
     <!-- التذييل -->
     <footer>
@@ -104,9 +127,12 @@
                     <h3 class="footer-title" data-i18n="quickLinks">روابط سريعة</h3>
                     <ul class="footer-links">
                         <li><a href="about.html"><i class="fas fa-angle-left"></i><span data-i18n="aboutUs"> عن الموقع</span></a></li>
+                        <li><a href="features.html"><i class="fas fa-angle-left"></i><span data-i18n="features"> المميزات</span></a></li>
                         <li><a href="teams.html"><i class="fas fa-angle-left"></i><span data-i18n="navTeams"> الفرق</span></a></li>
                         <li><a href="news.html"><i class="fas fa-angle-left"></i><span data-i18n="navNews"> الأخبار</span></a></li>
+                        <li><a href="stats.html"><i class="fas fa-angle-left"></i><span data-i18n="navStats"> الإحصائيات</span></a></li>
                         <li><a href="contact.html"><i class="fas fa-angle-left"></i><span data-i18n="navContact"> اتصل بنا</span></a></li>
+                        <li><a href="sitemap.html"><i class="fas fa-angle-left"></i> خريطة الموقع</a></li>
                     </ul>
                 </div>
                 
@@ -119,13 +145,6 @@
                     </ul>
                 </div>
             </div>
-            
-            <div class="footer-legal">
-                <ul class="footer-links">
-                    <li><a href="privacy-policy.html">سياسة الخصوصية</a></li>
-                    <li><a href="terms-and-conditions.html">الشروط والأحكام</a></li>
-                </ul>
-            </div>
 
             <div class="copyright">
                 © 2024 Football 3D Hub. جميع الحقوق محفوظة.
@@ -133,17 +152,12 @@
         </div>
     </footer>
 
-    <button id="back-to-top" title="الرجوع للأعلى"><i class="fas fa-arrow-up"></i></button>
+    <!-- إشعار ملفات تعريف الارتباط -->
+    <div id="cookie-notice">
+        <p>يستخدم هذا الموقع ملفات تعريف الارتباط لضمان حصولك على أفضل تجربة. <a href="privacy-policy.html">اعرف المزيد</a></p>
+        <button id="cookie-accept-btn">أوافق</button>
+    </div>
 
     <script src="main.js" defer></script>
-    <script>
-        // هذا الكود مخصص لتهيئة الصفحة عند تحميلها
-        // سيتم استدعاء الدالة initializeTeamDetailsPage من main.js
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof initializeTeamDetailsPage === 'function') {
-                initializeTeamDetailsPage();
-            }
-        });
-    </script>
 </body>
 </html>
