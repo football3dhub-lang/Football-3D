@@ -589,16 +589,16 @@ document.addEventListener('DOMContentLoaded', () => {
  
         // --- Load chat history from localStorage ---
         const CHAT_HISTORY_KEY = 'football-ai-chat-history';
-        let chatHistory = JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY)) || [{sender: 'ai', text: 'أهلاً بك في نونو شات! كيف يمكنني مساعدتك اليوم؟'}];
+        let chatHistory = JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY)) || [];
  
         // --- Function to create and display a message ---
-        function displayMessage(message, fromUser) {
+        function displayMessage(message, sender) { // sender can be 'user' or 'model'
  
             const messageElement = document.createElement("div");
-            messageElement.classList.add("message", fromUser ? "user-message" : "ai-message");
+            messageElement.classList.add("message", sender === 'user' ? "user-message" : "ai-message");
  
             // Add copy button for AI messages
-            const copyButtonHTML = !fromUser ? `
+            const copyButtonHTML = sender !== 'user' ? `
                 <button class="copy-btn" title="نسخ الرد">
                     <i class="far fa-copy"></i>
                 </button>
@@ -606,9 +606,11 @@ document.addEventListener('DOMContentLoaded', () => {
  
             const iconClass = fromUser ? "fa-user" : "fa-robot";
             
-            messageElement.innerHTML = `
+            const iconHTML = sender === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+            
+            messageElement.innerHTML =  `
                 <div class="message-icon">
-                    <i class="fas ${iconClass}"></i>
+                    ${iconHTML}
                 </div>
                 <div class="message-content">
                     ${copyButtonHTML}
@@ -620,7 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
             messageElement.querySelector('.message-text-content').textContent = message;
 
             // Add event listener for the copy button
-            if (!fromUser) {
+            if (sender !== 'user') {
                 const copyBtn = messageElement.querySelector('.copy-btn');
                 if (copyBtn) {
                     copyBtn.addEventListener('click', (e) => copyToClipboard(message, e));
@@ -675,58 +677,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Function to fetch response from the AI backend ---
         async function fetchResponse(userMessage) {
-            // استخدام البروكسي على Netlify لتأمين المفتاح
             const API_URL = "/.netlify/functions/ai-proxy";
-            // لا حاجة لتعريف المفتاح هنا، سيتم استخدامه على الخادم
-            // const DEEPSEEK_API_KEY = "YOUR_KEY"; 
 
-            // تحويل سجل المحادثة إلى التنسيق المطلوب وإضافة رسالة النظام
-            const messages = [
-                {
-                    role: "system",
-                    content: "أنت نونو شات، الذكاء الصناعي الرسمي لموقع Football 3D AI. أنت مساعد ذكي وودود ومحترم. يمكنك الحديث في جميع المواضيع مثل التقنية، الرياضة، التعليم، البرمجة، الترفيه، والمحادثة العامة. عندما يسألك أي شخص عن اسمك، أجب بـ: 'أنا نونو شات.' استخدم اللغة العربية."
-                },
-                ...chatHistory.map(msg => ({
-                    role: msg.sender === 'user' ? 'user' : 'assistant',
-                    content: msg.text
-                }))
-            ];
+            // رسالة النظام التي ستبدأ بها كل محادثة جديدة
+            const systemInstruction = {
+                role: "user",
+                parts: [{ text: "أنت نونو شات، الذكاء الصناعي الرسمي لموقع Football 3D AI. أنت مساعد ذكي وودود وخبير في كرة القدم. مهمتك هي الإجابة على أسئلة المستخدمين حول كرة القدم وكل ما يتعلق بها. يمكنك أيضاً الحديث في مواضيع عامة. عندما يسألك أي شخص عن اسمك، أجب بـ: 'أنا نونو شات.' استخدم اللغة العربية بشكل أساسي." }]
+            };
+            const systemResponse = {
+                role: "model",
+                parts: [{ text: "مرحباً! أنا نونو شات، مساعدك الذكي في عالم كرة القدم. كيف يمكنني مساعدتك اليوم؟" }]
+            };
+
+            // إذا كانت المحادثة جديدة، أضف رسالة النظام
+            const historyForAPI = chatHistory.length === 0 ? [systemInstruction, systemResponse] : chatHistory;
 
             try {
                 const response = await fetch(API_URL, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" }, // لا نرسل المفتاح من هنا
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        messages: messages // البروكسي سيضيف الموديل
+                        history: historyForAPI,
+                        message: userMessage
                     })
                 });
  
                 if (!response.ok) {
                     console.error("API Error:", response.status, response.statusText);
-                    return "عذراً، حدث خطأ أثناء الاتصال بالخبير. يرجى المحاولة مرة أخرى لاحقاً.";
+                    const errorData = await response.json();
+                    return errorData.message || "عذراً، حدث خطأ أثناء الاتصال بالخبير. يرجى المحاولة مرة أخرى لاحقاً.";
                 }
  
                 const data = await response.json();
- 
-                if (data.choices && data.choices[0] && data.choices[0].message) {
-                    return data.choices[0].message.content;
-                } else {
-                    console.error("Unexpected API response structure:", data);
-                    return "عذراً، لم أتمكن من فهم الرد. يرجى المحاولة مرة أخرى.";
-                }
+                return data.text;
+
             } catch (error) {
                 console.error("Fetch Error:", error);
                 return "عذراً، هناك مشكلة في الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت.";
             }
         }
  
-        // --- Main function to handle sending a message ---
         async function handleSendMessage() {
             const userMessage = userInput.value.trim();
             if (!userMessage) return;
  
-            displayMessage(userMessage, true);
-            chatHistory.push({ sender: 'user', text: userMessage });
+            displayMessage(userMessage, 'user');
+            chatHistory.push({ role: 'user', parts: [{ text: userMessage }] });
             saveChatHistory();
  
             userInput.value = "";
@@ -736,11 +732,11 @@ document.addEventListener('DOMContentLoaded', () => {
  
             const botResponse = await fetchResponse(userMessage);
             
-            chatHistory.push({ sender: 'ai', text: botResponse });
+            chatHistory.push({ role: 'model', parts: [{ text: botResponse }] });
             saveChatHistory();
             
             removeTypingIndicator();
-            displayMessage(botResponse, false);
+            displayMessage(botResponse, 'model');
         }
  
         // --- Event Listeners ---
@@ -755,10 +751,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // زر محادثة جديدة
         newChatBtn.addEventListener('click', () => {
             if (confirm('هل أنت متأكد أنك تريد بدء محادثة جديدة؟ سيتم حذف السجل الحالي.')) {
-                chatHistory = [];
+                chatHistory = []; // مسح السجل
                 saveChatHistory();
-                chatMessages.innerHTML = ''; // مسح الرسائل من الشاشة                
-                displayMessage('أهلاً بك في نونو شات! كيف يمكنني مساعدتك اليوم؟', false); // عرض رسالة ترحيب جديدة
+                chatMessages.innerHTML = ''; // مسح الرسائل من الشاشة
+                // عرض رسالة الترحيب الافتراضية
+                displayMessage('أهلاً بك في نونو شات! كيف يمكنني مساعدتك اليوم في عالم كرة القدم؟', 'model');
             }
         });
 
@@ -781,7 +778,11 @@ document.addEventListener('DOMContentLoaded', () => {
  
         // --- Load and display initial chat history ---
         function loadInitialHistory() {
-            chatHistory.forEach(msg => displayMessage(msg.text, msg.sender === 'user'));
+            if (chatHistory.length === 0) {
+                displayMessage('أهلاً بك في نونو شات! كيف يمكنني مساعدتك اليوم في عالم كرة القدم؟', 'model');
+            } else {
+                chatHistory.forEach(msg => displayMessage(msg.parts[0].text, msg.role));
+            }
         }
         loadInitialHistory();
     }
