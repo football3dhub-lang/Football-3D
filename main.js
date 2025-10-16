@@ -604,8 +604,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </button>
             ` : '';
  
-            const iconClass = fromUser ? "fa-user" : "fa-robot";
-            
             const iconHTML = sender === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
             
             messageElement.innerHTML =  `
